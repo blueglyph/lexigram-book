@@ -1,0 +1,584 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - Lexigram Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-1a4e6431.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3f39279b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-d7ab1a61.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Lexigram Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This chapter gives a gentle introduction to parsers and how the tool can help you build one. Its only purpose is to make sure the user is aware of how lexers and parsers work, and what the limitations of the grammar are.</p>
+<p>If you’re already familiar with those notions, you can skip this introduction.</p>
+<h2 id="components-of-a-parser"><a class="header" href="#components-of-a-parser">Components of a parser</a></h2>
+<p>A parser is split in two main components: the <em>lexical analyzer</em> and the <em>syntax analyzer</em>. We also call them respectively <em>lexer</em>, or <em>scanner</em>, and <em>parser</em>. The term “parser” is sometimes used more loosely to refer to both the lexer and the parser, as we did before.</p>
+<p>To give an intuitive view, the lexer reads the input and transforms it into a sequence of <em>tokens</em>, which are the basic symbols of the language. Those words can be variable, like a number, or they can be fixed, like a keyword or a punctuation symbol. The parser gets the sequence of tokens from the lexer and verifies that they fit the grammatical rules.</p>
+<p>Here is a simple example to illustrate the difference:</p>
+<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+Space: [ \n\r\t]+ -&gt; skip;
+
+assign -&gt; "let" Id "=" value;
+value -&gt; Id | Num;
+</code></pre>
+<p>For the vocabulary, the grammar rules are called production rules or, more simply, <em>productions</em>. The part on the left side of the arrow is the <em>head</em>, and the part on the right is the <em>body</em>. The tokens are also called <em>terminals</em>, especially when they’re considered in a production. The production names, like “assign” and “value”, are referred to as <em>nonterminals</em>, as opposed to terminals.</p>
+<p>The tokens recognized by the lexer are <code>Id</code>, <code>Num</code>, <code>"let"</code>, and <code>"="</code>. The first two are a little more complicated since their regular expressions can match many different strings. The others are given literally.</p>
+<p>The <code>Space</code> terminal is a little special. We must often use something to separate the tokens, because they could otherwise be merged; for example, if the input starts with “letvelocity” instead of “let velocity”, it’ll match <code>Id</code> instead of matching the sequence <code>"let"</code>, <code>Id</code>. By introducing <code>Space</code>, we allow the other tokens to be separated by space characters, even allowing for tabs and new lines. The <code>-&gt; skip</code> action makes the lexer discard those tokens, so that the parser gets <code>"let"</code>, <code>Id</code> instead of <code>"let"</code>, <code>Space</code>, <code>Id</code>, which would be tedious to handle.</p>
+<p>The productions used by the parser are <code>assign -&gt; …</code> and <code>value -&gt; …</code>. They specify how the tokens coming from the lexer may be arranged syntactically in the source language. When a production matches a sequence of tokens, we say that it <em>derives</em> the input from the nonterminal on the left-hand side. Some of those terms are somewhat abstract and formal, but we mention them because they’re often used in the context of parsers.</p>
+<p>We use the convention that the top nonterminal is the first to be defined. In this case, <code>assign</code> is the top nonterminal.</p>
+<p>Let’s see with an example how an input gets parsed:</p>
+<pre><code>let velocity = 125
+</code></pre>
+<p>The lexer outputs the following sequence of tokens:</p>
+<p><code>"let"</code>, <code>Id("velocity")</code>, <code>"="</code>, <code>Num("125")</code></p>
+<p>The parser determines the parse tree that makes the productions correspond to the input:</p>
+<p><img src="./images/basic_2.svg" alt="Image"></p>
+<ul>
+<li>The top nonterminal is <code>assign</code>. The three leftmost terminals match the input tokens <code>"let"</code>, <code>Id</code>, and <code>"="</code>.</li>
+<li>The fourth element is the nonterminal <code>value</code>, which contains two alternative productions: <code>value -&gt; Id</code> or <code>value -&gt; Num</code>. The derivation <code>value -&gt; Num</code> matches the input.</li>
+</ul>
+<p>The <em>parse tree</em>, also called <em>production graph</em>, is only a representation of the order in which the productions are arranged to match the input (to derive the input). It’s not necessarily an actual object built by the parser, but rather a representation of the parser flow through the productions and the received tokens. Quite commonly, the parser helps build an abstract syntax tree, which better corresponds to the needs of the application. We’ll see how in the next section.</p>
+<p>When the parser can’t match the input with the grammar, it generates a <em>syntax error</em>, ideally with enough information to tell the user where it fails and why. Similarly, when the lexer can’t extract any token from the input, it generates a <em>lexical error</em>.</p>
+<h2 id="how-parsers-are-used"><a class="header" href="#how-parsers-are-used">How parsers are used</a></h2>
+<p>Parsers are used in any application that needs to read an input in a specific language. It could be a programming language, a configuration file, or an HTML page. Sometimes, they’re written manually, but for more complex parsers, or types of parsers that are hard to write by hand, a parser generator is preferably used.</p>
+<p>Parsers are usually known as the first part of a compiler, which reads the source of a program and produces an executable. In a nutshell, a compiler has the following parts:</p>
+<ul>
+<li>a lexer and a parser</li>
+<li>a <em>semantic analyzer</em>, that uses the productions of the parser to build an <em>abstract syntax tree</em> (AST), a representation easier to process</li>
+<li>an <em>intermediate code generator</em>, which, based on the AST, creates a sequence of basic code that we call <em>intermediate representation</em> (IR)</li>
+<li>an optional <em>optimizer</em>, that produces a better sequence of IR</li>
+<li>a <em>code generator</em>, which transforms the IR into machine code for the target architecture (possibly followed by an optimizer for that particular architecture)</li>
+</ul>
+<p>We have subtly avoided so far to tell exactly what the parser is supposed to output. In truth, unlike the lexer, the parser doesn’t produce an output in the form of data. In order to build the abstract syntax tree, or more generally, the object that represents the parsed input, the parser interacts with your code each time it has recognized which production applies to the next bit. Your code can then produce the desired output.</p>
+<p>This interaction can take several forms, depending on the parser, but it generally comes in one of two common patterns: the listener and the visitor.</p>
+<p>In the <em>listener</em> pattern, each time the parser has correctly matched a production, it calls a user-defined <em>action routine</em>. In parser generators like Yacc and Bison, those routines are written in the grammar itself, which can sometimes reduce readability. In other generators, like ANTLR, the generated code provides a base class that can be specialized (inherited) by the user and where each method corresponds to a nonterminal: here, something like <code>exit_assign()</code> and <code>exit_value()</code>. Other methods corresponding to other phases of the parsing may be available, too, like when a nonterminal is about to be parsed, which can be used to initialize some data.</p>
+<p>In the <em>visitor</em> pattern, the generated code also provides a base class with methods that correspond to the nonterminals. The top nonterminal visitor is called at some point, and the user code can then inspect the data matched by the parser in that production, and call the visitor of the nonterminals to go deeper. In our example above, the user would call <code>visit_value()</code> from <code>visit_assign()</code>, so that the whole tree is visited by the user code.</p>
+<p>The listener approach is more automatic and natural, while the visitor approach allows the user to skip entire parts of the tree that are not relevant. For example, if there are several parsing passes, the first visitor implementation will collect all the declarations, but it will disregard the fine details of the definitions (e.g. not calling <code>visit_value()</code>). In the second pass, it will read everything, already knowing all the names that have been declared, even if that declaration comes later in the input.</p>
+<p>At this time, Lexigram generates the code for a listener only, creating a custom trait that you can implement for a listener object. This allows you to intercept the parser flow with the trait methods and to build an abstract syntax tree very efficiently.</p>
+<h2 id="lexicon-and-grammar"><a class="header" href="#lexicon-and-grammar">Lexicon and grammar</a></h2>
+<p>We saw earlier the specification of a simple language:</p>
+<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+
+assign -&gt; "let" Id "=" value;
+value -&gt; Id | Num;
+</code></pre>
+<p>You may have already seen the specification of a programming language in one form or another. One that we often see is the Backus–Naur form (BNF), which originated from the collaborative design of ALGOL 58 and evolved to the syntax we know today. Several variants of Extended Backus-Naur form (EBNF) exist, which add regular-expression-like niceties such as repetitions and optional items.</p>
+<p>We’ll be using our own language to describe the tokens the lexer must extract, which is the <em>lexicon</em>, and the productions the parser must use, which is the <em>grammar</em>. The syntax we’re using is inspired by ANTLR; it tries to be flexible and easy to read.</p>
+<p>Here is what the lexicon of the above example would be; note the names of the terminals are upper camel case:</p>
+<pre><code>Let: "let";
+Equal: "=";
+Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+</code></pre>
+<p>And here is the grammar, in which the names of the nonterminals are snake case, to distinguish them from the terminals:</p>
+<pre><code>assign: Let Id Equal value;
+value: Id | Num;
+</code></pre>
+<p>We like to separate both when we generate a parser with Lexigram, for several reasons:</p>
+<ul>
+<li>Using string literals for keywords like “let” and punctuation like “,” or “;” introduces a risk of discrepancy if there’s a typo somewhere. If each statement is ended by a semicolon, you may have to repeat that string literal in several productions, and if you decide to change that later, there’s a risk to miss some of them.</li>
+<li>Using string literals doesn’t give them a name, which is annoying when you have to process terminals in the code, as you’ll see later.</li>
+<li>Using string literals doesn’t specify in which order they’re defined. This can be limiting when the order is used to clarify ambiguities. Above, we see that <code>Let</code> and <code>Id</code> overlap since “let” matches <code>[A-Za-z][A-Za-z0-9]*</code>, but since <code>Let</code> is defined first, the lexer knows that “let” must be extracted as the <code>Let</code> token. Having a full lexicon improves the clarity and the precision.</li>
+<li>The tool allows to generate only a lexer; later, it will allow the user to use another, external lexer, so having separate lexicons and grammars is necessary.</li>
+</ul>
+<p>But for the sake of conciseness, we’ll often use the simplified form with string literals in small examples, where the concerns above don’t really apply. When we do that, we’re using <code>-&gt;</code> in the grammar instead of <code>:</code> (you may have spotted that clue earlier already).</p>
+<h2 id="where-to-draw-the-line"><a class="header" href="#where-to-draw-the-line">Where to draw the line?</a></h2>
+<p>Knowing where the lexer’s job ends and where the parser’s job is taking over isn’t always easy when you’re not used to it. For instance, if you declare a variable, it’s possible to rely on the lexer to scan the whole declaration:</p>
+<pre><code>Decl: 'let' [ \t]+ [_a-z][_0-9a-z0-9]* [ \t]* ':' [ \t]* [_a-z][_0-9a-z0-9]*;
+</code></pre>
+<p>All there is to do, once the parser (if you still need one) receives a <code>Decl</code> token, is to read the input attributes that come with it, remove the “let”, and do a split on space and colon characters—there are efficient methods for that in the standard library, after all.</p>
+<p>Of course, you’ll have to forbid any comment inside that section of source code.</p>
+<p>Another way is to slice it into smaller chunks and rely on the parser to assemble them:</p>
+<pre><code>// lexicon
+Colon: ':';
+Let: 'let';
+Id: [_a-z][_0-9a-z0-9]*;
+SkipSpaces: [ \t]+ -&gt; skip;
+</code></pre>
+<pre><code>// grammar
+declaration: Let Id Colon Id; 
+</code></pre>
+<p>At first glance, it’s more work, but you won’t have to split anything in the parser. In the listener’s <code>exit_declaration()</code> method, you’ll receive the strings for the variable and the type, and you don’t have to worry about the rest. If you decide your statements can be split across several lines, it’s fine: just add “\n” once to <code>SkipSpaces</code>. And if you want to support comments everywhere, just add this to the lexicon:</p>
+<pre><code>SkipComment: '/*' .*? '*/' -&gt; skip; 
+</code></pre>
+<p>There are no formal rules that tell how to separate what should be in the lexicon and what should be in the grammar, but you can use a few guidelines:</p>
+<ul>
+<li>As a general rule of thumb, split the source into tokens that represent simple words of the language, words that are easy to manipulate for the parser.</li>
+<li>If a token contains characters that must be discarded later by the parser, you should consider reworking that token’s definition and let the lexer discard what’s possible.</li>
+<li>If a variable pattern is repeated in a token, is there a way to split it, like we did with <code>[_a-z][_0-9a-z0-9]*</code> above? If not, we’ll see a way to define those patterns so they can be reused in the lexicon when we discuss that part more in detail.</li>
+<li>If a token is not useful in a grammar, maybe it can be skipped entirely by the lexer. You have to make sure it’s not used to distinguish two grammar productions, though.</li>
+<li>If several tokens are processed identically by the parser, like integers and floating points if there’s only one numerical type, or like strings between quotes or double quotes (e.g. in Python), it’s better to regroup them in the lexer and issue a single token to reduce the work in the parser.</li>
+</ul>
+<p>Don’t take those rules too literally; always consider the work on both sides and in all the situations. For example, if you allow escape codes and Unicode values in your string literals, how are you going to do? As single characters, they may look like this:</p>
+<ul>
+<li>‘\n’, ‘\r’, ‘\’</li>
+<li>‘\u{20}’, ‘\u{00A9}’</li>
+</ul>
+<p>But they could also be in the middle of a string:</p>
+<ul>
+<li>“Value:\n\u{25ba} “</li>
+</ul>
+<p>When they’re single characters, you could decide to return different tokens, depending on whether they’re regular characters, escape codes, or Unicode hex values. You could strip the unnecessary and just return a <code>Unicode</code> token with the hex value in attribute, in a string that’s ready to be converted to an integer by the parser.</p>
+<p>But that would complicate the parser. Instead of handing the character as a token, you’ll need several alternatives:</p>
+<pre><code>char_value: Char | Escape | Unicode; 
+</code></pre>
+<p>Then, you’ll need to implement its listener method:</p>
+<pre><code>let chr = match context {
+    CtxCharValue::V1 { char } =&gt; { ... }
+    CtxCharValue::V2 { escape } =&gt; { ... }
+    CtxCharValue::V3 { unicode } =&gt; { ... }
+}    
+</code></pre>
+<p>In fact, this isn’t too bad since each branch knows how to handle the attribute: take as-is, unescape, or convert the hex code to a Unicode character. If you process only single characters, it’s a good way to do it, but what if you must handle string literals, too?</p>
+<p>Another way to deal with it, since there is some processing that goes beyond the job of the lexer, is to let those codes in string and character literals, and have a Rust method that unescapes those codes. That method can be used for both characters and strings. If you decide to add more escape codes, you’ll just have to add them in one line in the lexicon, and to update that method; the parser won’t require an additional alternative in the rule and a new branch in the listener implementation.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>At this point, you may have been asking yourself how Lexigram was parsing the lexicon and the grammar. That’s right, it has a lexer and a parser of its own! Two, actually, since the lexicon and the grammar are two different languages.</p>
+<p>Processing the escape codes and Unicode values is actually done as described above; you can see how it’s done by checking Lexi’s lexicon, grammar, and listener implementation (Lexi is the lexer generator; Gram is the parser generator).</p>
+<p>And, before you ask, yes: Lexigram generates its own lexer and parser.</p>
+</blockquote>
+<h2 id="theres-parser-and-parser"><a class="header" href="#theres-parser-and-parser">There’s parser and parser</a></h2>
+<p>We have another important matter to tackle: there are different parser types, which support different classes of grammars, and so different subsets of possible languages. It’s worth knowing the basics in order to choose the right parser for the desired language, or, conversely, to design the language so that its grammar is supported by a type of parser.</p>
+<p>There are several ways to classify parsers, but if we consider a practical perspective, the derivation order, there are three classes of parsers for context-free grammars: <em>top-down</em>, <em>bottom-up</em>, and <em>universal</em>. The most common parser types are top-down and bottom-up because they’re more efficient.</p>
+<p>Currently, Lexigram generates a top-down parser. More precisely, a table-driven LL(1) parser, which belongs to the category of top-down parsers. As we’ll see, those parsers can’t process left recursion (<code>a -&gt; a B | C</code>) nor alternative productions beginning with the same symbols (<code>a -&gt; B C | B D</code>), but it’s possible to systematically transform the grammar to remove them. Thankfully, Lexigram performs these transformations automatically and as transparently as possible, so that you don’t have to bother about those limitations.</p>
+<p>In practice, top-down parsers are widely used in compilers because they’re relatively simple to make and to maintain. They’re often written manually using a recursive implementation, in which case they’re called recursive descent parsers. Some generators, like ANTLR, also write a recursive descent parser instead of a non-recursive, table-driven one.</p>
+<p>The next two sections give a general idea of each parser type.</p>
+<h2 id="top-down-parsers"><a class="header" href="#top-down-parsers">Top-down parsers</a></h2>
+<p>A top-down parser starts from the top production and deduces the items from the grammar, looking at the next symbol(s) to predict the production when there are several alternatives.</p>
+<p>Let’s illustrate that with an example:</p>
+<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+
+statement -&gt; assign ";" | print ";"; 
+assign -&gt; "let" Id "=" value;
+print -&gt; "print" value;
+value -&gt; Id | Num;
+</code></pre>
+<p>which we can rewrite with each production alternative on its own line:</p>
+<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+
+statement -&gt; assign ";";
+statement -&gt; print ";"; 
+assign -&gt; "let" Id "=" value;
+print -&gt; "print" value;
+value -&gt; Id;
+value -&gt; Num;
+</code></pre>
+<p>A top-down parser processes the input “let a = 10;” as follows:</p>
+<ul>
+<li>The top nonterminal is <code>statement</code>, but there are two alternatives. The first token is “<code>let</code>”, so <code>statement -&gt; assign ";"</code> is predicted since <code>assign</code> starts with that token. The symbols <code>assign</code> and <code>";"</code> of the production are queued to check that the incoming tokens match them.</li>
+<li>The next symbol in the queue is the nonterminal <code>assign</code>, and the pending token is still <code>"let"</code>, so the parser predicts the production <code>assign -&gt; "let" Id "=" value</code>. <code>assign</code> is removed from the queue and replaced with the symbols of the production body, so the queue is now <code>"let"</code>, <code>Id</code>, <code>"="</code>, <code>value</code>, <code>";"</code>.</li>
+<li>The next 3 tokens match the terminals in the queue: <code>"let"</code>, <code>Id("a")</code>, and <code>"="</code>. They’re removed from the queue, leaving <code>value</code> and <code>";"</code>.</li>
+<li>Since the next symbol in the queue is a nonterminal, <code>value</code>, the parser looks at the incoming token, <code>Num("10")</code>, and predicts that the next production is <code>value -&gt; Num</code>. <code>value</code> is replaced by <code>Num</code> in the queue.</li>
+<li>The <code>Num</code> symbol of the queue matches the incoming token <code>Num("10")</code>, so it’s removed. The queue now contains <code>";"</code>.</li>
+<li>The next token from the lexer is <code>";"</code>. It matches the last item in the queue, so it’s removed.</li>
+<li>The queue is empty, and there are no more tokens from the lexer, so the parser has finished and the result is successful.</li>
+</ul>
+<p>The equivalent parse tree is shown below:</p>
+<p><img src="./images/basic_3.svg" alt="Image"></p>
+<p>You can see that it’s indeed built from the top down, by incrementally attaching nonterminal branches and terminal leaves following a preorder, depth-first search.</p>
+<p>Another way to see it is that the input is derived from left to right, matching the tokens in that order with the productions.</p>
+<p>The “LL” in “LL(k) parser” stands for “scanning <strong>L</strong>eft-to-right, <strong>L</strong>eftmost derivation”, and <em>k</em> is the number of tokens the parser can look ahead to predict the next derivation. Similarly, an LL(k) grammar needs to look at maximum k following tokens to the right to predict a unique derivation. So an LL(k) parser can parse an LL(k) grammar (and also any LL(i) grammar, for i &lt; k). When k isn’t mentioned, it normally means LL(1).</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>A more restrictive subclass of grammars is sometimes mentioned: SLL, for <strong>S</strong>imple <strong>LL</strong>. Substantially, an SLL grammar requires no empty production (<code>a -&gt; A | ε</code>), and the production alternatives of a given nonterminal shouldn’t start with the same k terminals (<code>a -&gt; A b | A c</code>). The SLL parsers are somewhat easier to build, but the restrictions are significant, so we won’t spend more time on them.</p>
+</blockquote>
+<p>The grammar above can be parsed by looking only at the next token, so it’s an LL(1) grammar, which can be parsed by an LL(1) parser. Easy enough.</p>
+<h3 id="implementations"><a class="header" href="#implementations">Implementations</a></h3>
+<p>LL(k) parsers can be implemented in different ways, the most common being either <em>recursive-descent</em> or <em>table-driven</em> parsers.</p>
+<ul>
+<li><strong>Recursive-descent parsers</strong></li>
+</ul>
+<p>This implementation has one method for each nonterminal. Each method begins by inspecting as many lookahead tokens as it requires to predict the production when there are several alternatives. Then, for each symbol of the production:</p>
+<ul>
+<li>if it’s a terminal, the method consumes the next token and verifies that it matches;</li>
+<li>if it’s a nonterminal, it calls the corresponding method.</li>
+</ul>
+<p>Here is an example of pseudocode for the recursive-descent implementation of the first two nonterminals:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Parser {
+    fn statement(&amp;mut self) -&gt; Statement {
+        let stmt = match self.peek_token() {
+            Terminal::Let =&gt; self.assign(),
+            Terminal::Print =&gt; self.print(),            
+            _ =&gt; panic!("syntax error"),
+        };
+        self.match_token(Terminal::Semicolon);
+        stmt
+    }
+    
+    fn assign(&amp;mut self) -&gt; Statement {
+        self.match_token(Terminal::Let);
+        let id = self.match_token(Terminal::Id);
+        self.match_token(Terminal::Equal);
+        let value = self.value();
+        // process id, value
+        Statement::Assign { .. }
+    }
+    
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>Many compiler projects start with a recursive-descent parser because it’s intuitive to write, and it’s easy to increase the lookahead capability without changing much. The Rust compiler is written that way. Another advantage is that you don’t depend on a tool.</p>
+<p>The drawbacks are the lack of visibility of the grammar, the difficulty to change it, and the risk of overflowing the stack. It also requires a mechanism to exit gracefully if you meet syntax errors or if you want to abort the parsing.</p>
+<p><strong>Table-driven parsers</strong> try to address those issues by using a stack-based finite state machine (also called pushdown automaton) and a single loop. The grammar is transformed into a parsing table, which predicts the next production as a function of the nonterminal on the stack and the next token. A local stack stores the pending terminals that must match the incoming tokens and the nonterminals that must be transformed by predicting their production.</p>
+<ul>
+<li>If a terminal is on the stack, it’s popped and must match the next token.</li>
+<li>If a nonterminal is on the stack, it’s popped, and the table is used to predict the production, whose symbols are then pushed on the stack.</li>
+</ul>
+<p>Here is the parsing table for the grammar above:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th style="text-align: center">Id</th><th style="text-align: center">Num</th><th style="text-align: center">“;”</th><th style="text-align: center">“let”</th><th style="text-align: center">“=”</th><th style="text-align: center">“print”</th><th style="text-align: center">$</th></tr>
+</thead>
+<tbody>
+<tr><td>statement</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">0</td><td style="text-align: center">.</td><td style="text-align: center">1</td><td style="text-align: center">.</td></tr>
+<tr><td>assign</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">2</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td></tr>
+<tr><td>print</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">3</td><td style="text-align: center">.</td></tr>
+<tr><td>value</td><td style="text-align: center">4</td><td style="text-align: center">5</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td><td style="text-align: center">.</td></tr>
+</tbody>
+</table>
+</div>
+<p>where the numbers are the indices of the production alternatives:</p>
+<pre><code>0: statement -&gt; assign ";";
+1: statement -&gt; print ";"; 
+2: assign -&gt; "let" Id "=" value;
+3: print -&gt; "print" value;
+4: value -&gt; Id;
+5: value -&gt; Num;
+</code></pre>
+<p>Here’s the pseudocode of the simplified parser loop, supposing the lexer sends a <code>Terminal::End</code> at the end of the input (often represented as <code>$</code>):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Parser {
+    fn parse(&amp;mut self) {
+        let mut stack = vec![Terminal::End, self.top_nonterminal];
+        while let Some(stack_sym) = stack.pop() {
+            match stack_sym {
+                Terminal(t) =&gt; {
+                    self.match_terminal(stack_sym);
+                }
+                Nonterminal(nt) =&gt; {
+                    let predicted = self.get_table(stack_sym, nt);
+                    stack.extend(predicted);
+                }
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>In reality, Lexigram’s loop is a little more complex because it handles the re-synchronization after encountering syntax errors and other types of symbols pushed on the stack to call the action routines.</p>
+<p>A website that calculates the table of an LL(1) parser can be found at <a href="https://jsmachines.sourceforge.net/machines/ll1.html">this URL</a>. It also shows step by step how the input is parsed.</p>
+<h3 id="limitations"><a class="header" href="#limitations">Limitations</a></h3>
+<p>Because the parser relies on the next token to decide what to do, top-down parsers suffer from a few limitations.</p>
+<ul>
+<li><strong>Elimination of left recursion</strong></li>
+</ul>
+<p>Left recursion is not supported. In <code>list -&gt; list "," Id | Id</code>, the parser can’t predict an alternative when <code>list</code> is the current nonterminal: in order to determine it, it must first know what to predict for its first symbol, which is <code>list</code> itself. This generates an infinite, recursive loop that it can’t solve.</p>
+<p>The grammar must be changed to work around the problem using right recursion, which is fine for LL parsers:</p>
+<pre><code>list -&gt; Id list_1;
+list_1 -&gt; "," Id list_1 | ε; 
+</code></pre>
+<p>where <code>ε</code> is the symbol for “nothing”, meaning here the end of the “loop”.</p>
+<ul>
+<li><strong>Left factorization</strong></li>
+</ul>
+<p>An LL(1) can only look at the next token to predict the next production. If several alternatives begin with the same terminal, like <code>a -&gt; A B | A C</code>, the parser can check that the next token is <code>A</code> but it can’t see beyond; it would require an LL(2) parser.</p>
+<p>It’s also possible to transform the grammar to work around the limitation:</p>
+<pre><code>a -&gt; A a_1;
+a_1 -&gt; B | C;
+</code></pre>
+<ul>
+<li><strong>Ambiguity</strong></li>
+</ul>
+<p>When there is both left and right recursion, the grammar is ambiguous for any class of parser. The classic example is the expression grammar:</p>
+<pre><code>e -&gt; e * e | e - e | Id;
+</code></pre>
+<p>Firstly, there is no information about the <em>associativity</em> of <code>-</code>. For example, with the input “a - b - c”, it is unclear whether the correct derviation is</p>
+<ul>
+<li>
+<p><code>e -&gt; (e -&gt; Id("a")) - (e -&gt; (e -&gt; Id("b")) - (e -&gt; Id("c")))</code></p>
+<p>more simply, <code>a - (b - c)</code></p>
+</li>
+<li>
+<p><code>e -&gt; (e -&gt; (e -&gt; Id("a")) - (e -&gt; Id("b"))) - (e -&gt; Id("c"))</code></p>
+<p>more simply: <code>(a - b) - c</code></p>
+</li>
+</ul>
+<p>Semantically, they’re not the same! 4 - (3 - 2) = 3, but (4 - 3) - 2 = -1.</p>
+<p>Secondly, there is no information about the relative precedence of <code>*</code> and <code>-</code>. The input “a - b * c” can be either</p>
+<ul>
+<li><code>a - (b * c)</code></li>
+<li><code>(a - b) * c</code></li>
+</ul>
+<p>The problem of ambiguity is more delicate to solve in the case of top-down parsers. Several techniques exist, that depend on the implementation:</p>
+<ul>
+<li>Handwritten parsers usually apply a technique called precedence climbing, or Pratt parsing, which is equivalent but more general. Both methods use bottom-up parsing for the ambiguous productions, inside a top-down parser.</li>
+<li>Table-driven parsers use Clarke’s technique, which modifies the grammar. That’s how Lexigram deals with ambiguous rules, since it better fits the table implementation than precedence climbing/Pratt.</li>
+</ul>
+<p>This is only a general rule; there are exceptions: the ANTLR generates a recursive descent parser where the ambiguities are solved using Clarke’s technique.</p>
+<p>As we said earlier, Lexigram modifies the grammar automatically in those three situations. Other parser generators, like ANTLR, do it too, but some generators will expect you to provide an LL(k) grammar. Either way, it’s worth keeping the grammar limitations in mind, because those transformations, even if they’re automatic, create extra nonterminals.</p>
+<p>We’ll come back on those transformations and on the performance aspects of a grammar when we discuss how Lexigram works.</p>
+<h2 id="bottom-up-parser"><a class="header" href="#bottom-up-parser">Bottom-up parser</a></h2>
+<p>A bottom-up parser starts from the tokens and deduces the production from them. It accumulates the incoming tokens until it recognizes a production and <em>reduces</em> that part of the input to a nonterminal. Then, it checks if further reductions can be made, consuming more tokens if necessary.</p>
+<p>Let’s take the same grammar again:</p>
+<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+Num: [0-9]+;
+
+statement -&gt; assign ";";
+statement -&gt; print ";"; 
+assign -&gt; "let" Id "=" value;
+print -&gt; "print" value;
+value -&gt; Id;
+value -&gt; Num;
+</code></pre>
+<p>A bottom-up parser processes the input “let a = 10;” as follows:</p>
+<ul>
+<li>The parser needs to consume <code>Let</code>, <code>Id("a")</code>, <code>"="</code>, and <code>Num("10")</code> before it can make its first reduction: <code>value -&gt; Num("10")</code>.</li>
+<li>The stack is <code>Let</code>, <code>Id("a")</code>, <code>"="</code>, <code>value</code>. The parser recognizes the production <code>assign -&gt; "let" Id "=" value</code>.</li>
+<li>The stack is <code>assign</code>. There are no further reductions, so the parser takes the next token.</li>
+<li>The stack is <code>value</code>, <code>";"</code>. The parser recognizes <code>statement -&gt; assign ";"</code>.</li>
+<li>The stack is <code>statement</code>, and the end of the input has been reached. <code>statement</code> is an acceptable result, so the parser has finished and the result is successful.</li>
+</ul>
+<p><img src="./images/basic_4.svg" alt="Image"></p>
+<p>This time, you can see that the syntax tree is built from the bottom up, by discovering the terminal leaves first and incrementally creating nonterminal branches to attach them.</p>
+<p>We can also see it as the <em>reduction</em> of the input, where symbols matching the right-hand side of a production are replaced by the left-hand side.</p>
+<p>The main classes of bottom-up parsers are</p>
+<ul>
+<li>LR(k), where the first L stands for scanning <strong>L</strong>eft to right, and the R for <strong>R</strong>ightmost derivation. k is the number of look-ahead tokens, which is in practice 0 or 1. So, in comparison to the LL parser which starts at the top of the syntax tree and always derives the leftmost nonterminal first, the LR parser starts at the bottom and always derives (in reverse) the rightmost nonterminal first.</li>
+<li>SLR(k) is a <strong>S</strong>imple <strong>LR</strong>. This class of parsers has fewer states than the equivalent LR for the same grammar, but they can handle a smaller set of grammars.</li>
+<li>LALR stands for <strong>L</strong>ook <strong>A</strong>head <strong>LR</strong>. Without going into details, this class of parsers improves on SLR by using local look-ahead, allowing them to handle a larger set of grammars with the same number of states as the equivalent SLR parsers. In practice, LALR parsers are often preferred to the other classes.</li>
+</ul>
+<p>The bottom-up parsers are table-driven, following a mechanism very similar to table-driven LL parsers. Computing the table of an LL parser is a little tedious, but it’s a lot of work for bottom-up parser, even LALR, so this task is almost always done by a tool.</p>
+<p>A website that calculates the table can be found at <a href="https://jsmachines.sourceforge.net/machines/lr1.html">this URL for an LR(1) parser</a>, and at <a href="https://jsmachines.sourceforge.net/machines/lalr1.html">this URL for an LALR(1) parser</a>. You can see the difference in the number of state for the default grammar shown as an example.</p>
+<p>Since Lexigram currently generates top-down parsers only, we won’t talk any further about bottom-up parsers. We’ll add more when Lexigram supports them.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="lexigram.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="tutorial.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="lexigram.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="tutorial.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

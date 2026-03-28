@@ -1,0 +1,1454 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Listener Implementation - Lexigram Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-1a4e6431.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3f39279b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-d7ab1a61.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Lexigram Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="listener-implementation"><a class="header" href="#listener-implementation">Listener implementation</a></h1>
+<p>Now that the grammar has been designed, we’ll generate the code and implement the parser.</p>
+<p>We’d like our configuration parser to give an <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/struct.Options.html"><code>Options</code></a> object, ready to be used to generate a parser from Rust code:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let options = ... ; // what comes from the parser
+match try_gen_parser(Action::Generate, options) {
+    Ok(log) =&gt; {
+        println!("Code generated");
+        assert!(
+            log.has_no_warnings(),
+            "unexpected warning(s):\n{}",
+            log.get_warnings().join("\n"));
+    }
+    Err(build_error) =&gt; panic!("{build_error}"),
+}
+<span class="boring">}</span></code></pre>
+<h2 id="starting-point"><a class="header" href="#starting-point">Starting point</a></h2>
+<p>Let’s first generate the lexer, parser, and the wrapper. It would also be good to keep a template of the user types and listener implementation; if we change the grammar at some point, it’s easier to update the listener code by checking how the templates changed. Those templates are generated with the code on demand.</p>
+<p>Create a new library project, then add <code>src/parser.rs</code> and <code>src/test.rs</code>. For now, add the <code>lexigram-core</code> dependency.</p>
+<p>Apart from the top-level parser definitions, we intend to have a few modules in <code>parser.rs</code>:</p>
+<ul>
+<li><code>listener</code>: where we implement the generated listener trait (we’ll initially copy that from the template).</li>
+<li><code>listener_types</code>: where we declare all the user types (we’ll initially copy that from the template).</li>
+<li><code>config_lexer</code>: the generated lexer.</li>
+<li><code>config_parser</code>: the generated low-level parser.</li>
+</ul>
+<p>You can of course change the structure, but that’s what we’ll assume in the code samples below.</p>
+<p>Here’s how the initial <code>parser.rs</code> file should look like. We’re adding attributes to avoid unnecessary warnings about unused items at this point; we’ll remove that later.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// top-level parser
+
+mod listener {
+    // listener implementation
+}
+
+#[allow(unused)]
+mod listener_types {
+    // listener types
+}
+
+#[allow(unused)]
+mod config_lexer {
+    // [config_lexer]
+    // [config_lexer]
+}
+
+#[allow(unused)]
+mod config_parser {
+    // [config_parser]
+    // [config_parser]
+}
+<span class="boring">}</span></code></pre>
+<p>Create another file in the project directory, <code>templates.txt</code>, with two pairs of tags for the templates:</p>
+<pre><code class="language-text">// -----------------------------------------------------------------------------
+// [template_user_types]
+// [template_user_types]
+// -----------------------------------------------------------------------------
+// [template_listener_impl]
+// [template_listener_impl]
+// -----------------------------------------------------------------------------
+</code></pre>
+<p>Add those files to the version control (git, …), so you can see the differences each time you generate a new version of the parser.</p>
+<h3 id="generating-from-code"><a class="header" href="#generating-from-code">Generating from code</a></h3>
+<p>If you want to create the code programmatically, create an additional binary crate <code>gen_config</code> and add it as workspace member. It needs <code>lexi-gram</code> as dependency, too.</p>
+<p>Write the code that generates the parser in <code>main.rs</code>, with pathnames relative to the main project’s directory (that’s where the binary should be run from):</p>
+<pre class="playground"><code class="language-rust">use lexi_gram::lexigram_lib;
+
+use lexi_gram::{gencode, genspec};
+use lexi_gram::gen_parser::try_gen_parser;
+use lexi_gram::options::{Action, OptionsBuilder};
+use lexigram_lib::CollectJoin;
+use lexigram_lib::log::LogStatus;
+
+static LEXICON_FILE: &amp;str = "src/config.l";
+static GRAMMAR_FILE: &amp;str = "src/config.g";
+static DEST_FILE: &amp;str = "src/parser.rs";
+static LEXER_TAG: &amp;str = "config_lexer";
+static PARSER_TAG: &amp;str = "config_parser";
+static DEST_TEMPLATES: &amp;str = "templates.txt";
+static USERS_TAG: &amp;str = "template_user_types";
+static LISTENER_TAG: &amp;str = "template_listener_impl";
+
+fn main() {
+    let options = OptionsBuilder::new()
+        .indent(4)
+        .lexer(
+            genspec!(filename: LEXICON_FILE), 
+            gencode!(filename: DEST_FILE, tag: LEXER_TAG))
+        .parser(
+            genspec!(filename: GRAMMAR_FILE), 
+            gencode!(filename: DEST_FILE, tag: PARSER_TAG))
+        .types_code(gencode!(filename: DEST_TEMPLATES, tag: USERS_TAG))
+        .listener_code(gencode!(filename: DEST_TEMPLATES, tag: LISTENER_TAG))
+        .libs(["super::listener_types::*"])
+        .span_params(true)
+        .build()
+        .expect("should have no error");
+    match try_gen_parser(Action::Generate, options) {
+        Ok(log) =&gt; {
+            println!("Code generated in {DEST_FILE}\n{log}");
+            assert!(log.has_no_warnings(), "unexpected warning(s)");
+        }
+        Err(build_error) =&gt; panic!("{build_error}"),
+    }
+}</code></pre>
+<h3 id="generating-from-cli"><a class="header" href="#generating-from-cli">Generating from CLI</a></h3>
+<p>Make sure you have <a href="crates.html#lexigram">installed the Lexigram binary</a>.</p>
+<p>If the project has a single crate, with the lexicon and grammar files in the <code>src</code> subdirectory, the following command should generate the same code:</p>
+<pre><code class="language-shell">lexigram --indent 4\
+  -x src/config.l -l "src/parser.rs" tag config_lexer\
+  -g src/config.g -p "src/parser.rs" tag config_parser\
+  --types templates.txt tag template_user_types\
+  --listener templates.txt tag template_listener_impl\
+  --lib "super::listener_types::*" --spans
+</code></pre>
+<h3 id="basic-parser"><a class="header" href="#basic-parser">Basic parser</a></h3>
+<p>Before implementing the full parser, it’s a good idea to test an empty shell with all the generated code.</p>
+<p>We can start by copying the content of the templates</p>
+<ul>
+<li><code>[template_user_types]</code>: copy what’s between the tags into the <code>listener_types</code> module.</li>
+<li><code>[template_listener_impl]</code>: copy what’s between the tags into the <code>listener</code> module.</li>
+</ul>
+<p>The parser needs a field for the lexer, the parser, and the wrapper. The listener is inside the wrapper, so you don’t need a field for it at the top.</p>
+<p>We’ll provide the input as a <code>&amp;str</code>, so we need an extra lifetime <code>'ls</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConfigParser&lt;'l, 'p, 'ls&gt; {
+    lexer: Lexer&lt;'l, Cursor&lt;&amp;'l str&gt;&gt;,
+    parser: Parser&lt;'p&gt;,
+    wrapper: Option&lt;Wrapper&lt;Listener&lt;'ls&gt;&gt;&gt;,
+}
+<span class="boring">}</span></code></pre>
+<p>In the <code>listener</code> module, let’s add a reference to the input in the listener, as a vector of references to each line. It’s not mandatory, but we’ll show an easy way to give a proper indication of where an error occurs in the input. We should also add bindings for <code>PosSpan</code> and <code>Logger</code>, and everything above, which are not generated automatically in the template.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod listener {
+    use lexigram_core::lexer::PosSpan;
+    use lexigram_core::log::Logger;
+    use super::*;
+
+    pub(super) struct Listener&lt;'ls&gt; {
+        pub log: BufLog,
+        lines: Option&lt;Vec&lt;&amp;'ls str&gt;&gt;,
+    }
+  
+    impl&lt;'ls&gt; Listener&lt;'ls&gt; {
+        pub fn new() -&gt; Self {
+            Listener {
+                log: BufLog::new(),
+                lines: None,
+            }
+        }
+
+        pub fn attach_lines(&amp;mut self, lines: Vec&lt;&amp;'ls str&gt;) {
+            self.lines = Some(lines);
+        }
+    }
+
+    //  ... (the rest remains as in the template)
+}
+<span class="boring">}</span></code></pre>
+<p>We’re now ready to implement the top parser.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::io::Cursor;
+use listener_types::*;
+use config_lexer::build_lexer;
+use config_parser::*;
+use listener::Listener;
+use lexigram_core::char_reader::CharReader;
+use lexigram_core::lexer::{Lexer, TokenSpliterator};
+use lexigram_core::log::{BufLog, Logger, LogStatus};
+use lexigram_core::parser::Parser;
+
+const VERBOSE_WRAPPER: bool = false;
+
+impl&lt;'l, 'ls: 'l&gt; ConfigParser&lt;'l, '_, 'ls&gt; {
+    /// Creates a new parser
+    pub fn new() -&gt; Self {
+        let lexer = build_lexer();
+        let parser = build_parser();
+        ConfigParser { lexer, parser, wrapper: None }
+    }
+
+    /// Parses a text.
+    ///
+    /// On success, returns the log.
+    /// 
+    /// On failure, returns the log with the error messages.
+    pub fn parse(&amp;mut self, text: &amp;'ls str) -&gt; Result&lt;BufLog, BufLog&gt; {
+        self.wrapper = Some(Wrapper::new(Listener::new(), VERBOSE_WRAPPER));
+        let stream = CharReader::new(Cursor::new(text));
+        self.lexer.attach_stream(stream);
+        self.wrapper.as_mut().unwrap()
+            .get_listener_mut()
+            .attach_lines(text.lines().collect());
+        let tokens = self.lexer.tokens().keep_channel0();
+        let result = self.parser.parse_stream(self.wrapper.as_mut().unwrap(), tokens);
+        let Listener { mut log, .. } = self.wrapper.take().unwrap().give_listener();
+        if let Err(e) = result {
+            log.add_error(e.to_string());
+        }
+        if log.has_no_errors() {
+            Ok(log)
+        } else {
+            Err(log)
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>The idea we’re following is to put the wrapper inside an <code>Option</code> (yes, we’re wrapping the wrapper). That way, we can keep the same parser object, even if we parse several inputs in a loop. Each time, a new wrapper / listener is created with the references to the new input, and it’s destroyed them after the parsing is done. It makes it easier to deal with the lifetimes, and it avoids reusing a listener which may have remnants of the previous input.</p>
+<p>All we need now is a test. Add this to <code>tests.rs</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span>#![cfg(test)]
+
+<span class="boring">fn main() {
+</span>use crate::parser::ConfigParser;
+
+#[test]
+fn test_run() {
+    let mut p = ConfigParser::new();
+    for (i, src) in [SRC1, SRC2].into_iter().enumerate() {
+        println!("source #{i}");
+        match p.parse(src) {
+            Ok(log) =&gt; println!("success\n{log}"),
+            Err(log) =&gt; panic!("error\n{log}"),
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+static SRC1: &amp;str = r#"
+def SOURCE_FILENAME = "../watcher/src/lib.rs";
+
+lexer {
+    combined: "src/watcher.lg",
+    output: SOURCE_FILENAME ["watcher_lexer"],
+    indent: 4
+}
+parser {
+    output: SOURCE_FILENAME ["watcher_parser"],
+    indent: 4
+}
+options {
+    nt-value: none,
+    spans: true
+}
+"#;
+
+static SRC2: &amp;str = r#"
+def LEXICON_GRAMMAR_FILENAME = "src/microcalc.lg";
+def SOURCE_FILENAME = "../microcalc/src/main.rs";
+
+lexer {
+    input: LEXICON_GRAMMAR_FILENAME,
+    output: SOURCE_FILENAME ["microcalc_lexer"],
+    indent: 4
+}
+parser {
+    input: LEXICON_GRAMMAR_FILENAME,
+    output: SOURCE_FILENAME ["microcalc_parser"],
+    indent: 4
+}
+options {
+    libs: { "super::listener_types::*" },
+    nt-value: default
+}
+"#;
+<span class="boring">}</span></code></pre>
+<p>You can launch the test to verify that it works. Then corrupt one of the inputs to verify that the error is detected.</p>
+<h2 id="storing-the-options"><a class="header" href="#storing-the-options">Storing the options</a></h2>
+<p>Since <code>Options</code> and its fields are public, we’ll simply store an instance in the listener and set its fields accordingly to what is parsed.</p>
+<p>By default, the generated code relies only on the <code>lexigram-core</code> crate. That’s what we used in our first test. But <code>Options</code> is in <code>lexi-gram</code>, which also depends on <code>lexigram-core</code>, as we explain in the <a href="crates.html">Lexigram crates chapter</a>.</p>
+<p>Rather than using two dependencies, we’ll use only <code>lexi-gram</code>, from which we’ll take <code>lexigram-core</code>. For example with this binding:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use lexi_gram::lexigram_lib::lexigram_core;
+<span class="boring">}</span></code></pre>
+<p>Let’s add this binding for the lexer and the low-level parser, which also need <code>lexigram_core</code>.</p>
+<ul>
+<li>
+<p>If you generated the parser from code, insert a <code>.headers(…)</code>, and generate the code again:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let options = OptionsBuilder::new()
+        .headers(["use lexi_gram::lexigram_lib::lexigram_core;"])
+        .indent(4)
+        .lexer(
+            genspec!(filename: LEXICON_FILE), 
+            gencode!(filename: DEST_FILE, tag: LEXER_TAG))
+        .parser(
+            genspec!(filename: GRAMMAR_FILE), 
+            gencode!(filename: DEST_FILE, tag: PARSER_TAG))
+        .types_code(gencode!(filename: DEST_TEMPLATES, tag: USERS_TAG))
+        .listener_code(gencode!(filename: DEST_TEMPLATES, tag: LISTENER_TAG))
+        .libs(["super::listener_types::*"])
+        .span_params(true)
+        .build()
+        .expect("should have no error");
+<span class="boring">}</span></code></pre>
+</li>
+<li>
+<p>If you generated the parser from the command-line, add a <code>--header</code> and generate the code again:</p>
+<pre><code class="language-shell">lexigram --indent 4 --header "use lexi_gram::lexigram_lib::lexigram_core;"\
+  -x src/config.l -l "src/parser.rs" tag config_lexer\
+  -g src/config.g -p "src/parser.rs" tag config_parser\
+  --types templates.txt tag template_user_types\
+  --listener templates.txt tag template_listener_impl\
+  --lib "super::listener_types::*" --spans
+</code></pre>
+</li>
+</ul>
+<p>In <code>parser.rs</code>, insert this at the top of the bindings:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use lexi_gram::lexigram_lib::lexigram_core;
+<span class="boring">}</span></code></pre>
+<p>The listener can now have its new <code>options</code> field:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub(super) struct Listener&lt;'ls&gt; {
+    pub options: Options,
+    pub log: BufLog,
+    lines: Option&lt;Vec&lt;&amp;'ls str&gt;&gt;,
+}
+
+impl&lt;'ls&gt; Listener&lt;'ls&gt; {
+    pub fn new() -&gt; Self {
+        Listener {
+            options: Options::default(),
+            log: BufLog::new(),
+            lines: None,
+        }
+    }
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>Check that everything compiles and that the tests still run.</p>
+<p>Now we’re ready to modify the listener implementation.</p>
+<h2 id="storing-the-constants"><a class="header" href="#storing-the-constants">Storing the constants</a></h2>
+<p>The next task is to store the constants that are defined at the beginning. They can be used anywhere, so they could contain any type of value defined in the grammar.</p>
+<p>In the <code>listener_types</code> module, we define the type that holds any type of value, and we add a field to the listener (which also needs to be initialized in <code>new(…)</code>):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `value`
+#[derive(Clone, PartialEq, Debug)]
+pub(super) enum SynValue {
+    Error,
+    Bool(bool),
+    Num(u32),
+    Str(String),
+    CodeStdout,
+}
+
+pub(super) struct Listener&lt;'ls&gt; {
+    // ...
+    consts: HashMap&lt;String, SynValue&gt;,
+}
+<span class="boring">}</span></code></pre>
+<p>Back in the <code>listener</code> module, we can now modify <code>exit_value(…)</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_value(&amp;mut self, ctx: CtxValue, spans: Vec&lt;PosSpan&gt;) -&gt; SynValue {
+    match ctx {
+        // value -&gt; BoolLiteral
+        CtxValue::V1 { boolliteral } =&gt; SynValue::Bool(boolliteral == "true"),
+        // value -&gt; NumLiteral
+        CtxValue::V2 { numliteral } =&gt; {
+            match usize::from_str(&amp;numliteral) {
+                Ok(v) =&gt; SynValue::Num(v),
+                Err(e) =&gt; {
+                    self.log.add_error(format!("at {}, {e}", spans[0]));
+                    SynValue::Error
+                }
+            }
+        }
+        // value -&gt; StrLiteral
+        CtxValue::V3 { mut strliteral } =&gt; {
+            strliteral.remove(0); // remove quotes
+            strliteral.pop();
+            SynValue::Str(strliteral)
+        }
+        // value -&gt; Id
+        CtxValue::V4 { id } =&gt; {
+            if let Some(v) = self.consts.get(&amp;id) {
+                v.clone()
+            } else {
+                self.log.add_error(format!("at {}, {id} is not defined", spans[0]));
+                SynValue::Error
+            }
+        }
+        // value -&gt; "stdout"
+        CtxValue::V5 =&gt; SynValue::CodeStdout,
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>The <code>spans</code> vector contains the location of the symbols in the corresponding production. Note that there are positions for symbols that don’t have any value, like fixed terminals. The type implements <code>Display</code> to show the location of one or more characters as “line:column”, “line:col1-col2”, or “line1:col1-line2:col2”. Later, we’ll update that to show the actual input that produces the error, but it’s enough for now.</p>
+<p>The definitions are in the rule <code>definitions</code>, but we’re mostly interested in <code>exit_i_def(…)</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_definitions(&amp;mut self, _: CtxDefinitions, _: Vec&lt;PosSpan&gt;) -&gt; SynDefinitions {
+    SynDefinitions()
+}
+
+fn init_i_def(&amp;mut self) -&gt; SynIDef {
+    SynIDef()
+}
+
+fn exit_i_def(&amp;mut self, acc: &amp;mut SynIDef, ctx: CtxIDef, spans: Vec&lt;PosSpan&gt;) {
+    // `&lt;L&gt; "def" Id "=" value ";"` iteration in 
+    // `definitions -&gt; ( ►► &lt;L&gt; "def" Id "=" value ";" ◄◄ )*`
+    let CtxIDef::V1 { id, value } = ctx;
+    if self.consts.contains_key(&amp;id) {
+        self.log.add_error(format!("at {}, redefined constant {id}", spans[4]));
+    } else if value != SynValue::Error {
+        self.consts.insert(id, value);
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Note that we use <code>spans[4]</code>, but <code>value</code> is the 4th item in the production (<code>&lt;L&gt;</code> doesn’t count). Why?</p>
+<p>In a loop, there’s an extra value in index 0, that contains the accumulated positions so far. So here, <code>spans[0]</code> spans all the definitions parsed, including the current one. <code>spans[1]</code> is <code>"def"</code>, and so on.</p>
+<p>To have a peek at the results, we can implement the listener’s <code>exit(…)</code> method:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit(&amp;mut self, config: SynConfig, span: PosSpan) {
+    let mut defs = self.consts.iter()
+        .map(|(k, v)| format!("\n- {k}: {v:?}"))
+        .to_vec();
+    defs.sort();
+    println!("definitions:{}", defs.join(""));
+}
+<span class="boring">}</span></code></pre>
+<p><code>to_vec</code> requires a <code>use lexi_gram::lexigram_lib::CollectJoin;</code>; alternatively, you can use a <code>collect</code>.</p>
+<p>Run the test again to verify the definitions, and try to add new ones, including redefinitions and references to undefined constants to check the errors.</p>
+<h2 id="io_options"><a class="header" href="#io_options"><code>io_options</code></a></h2>
+<p>Next, we have the production rules of the lexer and parser groups, both using <code>io_options</code> to parse the options.</p>
+<pre><code class="language-text">lexer:
+    Lexer Lbracket io_options Rbracket
+;
+
+io_options:
+    io_option (&lt;L=i_io_opt&gt; Comma io_option)*
+;
+
+io_option:
+    Combined Colon value tag_opt            // string
+|   Input    Colon value tag_opt            // string
+|   Output   Colon value tag_opt            // string
+|   Indent   Colon value                    // num
+|   Headers  Colon Lbracket value (Comma value)* Rbracket // string
+;
+
+tag_opt:
+    (LSbracket value RSbracket)?            // string
+;
+</code></pre>
+<p>We have two possible approaches.</p>
+<p>In the first one, we store in a new field of the listener whether we’re parsing the lexer or the parser when we enter those rules (<code>init_lexer(…)</code> and <code>init_parser(…)</code>). In <code>io_option</code>, we set the appropriate values of <code>self.options</code> depending on the production alternative and the subject (lexer/parser). The nonterminals <code>io_options</code> and <code>io_option</code> don’t hold a value.</p>
+<p>In the second approach, we store in <code>io_option</code> a new type that contains the possible options (<a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/enum.Specification.html"><code>Specification</code></a>, <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/enum.CodeLocation.html"><code>CodeLocation</code></a>, <code>usize</code>, …). We fold the values in <code>io_options</code> and detect repetitions, then we store the same type in <code>io_options</code>, and <code>lexer</code>/<code>parser</code> detect other errors and store the options in <code>self.options</code>.</p>
+<p>Both work, but we’ll choose the second approach because it’s more there’s less coupling, and the responsibilities are better located.</p>
+<p>For <code>io_option</code>, we define the following type in the <code>listener_types</code> module (<code>Specifications</code> and <code>CodeLocation</code> must be imported):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `io_option`
+#[derive(Clone, PartialEq, Debug)]
+pub enum SynIoOption {
+    Error,
+    Combined(Specification),
+    Spec(Specification),
+    Code(CodeLocation),
+    Indent(usize),
+    Headers(Vec&lt;String&gt;),
+}
+<span class="boring">}</span></code></pre>
+<p>The <code>Error</code> variant is added in case an error is encountered when parsing the nonterminal.</p>
+<p><code>tag_opt</code>, which is used in <code>io_option</code>, is just an optional string for the tag:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `tag_opt`
+pub type SynTagOpt = Option&lt;String&gt;;
+<span class="boring">}</span></code></pre>
+<p>For <code>io_options</code>, here is the “accumulator” type we’ll use to fold the option values:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `io_options`
+#[derive(Clone, PartialEq, Debug)]
+pub struct SynIoOptions {
+    pub is_combined: bool,
+    pub spec: Specification,
+    pub code: CodeLocation,
+    pub indent_opt: Option&lt;usize&gt;,
+    pub headers: Vec&lt;String&gt;,
+}
+
+impl Default for SynIoOptions {
+    fn default() -&gt; Self {
+        SynIoOptions {
+            is_combined: false,
+            spec: Specification::None,
+            code: CodeLocation::None,
+            indent_opt: None,
+            headers: vec![],
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Here is its implementation:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl SynIoOptions {
+    pub fn new() -&gt; Self {
+        Self::default()
+    }
+
+    pub fn fold(&amp;mut self, io_option: SynIoOption) -&gt; Result&lt;(), &amp;str&gt; {
+        match io_option {
+            SynIoOption::Error =&gt; {}
+            SynIoOption::Combined(spec) =&gt; {
+                if self.spec.is_none() {
+                    self.is_combined = true;
+                    self.spec = spec;
+                } else {
+                    return Err("more than one specification");
+                }
+            }
+            SynIoOption::Spec(spec) =&gt; {
+                if self.spec.is_none() {
+                    self.spec = spec;
+                } else {
+                    return Err("more than one specification");
+                }
+            }
+            SynIoOption::Code(code) =&gt; {
+                if self.code.is_none() {
+                    self.code = code;
+                } else {
+                    return Err("more than one code location");
+                }
+            }
+            SynIoOption::Indent(indent) =&gt; {
+                if self.indent_opt.is_none() {
+                    self.indent_opt = Some(indent);
+                } else {
+                    return Err("more than one indentation");
+                }
+            }
+            SynIoOption::Headers(headers) =&gt; {
+                self.headers.extend(headers);
+            }
+        }
+        Ok(())
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>We don’t check if we can use <code>combined</code> at this level; this and its effect are handled in <code>lexer</code> and <code>parser</code>.</p>
+<p>Here’s the implementation of <code>exit_io_option(…)</code>, which is a little long because of the different cases and the error checking, but otherwise straightforward.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_io_option(&amp;mut self, ctx: CtxIoOption, spans: Vec&lt;PosSpan&gt;) -&gt; SynIoOption {
+    fn get_spec(value: SynValue, tag_opt: SynTagOpt) -&gt; Result&lt;Specification, &amp;'static str&gt; {
+        match value {
+            SynValue::Error =&gt; Ok(genspec!(none)),
+            SynValue::Bool(_)
+            | SynValue::Num(_)
+            | SynValue::CodeStdout =&gt; Err("string"),
+            SynValue::Str(s) =&gt; {
+                if let Some(tag) = tag_opt {
+                    Ok(genspec!(filename: s, tag: tag))
+                } else {
+                    Ok(genspec!(filename: s))
+                }
+            }
+        }
+    }
+
+    match ctx {
+        // io_option -&gt; "combined" ":" value tag_opt
+        CtxIoOption::V1 { value, tag_opt } =&gt; {
+            match get_spec(value, tag_opt) {
+                Ok(spec) =&gt; SynIoOption::Combined(spec),
+                Err(expected) =&gt; {
+                    self.log.add_error(format!("at {}, expected {expected}", spans[2]));
+                    SynIoOption::Error
+                }
+            }
+        }
+        // io_option -&gt; "input" ":" value tag_opt
+        CtxIoOption::V2 { value, tag_opt } =&gt; {
+            match get_spec(value, tag_opt) {
+                Ok(spec) =&gt; SynIoOption::Spec(spec),
+                Err(expected) =&gt; {
+                    self.log.add_error(format!("at {}, expected {expected}", spans[2]));
+                    SynIoOption::Error
+                }
+            }
+        }
+        // io_option -&gt; "output" ":" value tag_opt
+        CtxIoOption::V3 { value, tag_opt } =&gt; {
+            match value {
+                SynValue::Error =&gt; SynIoOption::Error,
+                SynValue::Bool(_)
+                | SynValue::Num(_) =&gt; {
+                    self.log.add_error(
+                        format!("at {}, expected string or stdout", spans[2]));
+                    SynIoOption::Error
+                }
+                SynValue::Str(s) =&gt; {
+                    if let Some(tag) = tag_opt {
+                        SynIoOption::Code(gencode!(filename: s, tag: tag))
+                    } else {
+                        SynIoOption::Code(gencode!(filename: s))
+                    }
+                }
+                SynValue::CodeStdout =&gt; SynIoOption::Code(gencode!(stdout)),
+            }
+        }
+        // io_option -&gt; "indent" ":" value
+        CtxIoOption::V4 { value } =&gt; {
+            if let SynValue::Num(indent) = value {
+                SynIoOption::Indent(indent)
+            } else {
+                if value != SynValue::Error {
+                    self.log.add_error(
+                      format!("at {}, expected number instead of {value:?}", spans[2]));
+                }
+                SynIoOption::Error
+            }
+        }
+        // io_option -&gt; "headers" ":" "{" value ("," value)* "}"
+        CtxIoOption::V5 { star: SynIoOption1(values) } =&gt; {
+            match self.values_to_strings(values, &amp;spans[3]) {
+                Ok(headers) =&gt; SynIoOption::Headers(headers),
+                Err(()) =&gt; SynIoOption::Error,
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Where we add this listener method to convert <code>Vec&lt;SynValue&gt;</code> to <code>Vec&lt;String&gt;</code> because it will be used several times:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'ls&gt; Listener&lt;'ls&gt; {
+    // ...
+    fn values_to_strings(&amp;mut self, values: Vec&lt;SynValue&gt;, spans: &amp;PosSpan) -&gt; Result&lt;Vec&lt;String&gt;, ()&gt; {
+        let values_len = values.len();
+        let strings = values.into_iter().enumerate().filter_map(|(i, v)| {
+            if let SynValue::Str(s) = v {
+                Some(s)
+            } else {
+                self.log.add_error(format!("at {}, item #{} isn't a string", spans, i + 1));
+                None
+            }
+        }).to_vec();
+        if strings.len() == values_len {
+            Ok(strings)
+        } else {
+            Err(())
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Finally, parsing the optional tag:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_tag_opt(&amp;mut self, ctx: CtxTagOpt, spans: Vec&lt;PosSpan&gt;) -&gt; SynTagOpt {
+    match ctx {
+        // tag_opt -&gt; "[" value "]"
+        CtxTagOpt::V1 { value } =&gt; {
+            if let SynValue::Str(s) = value {
+                Some(s)
+            } else {
+                self.log.add_error(format!("at {}, expected a string", spans[1]));
+                None
+            }
+        }
+        // tag_opt -&gt; ε
+        CtxTagOpt::V2 =&gt; None,
+    }
+}
+<span class="boring">}</span></code></pre>
+<p><code>i_io_opt</code>, which iterates on <code>io_option</code> items and folds them, has the same type as <code>io_options</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `&lt;L&gt; "," io_option` iteration in `io_options -&gt; io_option ( ►► &lt;L&gt; "," io_option ◄◄ )*`
+pub type SynIIoOpt = SynIoOptions;
+<span class="boring">}</span></code></pre>
+<p>Remember that <code>io_option</code> items are separated by a comma, so they’re defined in the grammar like below, but Lexigram sees that the first <code>io_option</code> item outside the repetition is actually the same pattern as the repetition (without the comma), so it includes that first item in the repetition:</p>
+<pre><code>io_options: io_option (&lt;L=i_io_opt&gt; Comma io_option)*;
+</code></pre>
+<p>Since it’s a <code>&lt;L&gt;</code> repetition, we get the two methods below. The first one gets the first item, and the second gets the remaining items.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn init_i_io_opt(&amp;mut self, ctx: InitCtxIIoOpt, spans: Vec&lt;PosSpan&gt;) -&gt; SynIIoOpt {
+    // value of `io_option` before `&lt;L&gt; "," io_option` iteration in 
+    // `io_options -&gt; io_option ( ►► &lt;L&gt; "," io_option ◄◄ )*`
+    let InitCtxIIoOpt::V1 { io_option } = ctx;
+    let mut acc = SynIIoOpt::new();
+    if let Err(e) = acc.fold(io_option) {
+        self.log.add_error(format!("at {}, {e}", spans[0]));
+    }
+    acc
+}
+
+fn exit_i_io_opt(&amp;mut self, acc: &amp;mut SynIIoOpt, ctx: CtxIIoOpt, spans: Vec&lt;PosSpan&gt;) {
+    // `&lt;L&gt; "," io_option` iteration in 
+    // `io_options -&gt; io_option ( ►► &lt;L&gt; "," io_option ◄◄ )*`
+    let CtxIIoOpt::V1 { io_option } = ctx;
+    if let Err(e) = acc.fold(io_option) {
+        self.log.add_error(format!("at {}, {e}", spans[2]));
+    }
+}
+<span class="boring">}</span></code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>In <code>exit_i_io_opt(…)</code>, <code>spans[0]</code> spans all the loop items that have already been parsed up to this point, <code>spans[1]</code> is the comma, so <code>spans[2]</code> is where the <code>io_option</code> input is located.</p>
+<pre><code>io_options: io_option (&lt;L=i_io_opt&gt; "," io_option)*;
+                       ^^^^^^^^^^^^ ^^^ ^^^^^^^^^
+[0]: accumulated       not in spans [1]    [2]
+</code></pre>
+<p>In <code>exit_io_options(…)</code>, <code>spans[0]</code>, which corresponds to the first <code>io_option</code> nonterminal, contains the span of that first item plus all the items in the repetition.</p>
+</blockquote>
+<p>In fact, we don’t really need to check the error in <code>init_i_io_opt(…)</code> because, at this point, only incorrect repetitions of some options are verified.</p>
+<p><code>exit_io_options(…)</code> has nothing else to do but to pass the value:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_io_options(&amp;mut self, ctx: CtxIoOptions, spans: Vec&lt;PosSpan&gt;) -&gt; SynIoOptions {
+    // io_options -&gt; io_option (&lt;L&gt; "," io_option)*
+    let CtxIoOptions::V1 { star } = ctx;
+    star
+}
+<span class="boring">}</span></code></pre>
+<h2 id="lexer-and-parser"><a class="header" href="#lexer-and-parser"><code>lexer</code> and <code>parser</code></a></h2>
+<p>The <code>exit_lexer(…)</code> method takes the value with the folded options and sets the corresponding values in the final <code>self.options</code> field.</p>
+<p>However, there is a little snag with the <code>indent</code> option. Normally,</p>
+<ul>
+<li>a default indentation for the <code>lexer</code>, <code>parser</code>, <code>types</code>, and <code>listener</code> can be specified in the command-line binary (and in the <code>OptionBuilder</code>) by putting this option in front of everything else.</li>
+<li>if the indentation is specified for any of those parts of code, it has more priority over the default indentation level.</li>
+</ul>
+<p>Thus, <code>lexigram --indent 4 -x lexicon.l -l lexer.rs --indent 0</code> doesn’t indent the lexer code.</p>
+<p>But in our grammar, the global options are specified after <code>lexer</code> and <code>parser</code>, so we might erase their specific indentation by the global, default value. To avoid those conflicts, we’ll store the specific values in separate fields of the listener, then we’ll deconflict after parsing everything:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub(super) struct Listener&lt;'ls&gt; {
+    // ...
+    lexer_indent: Option&lt;usize&gt;,
+    parser_indent: Option&lt;usize&gt;,
+}
+<span class="boring">}</span></code></pre>
+<p>The only other singularity in <code>exit_lexer(…)</code> is copying the specifications (the location of the lexicon/grammar) into the <code>self.options.parser_spec</code> field:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_lexer(&amp;mut self, ctx: CtxLexer, spans: Vec&lt;PosSpan&gt;) -&gt; SynLexer {
+    // lexer -&gt; "lexer" "{" io_options "}"
+    let CtxLexer::V1 { io_options } = ctx;
+    if io_options.is_combined {
+        self.options.parser_spec = io_options.spec.clone();
+    }
+    self.options.lexer_spec = io_options.spec;
+    self.options.lexer_code = io_options.code;
+    self.options.lexer_headers.extend(io_options.headers);
+    self.lexer_indent = io_options.indent_opt;
+    SynLexer()
+}
+<span class="boring">}</span></code></pre>
+<p>For the parser, there are more verifications to perform:</p>
+<ul>
+<li>if parser options were found (<code>V1</code> variant)
+<ul>
+<li><code>combined</code> shouldn’t be used.</li>
+<li>If <code>combined</code> was used in the lexer, there shouldn’t be a redundant <code>input</code> spec in the parser options.</li>
+<li>Otherwise, <code>input</code> must be present.</li>
+</ul>
+</li>
+<li>Finally, the parser options may be absent if one doesn’t want a parser. In this case, <code>combined</code> is illegal in the <code>V2</code> variant.</li>
+</ul>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_parser(&amp;mut self, ctx: CtxParser, spans: Vec&lt;PosSpan&gt;) -&gt; SynParser {
+    match ctx {
+        // parser -&gt; "parser" "{" io_options "}"
+        CtxParser::V1 { io_options } =&gt; {
+            if io_options.is_combined {
+                self.log.add_error(
+                    format!("at {}, 'combined' can only be used in 'lexer' options", spans[2]));
+            } else {
+                if io_options.spec.is_none() &amp;&amp; self.options.parser_spec.is_none() {
+                    self.log.add_error(format!("at {}, undefined grammar location", spans[2]));
+                } else if !io_options.spec.is_none() &amp;&amp; !self.options.parser_spec.is_none() {
+                    self.log.add_error(
+                        format!("at {}, redefined grammar location ('combined' in lexer)", spans[2]));
+                }
+            }
+            if !io_options.spec.is_none() {
+                self.options.parser_spec = io_options.spec;
+            }
+            self.options.parser_code = io_options.code;
+            self.options.parser_headers.extend(io_options.headers);
+            self.parser_indent = io_options.indent_opt;
+        }
+        // parser -&gt; ε
+        CtxParser::V2 =&gt; {
+            if !self.options.parser_spec.is_none() {
+                self.log.add_error(
+                    "combined lexicon/grammar, but missing parser code location".to_string());
+            }
+        }
+    }
+    SynParser()
+}
+<span class="boring">}</span></code></pre>
+<h2 id="global_options"><a class="header" href="#global_options"><code>global_options</code></a></h2>
+<p>Finally, we have the group of the global options, which is a mix of default/global options and wrapper code options.</p>
+<pre><code>options:
+    (Options Lbracket global_options Rbracket)?
+;
+
+global_options:
+     global_option (&lt;L=i_global_opt&gt; Comma global_option)*
+;
+
+global_option:
+    Headers Colon Lbracket value (Comma value)* Rbracket
+|   Indent  Colon value
+|   Libs    Colon Lbracket value (Comma value)* Rbracket
+|   NTValue Colon nt_value
+|   Spans   Colon value
+;
+
+value: /* ... */
+
+nt_value:
+    Default
+|   None
+|   Parents
+|   Set Lbracket Id (Comma Id)* Rbracket
+;
+</code></pre>
+<p>The handling of these options is quite similar to the <code>io_options</code> of the <code>lexer</code> and <code>parser</code> groups.</p>
+<p>Let’s first get <code>nt-value</code> out of the way. We’re using the same type that <code>Options</code> requires, since it’s already available and fits our purpose:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `nt_value`
+pub type SynNtValue = NTValue;
+<span class="boring">}</span></code></pre>
+<p>Parsing it is straightforward, but since we don’t have a <code>NTValue::Error</code> if there’s something wrong with the <code>set</code> variant, we simply return an empty list of names. In case of parsing error, it allows the parser to continue parsing the input and possibly to detect further errors. It would ultimately report the errors instead of returning an <code>Options</code>, so it’s not important if some values aren’t accurate.</p>
+<p>We could also use the listener <a href="tut-overview.html#the-listener">abort</a> feature, if not returning accurate data could risk the code to crash later.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_nt_value(&amp;mut self, ctx: CtxNtValue, spans: Vec&lt;PosSpan&gt;) -&gt; SynNtValue {
+    match ctx {
+        // nt_value -&gt; "default"
+        CtxNtValue::V1 =&gt; NTValue::Default,
+        // nt_value -&gt; "none"
+        CtxNtValue::V2 =&gt; NTValue::None,
+        // nt_value -&gt; "parents"
+        CtxNtValue::V3 =&gt; NTValue::Parents,
+        // nt_value -&gt; "set" "{" value ("," value)* "}"
+        CtxNtValue::V4 { star: SynNtValue1(values) } =&gt; {
+            match self.values_to_strings(values, &amp;spans[2]) {
+                Ok(names) =&gt; NTValue::SetNames(names),
+                Err(()) =&gt; NTValue::SetNames(vec![]),
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>We then define the following type for <code>global_option</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `global_option`
+#[derive(Debug, PartialEq)]
+pub enum SynGlobalOption {
+    Error,
+    Headers(Vec&lt;String&gt;),
+    Indent(usize),
+    Libs(Vec&lt;String&gt;),
+    NTValue(NTValue),
+    Spans(bool),
+}
+<span class="boring">}</span></code></pre>
+<p>Lastly, <code>global_options</code> is the accumulator in which the <code>global_option</code> items are folded:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// User-defined type for `global_options`
+#[derive(Debug, PartialEq)]
+pub struct SynGlobalOptions {
+    pub headers: Vec&lt;String&gt;,
+    pub indent_opt: Option&lt;usize&gt;,
+    pub libs: Vec&lt;String&gt;,
+    pub nt_value_opt: Option&lt;NTValue&gt;,
+    pub spans_opt: Option&lt;bool&gt;,
+}
+
+impl Default for SynGlobalOptions {
+    fn default() -&gt; Self {
+        SynGlobalOptions {
+            headers: vec![],
+            indent_opt: None,
+            libs: vec![],
+            nt_value_opt: None,
+            spans_opt: None,
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Its implementation is again very similar to that of <code>SynIoOptions</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl SynGlobalOptions {
+    pub fn new() -&gt; Self {
+        Self::default()
+    }
+
+    pub fn fold(&amp;mut self, global_option: SynGlobalOption) -&gt; Result&lt;(), &amp;str&gt; {
+        match global_option {
+            SynGlobalOption::Error =&gt; {}
+            SynGlobalOption::Headers(headers) =&gt; {
+                self.headers.extend(headers);
+            }
+            SynGlobalOption::Indent(indent) =&gt; {
+                if self.indent_opt.is_none() {
+                    self.indent_opt = Some(indent);
+                } else {
+                    return Err("more than one indentation");
+                }
+            }
+            SynGlobalOption::Libs(libs) =&gt; {
+                self.libs.extend(libs);
+            }
+            SynGlobalOption::NTValue(nt_value) =&gt; {
+                if self.nt_value_opt.is_none() {
+                    self.nt_value_opt = Some(nt_value);
+                } else if let Some(current) = self.nt_value_opt.as_mut() {
+                    match (current, nt_value) {
+                        // we allow to grow names
+                        (NTValue::SetNames(names), NTValue::SetNames(new)) =&gt; {
+                            names.extend(new);
+                        }
+                        _ =&gt; return Err("conflicting nt-value options"),
+                    }
+                }
+            }
+            SynGlobalOption::Spans(spans) =&gt; {
+                if self.spans_opt.is_none() {
+                    self.spans_opt = Some(spans);
+                } else {
+                    return Err("more than one `spans` option")
+                }
+            }
+        }
+        Ok(())
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>For <code>nt-value</code>, we allow several options in the same group if they’re all adding names with <code>set</code>:</p>
+<pre><code>options {
+    nt-value: set { "lexer", "parser" },
+    nt-value: set { "options" },
+    spans: true
+}
+</code></pre>
+<p>The implementation of <code>global_option</code> is simpler than what we did for <code>io_option</code>, but still very similar (especially since <code>headers</code> and <code>indent</code> are there, too):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_global_option(&amp;mut self, ctx: CtxGlobalOption, spans: Vec&lt;PosSpan&gt;) -&gt; SynGlobalOption {
+    match ctx {
+        // global_option -&gt; "headers" ":" "{" value ("," value)* "}"
+        CtxGlobalOption::V1 { star: SynGlobalOption1(values) } =&gt; {
+            match self.values_to_strings(values, &amp;spans[3]) {
+                Ok(headers) =&gt; SynGlobalOption::Headers(headers),
+                Err(()) =&gt; SynGlobalOption::Error,
+            }
+        }
+        // global_option -&gt; "indent" ":" value
+        CtxGlobalOption::V2 { value } =&gt; {
+            if let SynValue::Num(indent) = value {
+                SynGlobalOption::Indent(indent)
+            } else {
+                if value != SynValue::Error {
+                    self.log.add_error(format!("at {}, expected number instead of {value:?}", spans[2]));
+                }
+                SynGlobalOption::Error
+            }
+        }
+        // global_option -&gt; "libs" ":" "{" value ("," value)* "}"
+        CtxGlobalOption::V3 { star: SynGlobalOption2(values) } =&gt; {
+            match self.values_to_strings(values, &amp;spans[3]) {
+                Ok(libs) =&gt; SynGlobalOption::Libs(libs),
+                Err(()) =&gt; SynGlobalOption::Error,
+            }
+        }
+        // global_option -&gt; "nt-value" ":" nt_value
+        CtxGlobalOption::V4 { nt_value } =&gt; SynGlobalOption::NTValue(nt_value),
+        // global_option -&gt; "spans" ":" value
+        CtxGlobalOption::V5 { value } =&gt; {
+            if let SynValue::Bool(flag) = value {
+                SynGlobalOption::Spans(flag)
+            } else {
+                self.log.add_error(format!("at {}, expected boolean instead of {value:?}", spans[2]));
+                SynGlobalOption::Error
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>The iteration in <code>global_options</code> is also an <code>&lt;L&gt;</code> repetition in a token-separated list. Lexigram provides the first item in <code>init_i_global_opt(…)</code> and the following ones in <code>exit_i_global_opt</code>. All we have to do is accumulate and report any error:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn init_i_global_opt(&amp;mut self, ctx: InitCtxIGlobalOpt, spans: Vec&lt;PosSpan&gt;) -&gt; SynIGlobalOpt {
+    // value of `global_option` before `&lt;L&gt; "," global_option` iteration in `global_options -&gt; global_option ( ►► &lt;L&gt; "," global_option ◄◄ )*`
+    let InitCtxIGlobalOpt::V1 { global_option } = ctx;
+    let mut acc = SynGlobalOptions::new();
+    acc.fold(global_option);
+    acc
+}
+
+fn exit_i_global_opt(&amp;mut self, acc: &amp;mut SynIGlobalOpt, ctx: CtxIGlobalOpt, spans: Vec&lt;PosSpan&gt;) {
+    // `&lt;L&gt; "," global_option` iteration in `global_options -&gt; global_option ( ►► &lt;L&gt; "," global_option ◄◄ )*`
+    let CtxIGlobalOpt::V1 { global_option } = ctx;
+    if let Err(e) = acc.fold(global_option) {
+        self.log.add_error(format!("at {}, {e}", spans[2]));
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>There’s nothing to do in <code>global_options</code> but to return the value in the context:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_global_options(&amp;mut self, ctx: CtxGlobalOptions, spans: Vec&lt;PosSpan&gt;) -&gt; SynGlobalOptions {
+    // global_options -&gt; global_option (&lt;L&gt; "," global_option)*
+    let CtxGlobalOptions::V1 { star } = ctx;
+    star
+}
+<span class="boring">}</span></code></pre>
+<h2 id="options"><a class="header" href="#options"><code>options</code></a></h2>
+<p>To complete the listener implementation, <code>options</code> copies the values accumulated in <code>global_options</code>.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_options(&amp;mut self, ctx: CtxOptions, spans: Vec&lt;PosSpan&gt;) -&gt; SynOptions {
+    match ctx {
+        // options -&gt; "options" "{" global_options "}"
+        CtxOptions::V1 { global_options } =&gt; {
+            self.options.lexer_headers.extend(global_options.headers.clone());
+            self.options.parser_headers.extend(global_options.headers);
+            if let Some(indent) = global_options.indent_opt {
+                self.options.lexer_indent = indent;
+                self.options.parser_indent = indent;
+            }
+            self.options.libs.extend(global_options.libs);
+            if let Some(nt_value) = global_options.nt_value_opt {
+                self.options.nt_value = nt_value;
+            }
+            if let Some(spans_opt) = global_options.spans_opt {
+                self.options.gen_span_params = spans_opt;
+            }
+        }
+        // options -&gt; ε
+        CtxOptions::V2 =&gt; {}
+    }
+    SynOptions()
+}
+<span class="boring">}</span></code></pre>
+<p>The global indent value is copied to all the indent options. We overwrite those values with <code>self.lexer_indent</code> and <code>self.parser_indent</code>, if they’re defined, in the <code>exit(…)</code> method:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit(&amp;mut self, config: SynConfig, span: PosSpan) {
+    if let Some(indent) = self.lexer_indent { self.options.lexer_indent = indent };
+    if let Some(indent) = self.parser_indent { self.options.parser_indent = indent };
+}
+<span class="boring">}</span></code></pre>
+<h2 id="wrapping-it-up"><a class="header" href="#wrapping-it-up">Wrapping it up</a></h2>
+<p>The parser can now return the options instead of just the log. Maybe it’s better to put that in a single object:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConfigResult {
+    pub options: Options,
+    pub log: BufLog,
+}
+
+impl&lt;'l, 'ls: 'l&gt; ConfigParser&lt;'l, '_, 'ls&gt; {
+    // ...
+    pub fn parse(&amp;mut self, text: &amp;'ls str) -&gt; Result&lt;ConfigResult, BufLog&gt; {
+        self.wrapper = Some(Wrapper::new(Listener::new(), VERBOSE_WRAPPER));
+        let stream = CharReader::new(Cursor::new(text));
+        self.lexer.attach_stream(stream);
+        self.wrapper.as_mut().unwrap().get_listener_mut().attach_lines(text.lines().collect());
+        let tokens = self.lexer.tokens().keep_channel0();
+        let result = self.parser.parse_stream(self.wrapper.as_mut().unwrap(), tokens);
+        let Listener { mut log, options, .. } = self.wrapper.take().unwrap().give_listener();
+        if let Err(e) = result {
+            log.add_error(e.to_string());
+        }
+         if log.has_no_errors() {
+            Ok(ConfigResult { options, log })
+        } else {
+            Err(log)
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>and the tests, which should still be expanded to actually validate the result:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_run() {
+    let mut p = ConfigParser::new();
+    for (i, src) in [SRC1, SRC2].into_iter().enumerate() {
+        println!("source #{i}");
+        match p.parse(src) {
+            Ok(ConfigResult { options, log }) =&gt; println!("{options:#?}\n\nlog:{log}"),
+            Err(log) =&gt; panic!("error\n{log}"),
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<h2 id="possible-improvements"><a class="header" href="#possible-improvements">Possible improvements</a></h2>
+<p>That’s a good first step. It’s not complete: there are other options that are not yet accessible from the configuration file parser, like the templates and some switches.</p>
+<p>The templates of the user types and the listener behave like the <code>lexer</code> and <code>parser</code> options, so they could be additional groups with their own generated code location and indentation. Feel free to add those features to the existing grammar and implementation, using the <code>templates.txt</code> file to more easily spot the required changes.</p>
+<h3 id="valueless-nonterminals"><a class="header" href="#valueless-nonterminals">Valueless nonterminals</a></h3>
+<p>Some of the nonterminals don’t need a value: you can remove them with the <code>--nt-value</code> command-line option:</p>
+<pre><code class="language-shell">lexigram --indent 4\
+  -x src/config.l -l "src/parser.rs" tag config_lexer\
+  -g src/config.g -p "src/parser.rs" tag config_parser\
+  --types templates.txt tag template_user_types\  
+  --listener templates.txt tag template_listener_impl\
+  --lib "super::listener_types::*" --spans\
+  --nt-value set "&lt;default&gt;,-config,-definitions,-i_def,-lexer,-parser,-options" 
+</code></pre>
+<p>or with the <code>.set_nt_value(…)</code> method of the <code>OptionsBuilder</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ... (other constants)
+static NT_NAMES: [&amp;str; 7] = [
+        "&lt;default&gt;",
+        "-config",
+        "-definitions",
+        "-i_def",
+        "-lexer",
+        "-parser",
+        "-options",
+];
+
+fn gen_source_config_l_g(action: Action) {
+    let options = OptionsBuilder::new()
+        .headers(["use lexi_gram::lexigram_lib::lexigram_core;"])
+        // ...
+        .span_params(true)
+        .set_nt_value(NTValue::SetNames(NT_NAMES.into_iter().map(|s| s.to_string()).to_vec()))
+        .build()
+        .expect("should have no error");
+    // ...
+<span class="boring">}</span></code></pre>
+<p>With the help of the template, removing the <code>Syn*</code> types and updating the relevant <code>exit_*(…)</code> methods should be easy.</p>
+<h3 id="trailing-comma-in-lists"><a class="header" href="#trailing-comma-in-lists">Trailing comma in lists</a></h3>
+<p>The options in the lexer, parser, and options group are separated by a comma, and so are some list elements like <code>headers</code>, <code>libs</code>, and <code>nt-value set</code>.</p>
+<p>However, the grammar doesn’t allow for a trailing comma at the end of the list:</p>
+<pre><code>options {
+    nt-value: set { 
+        "lexer", 
+        "parser",
+        "options",    // &lt;-- trailing comma 
+    },
+    spans: true
+}
+</code></pre>
+<p>If you modify the grammar to allow it, Lexigram warns you that the grammar is ambiguous. For example, if you modify the following rule:</p>
+<pre><code>nt_value:
+    Default
+|   None
+|   Parents
+|   Set Lbracket value (Comma value)* comma_opt Rbracket
+;
+
+comma_opt:
+    Comma
+|
+;
+</code></pre>
+<p>you get this message, that we split to improve the clarity (it’s indeed a little obscure!):</p>
+<pre><code>Warning: - calc_table: ambiguity for NT 'nt_value_1', T ',': 
+           &lt;"," value nt_value_1&gt; or &lt;ε&gt; 
+           =&gt; &lt;"," value nt_value_1&gt; has been chosen
+</code></pre>
+<p>To understand what it means, you must inspect the table with the rule alternatives, at the end of the log:</p>
+<pre><code>32: nt_value -&gt; "default"
+33: nt_value -&gt; "none"
+34: nt_value -&gt; "parents"
+35: nt_value -&gt; "set" "{" value nt_value_1 comma_opt "}"
+44: . nt_value_1 -&gt; "," value nt_value_1                  &lt;- starts with ","
+45: . nt_value_1 -&gt; ε
+36: comma_opt -&gt; ","                                      &lt;- starts with ","
+37: comma_opt -&gt; ε
+</code></pre>
+<p>The repetition of comma-separated items is handled by <code>nt_value_1</code>. The new optional comma after <code>value_1</code> in production 44 is problematic because the parser cannot tell whether it’s the comma in production 44 or the trailing comma in production 35.</p>
+<ul>
+<li>In the first case, annotated <code>&lt;"," value nt_value_1</code>, the iteration continues with production 44.</li>
+<li>In the second case, annotated <code>&lt;ε&gt;</code>, the iteration ends with production 45, which is then followed by production 36.</li>
+</ul>
+<p>If the parser could predict the next production by looking two tokens ahead instead of one, so if it was an LL(2), it could check whether the 2nd token is <code>"}"</code> or one of the tokens that starts <code>value</code> (<code>"false"</code>, <code>"true"</code>, <code>Id</code>, …).</p>
+<p>Here, the parser is LL(1), so it removes the ambiguity by assuming it’s always production 44: it takes a new iteration. If your list has a trailing comma, it will generate a syntax error when the parser gets a <code>"}"</code> instead of a <code>value</code>-friendly token.</p>
+<p>Is it possible to have trailing commas in a LL(1) grammar?</p>
+<p>Yes, but you must reword the rules. Let’s consider a simpler, generic rule:</p>
+<pre><code>a -&gt; "{" Id ( "," Id )* ","? "}";
+</code></pre>
+<p>which is transformed into:</p>
+<pre><code>a   -&gt; "{" Id a_1 a_2 "}";
+a_1 -&gt; "," Id a_1 | ε; 
+a_2 -&gt; "," | ε; 
+</code></pre>
+<p>It can be transformed into:</p>
+<pre><code>a   -&gt; "{" Id a_1 "}";
+a_1 -&gt; "," a_2 | ε; 
+a_2 -&gt; Id a_1 | ε; 
+</code></pre>
+<p>Lexigram doesn’t do that transformation automatically for you. You could write those rules, but you’d have to process the list on your own, which would be less convenient than the vector we receive for free in our current grammar.</p>
+<p>An alternative is to end all the options in a group by a semicolon, and not to allow a trailing comma in lists like <code>libs</code>.</p>
+<p>That’s quite typical of the occasional compromise or transformation you must do when you’re working with an LL(1) parser.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tut-ex-grammar.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="tut-what-next.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tut-ex-grammar.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="tut-what-next.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

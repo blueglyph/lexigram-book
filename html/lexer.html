@@ -1,0 +1,777 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lexer Generator Reference: Lexi - Lexigram Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-1a4e6431.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3f39279b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-d7ab1a61.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Lexigram Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="lexer-generator-reference-lexi"><a class="header" href="#lexer-generator-reference-lexi">Lexer Generator Reference: Lexi</a></h1>
+<p>Lexi is the part of Lexigram that generates a lexer.</p>
+<p>The lexer, or scanner, is the very front-end of a parser. It reads the input text, recognizes symbols, and outputs a stream of tokens corresponding to those symbols. The lexer isn’t aware of the syntax of the input language, only of its lexical rules. The stream of tokens is generally read by a parser, but it can also be used directly in a user application.</p>
+<p>The lexical rules are defined in a lexicon, in a human-readable language described in this reference. The code of the lexer proper already exists in the <code>lexigram-core</code> crate; its main object is <a href="https://docs.rs/lexigram-core/latest/lexigram_core/lexer/struct.Lexer.html">Lexer</a>. Lexi takes a lexicon and generates the data required by <code>Lexer</code> to scan the language.</p>
+<p>The language used to describe a lexicon is very similar to that of the ANTLR tool, though there are a few differences.</p>
+<h2 id="notation"><a class="header" href="#notation">Notation</a></h2>
+<p>We’re using the following conventions in the lexicon:</p>
+<ul>
+<li>Terminals (or tokens, which means the same in this context) are written in upper camel case: <code>Assign</code>, <code>Id</code>, <code>StringLiteral</code>.</li>
+<li>Fragments are written in upper snake case: <code>DIGIT</code>, <code>HEX_DIGIT</code>.</li>
+<li>Modes are written in upper snake case and end with <code>_MODE</code>: <code>DEFAULT_MODE</code>, <code>TAG_MODE</code>.</li>
+<li>Channels are written in upper snake case and end with <code>_CHANNEL</code>: <code>COMMENTS_CHANNEL</code>.</li>
+</ul>
+<p>Those conventions are not enforced by Lexi.</p>
+<h2 id="main-concepts"><a class="header" href="#main-concepts">Main Concepts</a></h2>
+<p>The lexicon defines the tokens emitted by the lexer, using simple regular expressions:</p>
+<pre><code>Assign	      : '=';
+Add           : '+';
+If            : 'if';
+While         : 'while';
+Id            : [_a-z][_a-z0-9]+;
+StringLiteral : '"' (~('"'|'\n'|'\r') | '""')* '"';
+</code></pre>
+<p>From the lexicon, Lexi generates the source code of the lexer:</p>
+<ul>
+<li>The symbol and the finite state machine tables, other data.</li>
+<li>A <code>build_lexer()</code> method that creates a <code>Lexer</code> from those data.</li>
+</ul>
+<h3 id="lexicon-structure"><a class="header" href="#lexicon-structure">Lexicon Structure</a></h3>
+<p>A lexicon can be made up of several elements.</p>
+<p>It begins with an optional <strong>header</strong>:</p>
+<pre><code>lexicon LexiLexer;
+</code></pre>
+<p>After the optional header, the lexicon is a list of items, each of which being an option, a rule, or a declaration.</p>
+<p>The only <strong>option</strong> currently implemented is a list of additional <a href="#channels">channels</a>:</p>
+<pre><code>channels { COMMENTS_CHANNEL, ATTRIBUTE_CHANNEL }
+</code></pre>
+<p>A <strong>rule</strong> is the definition of a token, which is what the lexer outputs, or a <a href="#fragments">fragment</a>, which is akin to an alias or a constant:</p>
+<pre><code>fragment DIGIT  : [0-9];
+Number          : DIGIT+;           
+</code></pre>
+<p>The only <strong>declaration</strong> currently implemented is the <a href="#modes">mode</a> section, in which the rules are effective only when that mode is the current one. The starting mode, <code>DEFAULT_MODE</code>, is implicitly declared at the top, and thus the default mode of the lexer.</p>
+<pre><code>mode COMMENT_MODE; 
+</code></pre>
+<h3 id="matching-rule"><a class="header" href="#matching-rule">Matching rule</a></h3>
+<p>Among the rules of the current mode, the one that matches the longer input is selected to issue a token. If you need the keywords <code>"down"</code>, <code>"downto"</code>, and <code>"to"</code> in your language, you can safely define the three tokens in whichever order suits you best. The resulting lexer will be the same, and it won’t cut the input “downto” in two tokens <code>"down"</code> and <code>"to"</code>.</p>
+<pre><code>Down:   'down';
+DownTo: 'downto';
+To:     'to';
+</code></pre>
+<p>When there is a conflict between two rules, the first token defined in the lexicon takes precedence. This typically occurs with <a href="#fixed--variable-tokens">variable tokens</a>:</p>
+<pre><code>Down:   'down';
+DownTo: 'downto';
+To:     'to';
+Id:     [_a-z][_a-z0-9]*;
+</code></pre>
+<ul>
+<li>“to” is scanned as <code>To</code>. There is a conflict between <code>To</code> and <code>Id("to")</code>, so <code>To</code> is selected because it’s defined first.</li>
+<li>“total” is scanned as <code>Id("total")</code>. There is no conflict after reading the first two characters “to” because <code>*</code> and <code>+</code> are greedy by default, so <code>Id</code> captures the whole word “total”. The lexer chooses the token matching the longer input, which is <code>Id("total")</code>.</li>
+</ul>
+<p>Were <code>Id</code> defined first, none of the other tokens would ever be selected. However, Lexigram would see that some tokens are never output, so it would produce an error before generating the lexer, suggesting to re-order the definitions.</p>
+<p>With a non-greedy repetition, we would get a different result for “total”: Once the first two characters “to” are read by the lexer, <code>To</code> and <code>Id("to")</code> and in conflict, this time:</p>
+<pre><code>To:     'to';
+Id:     [_a-z][_a-z0-9]*?;
+</code></pre>
+<ul>
+<li>“to” is scanned as <code>To</code>. Like above, there is conflict between <code>To</code> and <code>Id</code>, which is resolved by taking the first definition.</li>
+<li>“total” is scanned as <code>To</code>, <code>Id("tal")</code>. Once the first two characters “to” are read, there is a conflict because of the non-greedy <code>*?</code>. <code>To</code> is selected because it’s defined first, which leaves the rest of the input “tal”. That remaining part is scanned as <code>Id("tal")</code></li>
+</ul>
+<p>In conclusion, the usual way to design a lexicon is to put the fixed tokens first and the variable tokens last, unless there is not risk of conflict.</p>
+<h3 id="fragments"><a class="header" href="#fragments">Fragments</a></h3>
+<p>The <code>fragment</code> keyword defines a fragment of lexemes that may be used several times, like an alias or a constant. It can also be used to split a rule into more explicit components.</p>
+<pre><code>fragment DIGIT        : [0-9];
+fragment HEX_DIGIT    : ( DIGIT | [A-Fa-f] );
+fragment DEC_INTEGER  : DIGIT ( '_' | DIGIT )* DIGIT | DIGIT;
+fragment HEX_INTEGER  : HEX_DIGIT ('_' | HEX_DIGIT)* HEX_DIGIT | HEX_DIGIT;
+                      
+Integer               : DEC_INTEGER | '0x' HEX_INTEGER;
+</code></pre>
+<p>Fragments are global: any fragment can be used in any mode section.</p>
+<h3 id="regular-expressions"><a class="header" href="#regular-expressions">Regular Expressions</a></h3>
+<p>The regular expressions used in each rule or fragment can include the following elements:</p>
+<ul>
+<li><code>'a'</code>, <code>'script'</code>: string literals that must be matched entirely (single quotes are used indifferently for characters and strings)
+<ul>
+<li><code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\'</code>, and <code>\\</code>: common escape codes for characters inside string literals</li>
+<li><code>\u{0}</code>-<code>\u{d7ff}</code>, <code>\u{e000}</code>-<code>\u{10ffff}</code>: general Unicode escape codes</li>
+</ul>
+</li>
+<li>character sets:
+<ul>
+<li>inside square brackets:
+<ul>
+<li><code>[abc]</code>, <code>[a-z0-9_]</code>, <code>[+\-*/]</code>: explicit character set; ‘-’ is used for inclusive ranges inside square brackets</li>
+<li><code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\\</code>, <code>\]</code>, <code>\-</code>: escape codes for characters inside square brackets (both <code>[</code> and <code>\[</code> are accepted)</li>
+</ul>
+</li>
+<li>outside square brackets:
+<ul>
+<li><code>'a'..'z'</code>: <u>inclusive</u> range of characters</li>
+<li><code>.</code>: represents any character</li>
+</ul>
+</li>
+<li>valid both inside and outside square brackets:
+<ul>
+<li><code>\w</code>: represents a single word character: <code>[a-zA-Z]</code></li>
+<li><code>\s</code>: represents a space character: <code>[ \t\r\n]</code></li>
+<li><code>\d</code>: represents a decimal digit: <code>[0-9]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>(</code> and <code>)</code> around item(s): groups the content to avoid conflicts of precedence with other operators</li>
+<li><code>~</code>: negates the character set on the right
+<ul>
+<li><code>~[ \t\n\r]</code>: any non-space character</li>
+<li><code>~( 'a' | 'b' | 'c' )</code>: any character but ‘a’, ‘b’, or ‘c’, equivalent to <code>~'a'..'c'</code></li>
+</ul>
+</li>
+<li><code>*</code>: zero or more instances of the item on the left
+<ul>
+<li><code>[a-z]*</code>: zero or several letters</li>
+<li><code>ab*</code>: ‘a’ followed by zero or more ‘b’ characters</li>
+<li><code>('--'|'==')*</code>: zero or more pairs of ‘-’ or ‘=’</li>
+</ul>
+</li>
+<li><code>+</code>: one or more instances of item on the left (same principle as <code>*</code>)</li>
+<li><code>?</code>: zero or one instances of item on the left (same principle as <code>*</code>)
+<ul>
+<li>after <code>*</code> or <code>+</code>: lazy repetition; for example, <code>'/*' .*? '*/'</code> (avoids the ending “*/” characters to be captured by <code>.*</code>)</li>
+</ul>
+</li>
+<li><code>|</code>: alternative between several items; for example, <code>'if' | 'while' | [a-z]+</code></li>
+<li>fragment; for example, <code>( DIGIT | [a-f] )+</code> where <code>DIGIT</code> has been defined as a fragment</li>
+</ul>
+<h3 id="channels"><a class="header" href="#channels">Channels</a></h3>
+<p>The lexer can output tokens on different channels, if parts of the input must be processed differently. For example, it can be used to isolate a sublanguage that is better parsed with another parser, or it can extract comments that must be put back in the output of a transpiler but would be too complex to handle in the grammar.</p>
+<p>Tokens are normally output on the predefined <code>DEFAULT_CHANNEL</code> (channel #0). If other channels are required, they must be declared with the <code>channels</code> option, and the <code>channel(&lt;channel name&gt;)</code> action must then be used in rules to output the corresponding tokens to that channel.</p>
+<pre><code>  channels { COMMENTS_CHANNEL };
+  
+  Comma           : ',';
+  Keyword         : [a-zA-Z]+;
+  
+  CommentLine     : '//' ~[\r\n]*     -&gt; channel(COMMENTS_CHANNEL);
+  WhiteSpaces     : [ \t\r\n]*        -&gt; skip;
+</code></pre>
+<ul>
+<li><code>Comma</code> and <code>Keyword</code> tokens are output on channel #0.</li>
+<li><code>CommentLine</code> tokens are output on channel #1 (<code>COMMENTS_CHANNEL</code>).</li>
+</ul>
+<p>The lexer outputs the tokens through two methods:</p>
+<ul>
+<li><code>get_token(&amp;mut self) -&gt; Result&lt;Option&lt;LexerToken&gt;, LexerError&gt;</code></li>
+<li><code>tokens(&amp;mut self) -&gt; LexInterpretIter</code>, which is an iterator of <code>LexerToken</code> items</li>
+</ul>
+<p>Both methods provide <code>LexerToken</code> items, defined as the following tuple, where the channel is the 2nd element:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub type LexerToken = (TokenId, ChannelId, String, PosSpan);
+<span class="boring">}</span></code></pre>
+<p>The <a href="https://docs.rs/lexigram-core/latest/lexigram_core/lexer/trait.TokenSpliterator.html"><code>TokenSpliterator</code></a> trait defines a few convenient methods which can be used with <code>tokens()</code> to filter the tokens. In particular, <a href="https://docs.rs/lexigram-core/latest/lexigram_core/lexer/trait.TokenSpliterator.html#method.keep_channel0"><code>keep_channel0()</code></a> discards all the channels but the default one, and its output can be directly connected to a parser generated by Lexigram. An example can be found in <a href="tut-ex-impl.html#basic-parser">the tutorial</a>.</p>
+<h3 id="modes"><a class="header" href="#modes">Modes</a></h3>
+<p>The lexicon can be divided into mode sections where the rules are independent of the other modes. It is very useful to scan a sublanguage.</p>
+<p>For example, Lexi uses square brackets to define a character set: <code>[a-z]</code>. The lexicon used to generate Lexi handles the content of square brackets in a separate mode to simplify the definition and to avoid any conflict with the other rules:</p>
+<pre><code>fragment ESC_SET_CHAR   : '\\' [nrt\\[\]\-];  // simplified for this example
+
+// ...
+Minus           : '-';
+FixedSet        : ('\\w' | '\\d');
+LSbracket       : '['                       -&gt; push(SET_CHAR_MODE);
+
+mode SET_CHAR_MODE;
+
+RSbracket       : ']'                       -&gt; pop;
+Minus2          : '-'                       -&gt; type(Minus);
+SetChar         : (ESC_SET_CHAR | ~[\n\r\t\\\]\-]);
+FixedSet2       : ('\\w' | '\\d')           -&gt; type(FixedSet);
+</code></pre>
+<p>When the next input character is “[”, the <code>LSbracket</code> token is emitted and the lexer switches to <code>SET_CHAR_MODE</code>. In that mode:</p>
+<ul>
+<li><code>\w</code>, <code>\d</code>, and <code>-</code> emit the same tokens as they would in the default mode</li>
+<li>unescaped “]” emits <code>RSbracket</code> and returns to the default mode</li>
+<li>other valid characters and escape sequences emit <code>SetChar</code>.</li>
+</ul>
+<p>If that had to be written as a single rule, it would require a complex repetition of both escaped and unescaped codes—of different lengths—while avoiding an accidental capture of the ending “]”. It would also emit a single token for the whole expression, so the parser would have to interpret it on its side.</p>
+<p>With the use of this separate mode, the definitions are simple, and the separate components are sent to the parser, simplifying its job considerably. Here is the relevant part of Lexi’s grammar:</p>
+<pre><code>char_set:
+    LSbracket (char_set_one)+ RSbracket
+// ...
+;
+
+char_set_one:
+    SetChar Minus SetChar // adds the range to the current set
+|   SetChar               // adds the character to the current set
+|   FixedSet              // adds the set to the current set
+;
+</code></pre>
+<h3 id="actions"><a class="header" href="#actions">Actions</a></h3>
+<p>When a rule is matched, the default action of the lexer is to emit the token. Other actions can be specified by writing them on the right side of a <code>-&gt;</code> symbol. Several actions are separated by a comma:</p>
+<pre><code>TagOpen: '&lt;' -&gt; mode(TAG_MODE), more;
+</code></pre>
+<p>List of actions:</p>
+<ul>
+<li><strong><code>channel(&lt;channel&gt;)</code></strong> emits the token on a specific channel (which must be defined in a <code>channels</code> rule). <code>DEFAULT_CHANNEL</code> is the name of channel 0, which is the default output channel for all tokens:
+<pre><code>channels { COMMENTS_CHANNEL, WHITESPACES_CHANNEL };
+CommentLine     : '//' ~[\r\n]*         -&gt; channel(COMMENTS_CHANNEL);
+</code></pre>
+</li>
+<li><strong><code>skip</code></strong> discards the match:
+<pre><code>WhiteSpaces     : [ \t\r\n]*            -&gt; skip;
+</code></pre>
+</li>
+<li><strong><code>mode(&lt;mode&gt;)</code></strong> changes the mode.
+<pre><code>TagOpen: '&lt;'                            -&gt; mode(TAG_MODE), more;
+</code></pre>
+</li>
+<li><strong><code>push(&lt;mode&gt;)</code></strong> changes the mode after pushing the current mode on the stack:
+<pre><code>ScriptOpen      : '&lt;script'             -&gt; push(SCRIPT_MODE);
+Id              : [A-Za-z][A-Za-z0-9]+;
+
+mode SCRIPT_MODE;
+ScriptClose     : '&gt;'                   -&gt; pop;
+ScriptInclude   : 'include';
+ScriptExecute   : 'execute';
+ScriptId        : [a-z][a-z0-9]+;
+</code></pre>
+</li>
+<li><strong><code>pop</code></strong> pops a mode from the stack and changes to that mode.</li>
+<li><strong><code>more</code></strong> continues evaluating the rules but keeps all the characters that have been matched so far for the next token. Below, the <code>Tag</code> token is associated with the <code>&lt;</code> and <code>&gt;</code> delimiters and all the characters in-between:
+<pre><code>TagOpen         : '&lt;'                   -&gt; mode(TAG_MODE), more;
+
+mode TAG_MODE:
+TagMore         : [a-zA-Z][a-zA-Z0-9]*  -&gt; more;
+Tag             : '&gt;'                   -&gt; mode(DEFAULT_MODE);
+</code></pre>
+</li>
+<li><strong><code>type(&lt;token&gt;)</code></strong> emits another defined token instead of one with the rule’s name. This action can be used if the same token must be emitted from different modes. Below, both <code>Minus</code> in <code>DEFAULT_MODE</code> and <code>Minus2</code> in <code>SET_CHAR_MODE</code> emit a <code>Minus</code> token for the <code>"-"</code> input:
+<pre><code>fragment ESC_SET_CHAR : '\\' [nrt\\[\]\-];
+Minus                 : '-';
+LSbracket             : '['             -&gt; push(SET_CHAR_MODE);
+
+mode SET_CHAR_MODE; 
+RSbracket             : ']'             -&gt; pop;
+Minus2                : '-'             -&gt; type(Minus);
+SetChar               : (ESC_SET_CHAR | ~[\n\r\t\\\]\-]);
+FixedSet2             : ('\\w' | '\\d') -&gt; type(FixedSet);
+</code></pre>
+</li>
+<li><strong><code>hook</code></strong> marks a token as interceptable. Whenever there’s a possibility that this token is parsed next, the parser calls a specific listener method <code>hook(…)</code>, and the user implementation can change the token before the parsing continues. See also <a href="#token-interception">Token Interception</a>.
+<pre><code>Id              : [a-zA-Z][a-zA-Z_0-9]*;
+(Type)                                  -&gt; hook;
+</code></pre>
+</li>
+</ul>
+<p>If <code>skip</code> or <code>more</code> is in the list of actions, no token is emitted. Otherwise, the rule emits the token corresponding to the rule name or, if specified, to the <code>type(&lt;token&gt;)</code> action. In the example below, the <code>String</code> and <code>StringContent</code> rules don’t emit anything; they accumulate the input characters. The <code>StringClose</code> rule emits the final <code>String</code> token with all the accumulated characters, including the double quotes.</p>
+<pre><code>String          : '"'         -&gt; push(STRING_MODE), more;
+
+mode STRING_MODE;
+StringClose     : '"'         -&gt; pop, type(String);
+StringContent   : [ -z]*      -&gt; more;
+</code></pre>
+<h3 id="fixed--variable-tokens"><a class="header" href="#fixed--variable-tokens">Fixed / Variable Tokens</a></h3>
+<p>Tokens can correspond to a fixed string literal, like <code>"-"</code>, or to an expression that can match different strings, like <code>[a-z]+</code> or <code>"a" | "A"</code>. In the documentation, we call them respectively fixed and variable tokens (or terminals). The distinction is important if you get the symbol table from Lexi, or when you implement the listener generated by Lexigram.</p>
+<p>Fixed tokens have an associated (constant) string literal in the symbol table, and they’re not represented in the context argument of the <code>exit_*(…)</code> listener methods. Variable tokens don’t have an associated string in the symbol table, but they’re represented in the context arguments with the captured input, which is generally useful for the parser: an identifier’s name, an integer literal, and so on.</p>
+<p>For example, with the following lexicon / grammar:</p>
+<pre><code>lexicon Example;
+Equal : '=';
+Id    : [a-z]+;
+Num   : [0-9]+;
+
+grammar Example;
+assign:
+    Id Equal Num
+;
+</code></pre>
+<p>The generated listener has the following method, where <code>Equal</code> is not present in the context because it’s fixed:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn exit_assign(&amp;mut self, ctx: CtxAssign) -&gt; SynAssign {
+    // assign -&gt; Id "=" Num
+    let CtxAssign::V1 { id, num } = ctx;    // id, num: String
+    SynAssign()
+}
+<span class="boring">}</span></code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>If the same token is emitted by several rules, the corresponding token is fixed only if all the literals are equal:</p>
+<pre><code>Interval              : '..';
+LSbracket             : '['             -&gt; push(SET_CHAR_MODE);
+
+mode SET_CHAR_MODE;
+RSbracket             : ']'             -&gt; pop;
+Interval2             : '-'            -&gt; type(Interval);
+SetChar               : [a-z];
+</code></pre>
+<p>Since <code>Interval</code> can be either <code>".."</code> or <code>"-"</code>, it is a variable token.</p>
+<p>Only emitted tokens are considered. In this somewhat contrived example,</p>
+<pre><code>A0 : 'a' -&gt; type(A);
+A  : 'A' -&gt; skip;
+</code></pre>
+<p>the generated lexer is such that the input</p>
+<ul>
+<li>“a” emits the token 0 = <code>(A, Some("a"))</code>, not <code>(A, None)</code>, so it won’t be in the context of the listener methods.</li>
+<li>“A” is valid but emits no token.</li>
+</ul>
+</blockquote>
+<h2 id="advanced-concepts"><a class="header" href="#advanced-concepts">Advanced Concepts</a></h2>
+<h3 id="token-indices"><a class="header" href="#token-indices">Token Indices</a></h3>
+<p>Each token has an index, which is the index in the symbol table and the value used internally by the lexer and the parser. Normally, it’s transparent to the Lexigram user, who doesn’t need to deal with those values, except when the tokens must be intercepted. In that case, an option of Lexigram generates an optional type that represents the tokens in an <code>enum</code>: <code>--token-enums</code> (or the option builder method <code>token_enums(true)</code>, if the lexer is generated from Rust code). See <a href="#token-interception">Token Interception</a> for more details.</p>
+<p>As a general rule, the index corresponds to the position of the rule in the lexicon. There are a few nuances:</p>
+<ul>
+<li>Rules that don’t produce a token don’t count in the indexing, in order to avoid gaps in the indices.</li>
+<li>If a rule has a <code>type(Other)</code> action, its definition is used for matching the input, but the output token is <code>Other</code> and its index is the index given to the <code>Other</code> rule. Note that if the <code>Other</code> rule itself doesn’t produce anything, it’s now considered as “productive” because its reference in another productive rule.
+<pre><code>Zero: '0';
+NotAToken: 'x' -&gt; type(Other);
+One: '1';
+Other: 'y' -&gt; skip;
+</code></pre>
+produces a lexer such that the input
+<ul>
+<li>“0” emits token 0 = <code>(Zero, Some("0"))</code></li>
+<li>“1” emits token 1 = <code>(One, Some("1"))</code></li>
+<li>“x” emits token 2 = <code>(Other, Some("x"))</code></li>
+<li>“y” is valid but doesn’t emit anything</li>
+</ul>
+</li>
+</ul>
+<h3 id="token-interception"><a class="header" href="#token-interception">Token Interception</a></h3>
+<p>If a rule has the name of the token between parentheses and no definition, it’s a reserved token. Lexi reserves the token index but doesn’t create any lexer rule that outputs the token, unless another rule specifies the token with the <code>type</code> action.</p>
+<p>Reserved tokens are mainly used when the tokens are intercepted dynamically by the listener, where they can be changed to another token.</p>
+<p>In this example of lexicon, <code>Id</code> takes all the identifiers, even those that are possibly types. <code>Type</code> is reserved, and it’s used in the <code>hook(…)</code> method when the identifier is indeed a language type or a user-defined type.</p>
+<pre><code>Id              : [a-zA-Z][a-zA-Z_0-9]*;
+(Type)                                      -&gt; hook;
+</code></pre>
+<p>Its accompanying grammar has, among other rules, <code>decl</code>:</p>
+<pre><code>program:
+    (&lt;L=decl_i&gt; decl)* (&lt;L=inst_i&gt; inst)+
+;
+decl:
+    Type Id (&lt;L=id_i&gt; Comma Id)* SemiColon
+|   Typedef Type Id SemiColon
+;
+inst:
+    Let Id Eq expr SemiColon
+|   Print expr SemiColon
+;
+// ...
+</code></pre>
+<p>The two alternatives include <code>Type</code>, though at a different position.</p>
+<ul>
+<li>When time <code>decl</code> is the next nonterminal to derive, or when there’s a possibility <code>decl</code> is predicted, <code>hook(…)</code> is called to determine the actual token, to see if the first production should be chosen.</li>
+<li>Also, if the 2nd alternative has been predicted, <code>hook(…)</code> is called after <code>Typedef</code> has been successfully matched. At this point, if the method returns anything else than the token <code>Type</code>, the parser issues a syntax error.</li>
+</ul>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl TypedefListener for TypeListener&lt;'_&gt; {
+    // ...
+    fn hook(&amp;mut self, token: TokenId, text: &amp;str, span: &amp;PosSpan) -&gt; TokenId {
+        match text {
+            "int" | "float" | "double" =&gt; Term::Type as u16,
+            t =&gt; {
+                if self.types.contains_key(t) {
+                    Term::Type as u16
+                } else {
+                    token
+                }
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>(<code>Term</code> is an enum generated with the <code>--token-enums</code> option)</p>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>Since the method is called each time the hooked token may occur at any point in the grammar, it will potentially encounter all the other tokens that could also occur at that point instead.</p>
+<p>In the grammatical definition of <code>decl</code> above, the <code>Type</code> in the first alternative is “competing” with the <code>Typedef</code> of the second alternative. Therefore, the method could get <code>Term::Type</code> or <code>Term::Typedef</code>. That’s not all: <code>inst</code> is competing with <code>decl</code> as next predicted nonterminal in <code>program</code>, so ``Let<code>and</code>Print<code>are two other arguments that</code>hook(…)`  receive.</p>
+</blockquote>
+<p>The listener offers another way to intercept all the tokens: the parser calls the listener’s <code>intercept_token(…)</code> method each time it receives a token from the lexer. Its default implementation is empty, so it’s optimized out by the compiler. Implementing it to intercept tokens may have a bigger performance impact than <code>hook(…)</code>, and it requires to take all the incoming tokens into account.</p>
+<p>See also the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef">gen_typedef</a> and <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef">typedef</a> examples, which illustrate both interception methods.</p>
+<h2 id="formal-grammar-definition"><a class="header" href="#formal-grammar-definition">Formal Grammar Definition</a></h2>
+<p>Here are the lexicon and the grammar of Lexi, using the Lexigram syntax. Those files can be found in the repository, in the <code>build-stage1</code> directory.</p>
+<h3 id="lexis-lexicon"><a class="header" href="#lexis-lexicon">Lexi’s Lexicon</a></h3>
+<pre><code>lexicon LexiLexer;
+
+fragment BLOCK_COMMENT  : '/*' .*? '*/';
+fragment LINE_COMMENT   : '//' ~[\r\n]*;
+fragment HEX_DIGIT      : [0-9a-fA-F];
+fragment UNICODE_ESC    : 'u{' HEX_DIGIT+ '}';
+fragment ESC_CHAR       : '\\' ([nrt'\\] | UNICODE_ESC);
+fragment CHAR           : ESC_CHAR | ~[\n\r\t'\\];
+fragment CHAR_LITERAL   : '\'' CHAR '\'';
+fragment STR_LITERAL    : '\'' CHAR CHAR+ '\'';
+
+// Char inside a '[' ']' set
+fragment ESC_SET_CHAR   : '\\' ([nrt\\[\]\-] | UNICODE_ESC);
+
+Arrow           : '-&gt;'; /* // first token // */
+Colon           : ':';
+Comma           : ',';
+Dot             : '.';
+Ellipsis        : '..';
+Lbracket        : '{';
+Lparen          : '(';
+Negate          : '~';
+Minus           : '-';
+Plus            : '+';
+Or              : '|';
+Question        : '?';
+Rbracket        : '}';
+Rparen          : ')';
+Semicolon       : ';';
+Star            : '*';
+
+Channels        : 'channels';
+Fragment        : 'fragment';
+Lexicon         : 'lexicon';
+Mode            : 'mode';
+Pop             : 'pop';
+Push            : 'push';
+More            : 'more';
+Skip            : 'skip';
+Type            : 'type';
+Channel         : 'channel';
+Hook            : 'hook';
+//SymEof          : 'EOF';
+
+SComment        : BLOCK_COMMENT             -&gt; skip;
+SLineComment    : LINE_COMMENT              -&gt; skip;
+SWhiteSpace     : [ \n\r\t]+                -&gt; skip;
+
+Id              : [a-zA-Z][a-zA-Z_0-9]*;
+
+CharLit         : CHAR_LITERAL;
+StrLit          : STR_LITERAL;
+
+FixedSet        : ('\\w' | '\\d');
+
+LSbracket       : '['                       -&gt; push(SET_CHAR_MODE);
+
+mode SET_CHAR_MODE;
+
+RSbracket       : ']'                       -&gt; pop;
+Minus2          : '-'                       -&gt; type(Minus);
+SetChar         : (ESC_SET_CHAR | ~[\n\r\t\\\]\-]);
+FixedSet2       : ('\\w' | '\\d')           -&gt; type(FixedSet);
+</code></pre>
+<h3 id="lexis-grammar"><a class="header" href="#lexis-grammar">Lexi’s Grammar</a></h3>
+<pre><code>grammar LexiParser;
+
+file: header? file_item*;
+
+file_item:
+    option | declaration | rule
+;
+
+header:
+    Lexicon Id Semicolon
+;
+
+declaration:
+    Mode Id Semicolon
+;
+
+option:
+    Channels Lbracket Id (Comma Id)* Rbracket
+;
+
+rule:
+    rule_fragment_name Colon match Semicolon
+|   rule_terminal_name Colon match (Arrow actions)? Semicolon
+    // only reserve the token, but doesn't add a rule to scan it:
+|   Lparen rule_terminal_name Rparen opt_str_lit (Arrow Hook)? Semicolon
+    // "grammar" Id ";" =&gt; start of grammar section
+|   rule_terminal_name Id Semicolon
+;
+
+opt_str_lit:
+    (Colon StrLit)?
+;
+
+rule_fragment_name:
+    Fragment Id
+;
+
+rule_terminal_name:
+    Id
+;
+
+actions:
+    action (Comma action)*
+;
+
+action:
+    Mode Lparen Id Rparen
+|   Push Lparen Id Rparen
+|   Pop
+|   Skip
+|   More
+|   Type Lparen Id Rparen
+|   Channel Lparen Id Rparen
+|   Hook
+;
+
+match:
+    alt_items
+;
+
+alt_items:
+    alt_item (Or alt_item)*
+;
+
+alt_item:
+	repeat_item+
+;
+
+repeat_item:
+    item Star Question?
+|   item Plus Question?
+|   item Question?
+;
+
+item:
+    Id
+|   CharLit (Ellipsis CharLit)?
+|   StrLit
+|   char_set
+|   Lparen alt_items Rparen
+|   Negate item
+;
+
+char_set:
+    LSbracket (char_set_one)+ RSbracket
+|   Dot
+|   FixedSet
+;
+
+char_set_one:
+    SetChar Minus SetChar
+|   SetChar
+|   FixedSet
+;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

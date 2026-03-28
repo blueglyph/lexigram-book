@@ -1,0 +1,1186 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Grammar - Lexigram Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-1a4e6431.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3f39279b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-d7ab1a61.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Lexigram Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="grammar"><a class="header" href="#grammar">Grammar</a></h1>
+<p>Let’s start with the top structure of the grammar. In this section, we’ll build the grammar and get a peek at the generated code. It’s a good opportunity to show off some features and to provide a little guidance. We’ll implement the listener for the generated code in <a href="#listener-implementation">the next section</a>, once the grammar is fully defined.</p>
+<p>The top level is a succession of four groups:</p>
+<ul>
+<li>definitions (<code>"def"</code>)</li>
+<li>lexer specifications (<code>"lexer"</code>)</li>
+<li>parser specifications (<code>"parser"</code>)</li>
+<li>general options (<code>"options"</code>)</li>
+</ul>
+<p>The definitions contain zero or more of items that all have the same format, so it’s pretty simple. We want to be able to use those “constants” for any value, so there are different types, like a string literal (filename or tag name), an integer literal (indent level), and other possibilities we’ll discover as we come across all the options.</p>
+<p>The lexer, parser, and general options contain between brackets a list of comma-separated options. We’ll see the inner options when we tackle those nonterminals.</p>
+<p>How are the top-level items organized? They could either follow one another in the order shown above, or there could just be a succession of those items in no particular order and with possible repetitions. The latter would offer more flexibility, but we’ll choose the former syntax because it’s cleaner.</p>
+<h2 id="optional-items"><a class="header" href="#optional-items">Optional items</a></h2>
+<p>The starting nonterminal, that we’re naming <code>config</code>, simply lists the four parts:</p>
+<pre><code>config:
+    definitions
+    lexer
+    parser
+    options
+;
+</code></pre>
+<p><code>lexer</code> is mandatory, but <code>parser</code> and <code>options</code> are optional; we can require either a lexer or the whole lexer + parser + wrapper code. Since Lexigram offers a few elements of syntactic sugar for optional and repetitive items, such as <code>α?</code>, <code>α*</code>, and <code>α+</code>, we can use that in the defintion of <code>parser</code> and <code>options</code>: (we have omitted the actual content of the grammatical rules for now)</p>
+<pre><code>definitions:  …;
+lexer:        …;
+parser:       (…)?;
+options:      (…)?;
+</code></pre>
+<p>The first task of Lexigram is to normalize the rules, transforming</p>
+<ul>
+<li><code>α?</code> to <code>α | ε</code> (where <code>ε</code> means “empty”, nothing),</li>
+<li><code>α*</code> to a new nonterminal <code>x</code>, where <code>x -&gt; α x | ε</code></li>
+<li><code>α+</code> to a new nonterminal <code>x</code>, where <code>x -&gt; α x | α</code></li>
+</ul>
+<p>This is transformed into the final productions below:</p>
+<blockquote>
+<pre><code>config -&gt; definitions lexer parser options
+definitions -&gt; …
+lexer -&gt; …
+parser -&gt; …      
+parser -&gt; ε                                
+options -&gt; …
+options -&gt; ε
+</code></pre>
+</blockquote>
+<p><code>parser</code> and <code>options</code> have an empty alternative, which is fine. It’s reflected directly in the listener trait methods as two variations of an <code>enum</code> context type, so the user knows there and then whether the option is used or not.</p>
+<p>There’s another way to write the grammar: it could be tempting to put the <code>?</code> directly in <code>config</code>:</p>
+<pre><code>config:
+    definitions
+    lexer
+    parser?
+    options?
+;
+definitions:  …;
+lexer:        …;
+parser:       …;
+options:      …;
+</code></pre>
+<p>And it would work, but it wouldn’t be optimal. Why?</p>
+<p>Each of those options would split the original production when it’s normalized, which would end up as a list of all the possible combinations:</p>
+<blockquote>
+<pre><code>config -&gt; definitions lexer parser options 
+config -&gt; definitions lexer parser 
+config -&gt; definitions lexer options 
+config -&gt; definitions lexer
+</code></pre>
+</blockquote>
+<p>It’s not too long—though we’d have eight of them if the lexer specs were optional too—but it’s cumbersome. And it’s not all; since those alternatives need <a href="intro.html#limitations">left factorization</a>, the rule would be transformed again later:</p>
+<blockquote>
+<pre><code>config -&gt; definitions lexer config_1
+. config_1 -&gt; parser config_2       
+. config_1 -&gt; options               
+. config_1 -&gt; ε                     
+.   config_2 -&gt; options             
+.   config_2 -&gt; ε                   
+definitions -&gt; …
+lexer -&gt; …
+parser -&gt; …      
+options -&gt; …
+</code></pre>
+</blockquote>
+<p>The user implementation of the trait method would reflect the same pattern, as shown below. It’s possible to work with it, but it’s annoying to handle the repetitions, especially if we need to handle nonterminal values for <code>definitions</code>, <code>lexer</code>, <code>parser</code>, and <code>options</code>.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// user-code template:
+impl ConfigListener for Listener {
+    fn exit_config(&amp;mut self, ctx: CtxConfig) -&gt; SynConfig {
+        match ctx {
+            // config -&gt; definitions lexer parser options
+            CtxConfig::V1 { definitions, lexer, parser, options } =&gt; {}
+            // config -&gt; definitions lexer parser
+            CtxConfig::V2 { definitions, lexer, parser } =&gt; {}
+            // config -&gt; definitions lexer options
+            CtxConfig::V3 { definitions, lexer, options } =&gt; {}
+            // config -&gt; definitions lexer
+            CtxConfig::V4 { definitions, lexer } =&gt; {}
+        }
+        SynConfig()
+    }
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>In this case, we probably don’t need a value for those nonterminals. In each option category, we’ll store the parsed result for each of them in the listener instead, so it’s not a big problem, but it’s not great from the perspective of the final LL(1) grammar.</p>
+<p>Compared to the first solution, which yields 1 production in the first and the “non-<code>?</code>” nonterminals, and 2*n productions in the <code>?</code> nonterminals, we get 2^n productions in the first (plus left factorizations!) and 1 production in the others. So we see why it’s better to use the <code>?</code> in the secondary nonterminals:</p>
+<ul>
+<li>For 2 optional items out of 4, we get 7 productions instead of 10.</li>
+<li>For 3 optional items out of 4, we get 8 productions instead of 16.</li>
+</ul>
+<p>The take-away is to avoid using this particular syntactic sugar several times in the same alternative, because the desugaring makes it grow exponentially when it’s distributed:</p>
+<pre><code>x: α? β? γ?;
+</code></pre>
+<p>becomes</p>
+<blockquote>
+<pre><code>x -&gt; (α | ε) (β | ε) (γ | ε) -&gt; α β γ | α β | α γ | α | β γ | β | γ | ε
+</code></pre>
+</blockquote>
+<p>If it’s used in separate alternatives, it’s fine because it only adds one <code>ε</code>, which is shared between them:</p>
+<pre><code>x: α? | β? | γ?;
+</code></pre>
+<p>becomes</p>
+<blockquote>
+<pre><code>x -&gt; α | β | γ | ε
+</code></pre>
+</blockquote>
+<h2 id="loops"><a class="header" href="#loops">Loops</a></h2>
+<p>Now that we have <code>config</code>, let’s see the secondary nonterminals, starting with <code>definitions</code>.</p>
+<p>Each definition has the syntax below, where we give a temporary definition for <code>value</code>:</p>
+<pre><code>lexer Config;
+
+Equal                   : '=';
+Semicolon               : ';';
+Id                      : [a-zA-Z][a-zA-Z_0-9]*;
+NumLiteral              : [0-9]+;
+StrLiteral              : '"' Char+ '"';
+
+parser Config;
+
+definition:
+    Def Id Equal value Semicolon
+;
+
+value:
+    NumLiteral
+|   StrLiteral
+|   Id
+;
+</code></pre>
+<p>Or, if we’re using the simple grammar notation to make terminals like <code>"def"</code> and <code>"="</code> more visible, instead of using <code>Def</code>, <code>Equal</code>, and so on:</p>
+<pre><code>definition -&gt; "def" Id "=" value ";"
+value -&gt; NumLiteral | StrLiteral | Id;
+</code></pre>
+<p>But how can we express 0 or more repetitions of <code>definition</code>? It’s time to see the different ways of doing grammar loops.</p>
+<h3 id="right-recursion"><a class="header" href="#right-recursion">Right recursion</a></h3>
+<p>The right recursion is the only valid loop in an LL(1) grammar.</p>
+<p>If we use this rule for <code>definitions</code>:</p>
+<pre><code>definitions -&gt; "def" Id "=" value ";" definitions | ;
+</code></pre>
+<p>The missing symbols on the right of <code>|</code> simply means it’s empty. Since the syntax is recursive, we need to give an alternative to end the recursion: here, we end it with “nothing”. In practice, the parser will check the next token after <code>";"</code> to predict which alternative of <code>productions</code> follows.</p>
+<ul>
+<li>If the token is <code>"def"</code>, it predicts the left, recursive alternative.</li>
+<li>If it’s <code>"lexer"</code>, it predicts the right, empty alternative. Indeed, when the alternative is “nothing”, the parser looks at the next possibilities in the <code>config</code> nonterminal. Here, <code>config</code> expects <code>lexer</code> after <code>definitions</code>, and the <code>lexer</code> syntax begins with the terminal <code>"lexer"</code> (even though we haven’t written that explicitly yet).</li>
+</ul>
+<p>There is no transformation for <code>definitions</code>,</p>
+<blockquote>
+<pre><code>definitions -&gt; "def" Id "=" value ";" definitions
+definitions -&gt; ε                                 
+</code></pre>
+</blockquote>
+<p>We get to implement this listener method:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// user-code template:
+impl ConfigListener for Listener {
+    fn init_definitions(&amp;mut self) {}
+    
+    fn exit_definitions(&amp;mut self, ctx: CtxDefinitions) -&gt; SynDefinitions {
+        match ctx {
+            // definitions -&gt; "def" Id "=" value ";" definitions
+            CtxDefinitions::V1 { id, value, definitions } =&gt; {}
+            // definitions -&gt; ε
+            CtxDefinitions::V2 =&gt; {}
+        }
+        SynDefinitions()
+    }
+    
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>This appears to be fine, but there is a catch: since it’s a <strong>right</strong>-recursive rule, we’ll get the last item first!</p>
+<p>Let’s consider the following input, which has three definitions:</p>
+<pre><code>def a = 0;
+def b = 1;
+def c = 2;
+</code></pre>
+<p>The reductions are performed as follows:</p>
+<pre><code>                definitions
+                ─────┬───── 
+                     │
+─────────────────────┴──────────────────────
+"def" Id("a") "=" value("0") ";" definitions
+                                 ─────┬─────
+                                      │
+                 ─────────────────────┴──────────────────────
+                 "def" Id("b") "=" value("1") ";" definitions
+                                                  ─────┬─────   
+                                                       │
+                                  ─────────────────────┴──────────────────────
+                                  "def" Id("c") "=" value("2") ";" definitions
+                                                                   ─────┬─────   
+                                                                        │
+                                                                        ε
+</code></pre>
+<p>Since the <code>exit_definitions(…)</code> method is called after all the items have been parsed in the production, we must wait until all the <code>productions</code> have been parsed. The successive calls are, if we simplify the notation somewhat:</p>
+<ul>
+<li><code>init_definitions()</code></li>
+<li><code>exit_definitions(CtxDefinitions::V2)</code>, returns <code>w</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "c", value: "2", definitions: w }) -&gt; x</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "b", value: "1", definitions: x }) -&gt; y</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "a", value: "0", definitions: y }) -&gt; z</code></li>
+</ul>
+<p>And the value of <code>definitions</code> in <code>exit_config(…)</code>, once it’s called, will be <code>z</code>.</p>
+<p>If we accumulated the values in a vector, we would ultimately get the items in reverse order, unless we used a <code>VecDeque</code> to push the items in front. It could also be annoying if you wanted to check that an indentifier hadn’t already been declared before. And if an identifier was the same as another one (<code>def c = a</code>), you’d need another pass to resolve it.</p>
+<p>Since we don’t have any way of knowing when <code>exit_definitions(…)</code> is called for the last time, any post-processing to fix those issues must be done wherever <code>definitions</code> is used. In our case, it’s used only once in <code>exit_config(…)</code>, but if it was used in several productions, we’d have to call a post-processing method from each location (and not forget about it if new instances are made!). Or we would have to add an intermediate nonterminal to keep things tidier.</p>
+<p>Another consequence, which isn’t obvious at first, is that all the values <code>SynDefinitions</code> are stored in the wrapper stack until the end of the list, and all the production symbols are stored in the parser stack, too. Not only do you get the last item first, after the whole list had to be parsed, but it consumes more memory to store the intermediate data and steps.</p>
+<p>Right-recursive loops are simple and useful when you need to preserve that reverse order, but otherwise it’s not something you’ll want to use in a grammar very often.</p>
+<h3 id="star"><a class="header" href="#star">Star</a></h3>
+<p>We’ve already seen the syntactic sugar for repetitions of zero or more items: <code>definition*</code>. We can even put it directly into the <code>definitions</code> nonterminal:</p>
+<pre><code>definitions -&gt; ("def" Id "=" value ";")*;
+</code></pre>
+<p>Lexigram transforms it as follows:</p>
+<blockquote>
+<pre><code>definitions -&gt; definitions_1                           
+. definitions_1 -&gt; "def" Id "=" value ";" definitions_1
+. definitions_1 -&gt; ε                                   
+</code></pre>
+</blockquote>
+<p>The generated code hides that transformation by giving the end result once <code>definitions</code> is entirely parsed. There are no listener calls corresponding to the nonterminal <code>definitions_1</code>.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CtxDefinitions {
+    /// `definitions -&gt; ("def" Id "=" value ";")*`
+    V1 { star: SynDefinitions1 },
+}
+
+pub struct SynDefinitions1(pub Vec&lt;SynDefinitions1Item&gt;);
+
+pub struct SynDefinitions1Item { pub id: String, pub value: SynValue }
+
+// user-code template:
+impl ConfigListener for Listener {
+    fn exit_definitions(&amp;mut self, ctx: CtxDefinitions) -&gt; SynDefinitions {
+        // definitions -&gt; ("def" Id "=" value ";")*
+        let CtxDefinitions::V1 { star } = ctx;
+        SynDefinitions()
+    }
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>The wrapper implements the glue logic to collect each item of the repetition and push it into a <code>Vec</code>. When we implement <code>exit_definitions(…)</code>, we get a vector <code>star</code> that contains all the (<code>id</code>, <code>value</code>) pairs. It’s often the most convenient way for small list of items.</p>
+<p>As we’ve already seen in the <a href="tut-overview.html">overview</a>, valueless symbols like <code>"def"</code>, <code>"="</code>, and <code>";"</code> are not given in the context variants, so they’re not stored in repetition vectors either.</p>
+<p>If there are alternatives in the repetition, like <code>x -&gt; (α | β)*</code>, the type inside the vector is an enum with the variants, so that each item can be either <code>α</code> or <code>β</code>. It can be very handy in simple situations, but it’s not to be abused; when the repeated item becomes too complex, another loop type may be preferable.</p>
+<p>At this point, something might be bothering you: isn’t <code>definitions_1</code> right-recursive? And didn’t we say that a right recursion produced the results in reverse order and had a few other downsides? Are we getting the items in reverse order here too?</p>
+<p>While it’s indeed right-recursive, which is the only way to loop in LL(1), the original rule wasn’t <em>meant</em> as a right recursion. Therefore, Lexigram knows that the trailing <code>definitions_1</code> of production 1 below doesn’t need to be known before using the items <code>Id</code> and <code>value</code>.</p>
+<blockquote>
+<pre><code>0: definitions -&gt; definitions_1                          
+1: . definitions_1 -&gt; "def" Id "=" value ";" definitions_1
+2: . definitions_1 -&gt; ε                                   
+</code></pre>
+</blockquote>
+<p>Let’s see what happens in more details:</p>
+<ul>
+<li>When the production 1 is predicted, the wrapper pushes an empty “loop” vector on the value stack.</li>
+<li>The production symbols are then parsed, and those that have a value are pushed on the wrapper stack; here, <code>Id</code> and <code>value</code>.</li>
+<li>When the <code>definitions_1</code> symbol at the end of production 1 is met, it isn’t processed as a normal nonterminal to be derived (which would put another empty vector on the stack), but as a <em>loop</em> nonterminal. When wrapper receives a loop call for that nonterminal, it pops the values from their respective stack and pushes that as a new item into the loop vector, which is now at the top of the value stack.</li>
+<li>This process iterates until all the items have been parsed.</li>
+<li>When the loop is finished, production 0 is fully parsed, and the wrapper knows that the value of <code>definitions_1</code>, which stands for the original <code>*</code> repetition, is at the top of the value stack.</li>
+</ul>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><strong>For the curious minds who know how table-driven parsers work in general.</strong></p>
+<p>When a production like <code>definitions_1 -&gt; "def" Id "=" value ";" definitions_1</code> is predicted, the usual algorithm description tells us that the symbols on the right-hand side are put in reverse order on a stack.
+Here, it would push <code>definitions_1</code>, <code>";"</code>, <code>value</code>, <code>"="</code>, <code>Id</code>, <code>"def"</code>.
+The parser would then pop the next symbol and, depending on its nature:</p>
+<ul>
+<li>if it’s a terminal, like <code>"def"</code>, it would check if the next token matches,</li>
+<li>if it’s a nonterminal, like <code>value</code>, it would predict, from the parsing table, which alternative of that nonterminal’s productions must be added onto the stack.</li>
+</ul>
+<p>Lexigram adds other symbols on the stack to call the wrapper:</p>
+<ul>
+<li>exit symbols for the nonterminals, so that the <code>exit_*(…)</code> methods are called at the right time,</li>
+<li>loop symbols to manage the iterations as we saw above,</li>
+<li>hook symbol to let the user intercept and modify specific tokens.</li>
+</ul>
+<p>These symbols are shown in the log (“opcodes”).</p>
+</blockquote>
+<p>In conclusion, the iterations of the parsing loop insert the items in the correct order, and nothing accumulates on the stacks. It’s more straightforward and not as resource-consuming.</p>
+<p>The same mechanism is used in other types of loops, like the left recursion and the low-latency loops.</p>
+<h3 id="plus"><a class="header" href="#plus">Plus</a></h3>
+<p>For repetitions of one or more items, <code>+</code> can be used; the result is identical to <code>*</code> from the point of view of the listener implementation, except the name <code>plus</code> is used instead of <code>star</code> in the context variant.</p>
+<pre><code>definitions -&gt; ("def" Id "=" value ";")+;
+</code></pre>
+<p>What we don’t see in the listener trait is that the final LL(1) grammar is slightly more complicated “internally”. The <code>+</code> is first normalized:</p>
+<blockquote>
+<pre><code>definitions -&gt; definitions_1                           
+. definitions_1 -&gt; "def" Id "=" value ";" definitions_1
+. definitions_1 -&gt; "def" Id "=" value ";"                                    
+</code></pre>
+</blockquote>
+<p>Since the productions begin with identical symbols, <code>"def"</code>, <code>Id</code>, <code>"="</code>, and so on, this must be left-factorized, too:</p>
+<blockquote>
+<pre><code>definitions -&gt; definitions_1                           
+. definitions_1 -&gt; "def" Id "=" value ";" definitions_2
+.   definitions_2 -&gt; definitions_1                     
+.   definitions_2 -&gt; ε                                 
+</code></pre>
+</blockquote>
+<h3 id="left-recursion"><a class="header" href="#left-recursion">Left recursion</a></h3>
+<p>As we saw in the <a href="intro.html#limitations">LL(1) grammar limitations</a>, left recursion is transformed as a right recursion, too.</p>
+<pre><code>definitions -&gt; 
+    definitions "def" Id "=" value ";" 
+| 
+;
+</code></pre>
+<p>The transformed rules look identical to what we saw with the <code>*</code> repetition:</p>
+<blockquote>
+<pre><code>0: definitions -&gt; definitions_1                         
+1: . definitions_1 -&gt; "def" Id "=" value ";" definitions_1
+2: . definitions_1 -&gt; ε
+</code></pre>
+</blockquote>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>Don’t confuse the <code>ε</code> in the production alternative 2 above, which corresponds to the <em>end of the loop</em>, with the <code>ε</code> we had in the right recursion, which corresponded to the <em>“empty” alternative</em> of the original rule. That “empty” is invisible in the case of the left recursion because it’s simplified during the transformation.</p>
+<pre><code>0: definitions -&gt; ε definitions_1 -&gt; definitions_1
+                 ^^^                         
+</code></pre>
+<p>Remember that <code>a -&gt; a α | β</code> is transformed as <code>a -&gt; β a_1; a_1 -&gt; α a_1 | ε</code>. Here, <code>β</code> is <code>ε</code>.</p>
+</blockquote>
+<p>The only difference from a <code>*</code> loop is in the wrapper. The context variants are shown as left-recursive, and, unlike the <code>*</code> repetition, the wrapper calls the listener trait method at each iteration, leaving you the choice of the loop value type and how to use it.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// user-code template:
+impl ConfigListener for Listener {
+    fn exit_definitions(&amp;mut self, ctx: CtxDefinitions) -&gt; SynDefinitions {
+        match ctx {
+            // definitions -&gt; definitions "def" Id "=" value ";"
+            CtxDefinitions::V1 { definitions, id, value } =&gt; {}
+            // definitions -&gt; ε
+            CtxDefinitions::V2 =&gt; {}
+        }
+        SynDefinitions()
+    }
+    
+    fn exitloop_definitions(&amp;mut self, definitions: &amp;mut SynDefinitions) {}
+    
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>Another important difference is the availability of another method called after the last iteration, <code>exitloop_definitions(…)</code>. It’s easy to do thanks to the transformation in the grammar: when the alternative 2 is predicted on the last iteration, the wrapper calls the method. In comparison, this wasn’t possible in the case of a right-recursive rule because, when the loop finally exits, the parser must still make all the pending exit calls for the items on the stack. And since there is no separate nonterminal for the loop, it would make calling such an <code>exitloop_*(…)</code> method more complicated.</p>
+<p>When Lexigram sees a left recursion, it knows the rightmost nonterminal can be treated differently, and since the original recursion is on the left term, the user expects to see the reductions on the left:</p>
+<p>For the same input, the reduction is done as follows:</p>
+<pre><code>                                                definitions
+                                                ─────┬───── 
+                                                     │
+                                ─────────────────────┴──────────────────────
+                                definitions "def" Id("c") "=" value("2") ";"
+                                ─────┬─────    
+                                     │
+                ─────────────────────┴──────────────────────
+                definitions "def" Id("b") "=" value("1") ";"
+                ─────┬─────    
+                     │
+─────────────────────┴──────────────────────
+definitions "def" Id("a") "=" value("0") ";"
+─────┬───── 
+     │
+     ε
+</code></pre>
+<p>The successive calls are, in this case:</p>
+<ul>
+<li><code>init_definitions()</code></li>
+<li><code>exit_definitions(CtxDefinitions::V2)</code>, returns <code>w</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "a", value: "0", definitions: w }) -&gt; x</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "b", value: "1", definitions: x }) -&gt; y</code></li>
+<li><code>exit_definitions(CtxDefinitions::V1 { id: "c", value: "2", definitions: y }) -&gt; z</code></li>
+<li><code>exitloop_definitions(&amp;mut z)</code></li>
+</ul>
+<h3 id="left-vs-right"><a class="header" href="#left-vs-right">Left vs right</a></h3>
+<p>Our need to encode the loop for <code>definitions</code> didn’t quite illustrate a subtlety between left and right recursion because we had an empty alternative. To remove any confusion and stress the difference between left and right, let’s introduce a non-empty alternative in each case.</p>
+<p>Here is a <strong>right-recursive</strong> version that ends with an “end”:</p>
+<pre><code>defs -&gt; "def" Id "=" value ";" defs | "end" Id; 
+</code></pre>
+<p>It corresponds to those productions (no transformation):</p>
+<blockquote>
+<pre><code>0: defs -&gt; "def" Id "=" value ";" defs
+1: defs -&gt; "end" Id
+</code></pre>
+</blockquote>
+<p>It can parse an input that <strong>ends</strong> with “end”, since that’s the only admissible <em>rightmost</em> token in the original rule:</p>
+<pre><code>def a = 0;
+def b = 1;
+end loop
+</code></pre>
+<p>This would generate those successive calls:</p>
+<ul>
+<li><code>init_defs()</code></li>
+<li><code>exit_defs(CtxDefs::V2 { id: "loop") -&gt; x</code></li>
+<li><code>exit_defs(CtxDefs::V1 { id: "b", value: "1", defs: x }) -&gt; y</code></li>
+<li><code>exit_defs(CtxDefs::V1 { id: "a", value: "0", defs: y }) -&gt; z</code></li>
+</ul>
+<p>And here is a <strong>left-recursive</strong> rule that begins with “begin”:</p>
+<pre><code>defs -&gt; defs "def" Id "=" value ";" | "begin" Id;   // defs α | β
+</code></pre>
+<p>or, if that’s easier to visualize,</p>
+<pre><code>defs -&gt; "begin" Id | defs "def" Id "=" value ";";   // β | defs α 
+</code></pre>
+<p>Lexigram transforms it into those productions:</p>
+<blockquote>
+<pre><code>0: defs -&gt; "begin" Id defs_1                        // β defs_1
+1: . defs_1 -&gt; "def" Id "=" value ";" defs_1        // α defs_1
+2: . defs_1 -&gt; ε                                    // (loop end)
+</code></pre>
+</blockquote>
+<p>It can parse an input that <strong>begins</strong> with “begin”, since that’s the only admissible <em>leftmost</em> token in the original rule:</p>
+<pre><code>begin loop
+def a = 0;
+def b = 1;
+</code></pre>
+<p>This would generate those successive calls:</p>
+<ul>
+<li><code>init_defs()</code></li>
+<li><code>exit_defs(CtxDefs::V2 { id: "loop" }) -&gt; x</code></li>
+<li><code>exit_defs(CtxDefs::V1 { id: "a", value: "0", defs: x }) -&gt; y</code></li>
+<li><code>exit_defs(CtxDefs::V1 { id: "b", value: "1", defs: y }) -&gt; z</code></li>
+<li><code>exitloop_definitions(&amp;mut z)</code></li>
+</ul>
+<h3 id="latency"><a class="header" href="#latency">Latency</a></h3>
+<p>To close the loop, we’ll have a quick look at a variant of right recursion and <code>*</code>/<code>+</code> repetitions. We saw that both those loop constructs had a higher latency. The right recursion puts everything in the stack until the last iteration, and only then starts calling the listener methods. And the repetitions delivery the vector of collected items once the loop has ended.</p>
+<p>Yet they provide useful alternatives to left recursion, by allowing independent terms at the end for the right recursion and none at all for the repetition. Wouldn’t it be worth having a way to get the loop items earlier?</p>
+<p>That’s why the “low-latency” attribute was introduced.</p>
+<p>In a <strong>low-latency right recursion</strong>, the rule has to be written as follows (the <code>&lt;L&gt;</code> can be placed anywhere in the recursive alternative):</p>
+<pre><code>definitions -&gt; "def" Id "=" value ";" &lt;L&gt; definitions | ;
+</code></pre>
+<p>Lexigram doesn’t change the productions:</p>
+<blockquote>
+<pre><code>1: definitions -&gt; "def" Id "=" value ";" definitions
+2: definitions -&gt; ε                                 
+</code></pre>
+</blockquote>
+<p>But the listener methods do change:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// user-code template:
+impl ConfigListener for Listener {
+    fn init_definitions(&amp;mut self) -&gt; SynDefinitions {
+        SynDefinitions(vec![])
+    }
+
+    fn exit_definitions(&amp;mut self, acc: &amp;mut SynDefinitions, ctx: CtxDefinitions) {
+        match ctx {
+            // definitions -&gt; "def" Id "=" value ";" &lt;L&gt; definitions
+            CtxDefinitions::V1 { id, value } =&gt; {
+                acc.0.push((id, value));
+            }
+            // definitions -&gt; ε
+            CtxDefinitions::V2 =&gt; {}
+        }
+    }
+    
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>Now,</p>
+<ul>
+<li><code>self.init_definitions()</code> returns the initial value of the loop variable; for example, an empty vector.</li>
+<li><code>self.exit_definitions(acc, ctx)</code> is called after parsing the independent term and each iteration.</li>
+</ul>
+<p>At first, calling <code>init_definitions(…)</code>, then <code>exit_definitions(…)</code> on the indepedent term may sound redundant, since both could provide the initial value, but they allow to separate the initialization of the nonterminal, before any part of it is parsed, and adjust it with the independent term if necessary. The other reason to do so is the mutable reference to the loop variable, <code>acc</code>, which is usually more efficient than moving its value at each iteration.</p>
+<p>Since it’s a right recursion, there is still no way to know when it’s the last iteration, but now the data can be processed directly in the incoming order. The example of code above will provide a vector containing the items in the correct order. It would also allow you to check that <code>Id</code> hasn’t already been defined before and, if so, to return the appropriate error message. And it would allow you to use an already defined <code>Id</code> as value, without using a second pass.</p>
+<p>The <strong>low-latency repetition</strong> is written a little differently, since the name of the loop nonterminal is given explicitly this time:</p>
+<pre><code>definitions -&gt; (&lt;L=i_def&gt; "def" Id "=" value ";")*;
+</code></pre>
+<p>The resulting productions are the same, except maybe for the nonterminal name:</p>
+<blockquote>
+<pre><code>1: definitions -&gt; i_def               
+2: . i_def -&gt; "def" Id "=" value ";" i_def
+3: . i_def -&gt; ε                       
+</code></pre>
+</blockquote>
+<p>But the listener methods change, too:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// user-code template:
+impl ConfigListener for Listener {
+    fn init_definitions(&amp;mut self) {}
+
+    fn exit_definitions(&amp;mut self, ctx: CtxDefinitions) -&gt; SynDefinitions {
+        // definitions -&gt; (&lt;L&gt; "def" Id "=" value ";")*
+        let CtxDefinitions::V1 { star } = ctx;
+        SynDefinitions()
+    }
+
+    fn init_i_def(&amp;mut self) -&gt; SynIDef {
+        SynIDef(vec![])
+    }
+
+    fn exit_i_def(&amp;mut self, acc: &amp;mut SynI, ctx: CtxIDef) {
+        // `&lt;L&gt; "def" Id "=" value ";"` iteration in 
+        // `definitions -&gt; ( ►► &lt;L&gt; "def" Id "=" value ";" ◄◄ )*`
+        let CtxIDef::V1 { id, value } = ctx;
+        acc.0.push((id, value));
+    }
+    // ...
+}
+<span class="boring">}</span></code></pre>
+<p>This variant allows you to define the type of the loop variable and to handle it directly.</p>
+<ul>
+<li><code>self.init_i_def()</code> is called after any symbol preceding the repetition in the original production is parsed, and before the first loop production is parsed.</li>
+<li><code>self.exit_i_def(acc, ctx)</code> is called after each iteration is parsed.</li>
+</ul>
+<p>There is no indication of the last iteration, but since there is an <code>exit_definitions(…)</code>, it’s not really necessary; you can do any post-processing on <code>star</code> in that method if necessary.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>In the case of the <code>+</code> repetition, there is an additional flag in the context that indicates the last iteration. Unlike the <code>*</code> repetition, it’s very easy to provide.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>CtxIDef::V1 { id: String, value: SynValue, last_iteration: bool }
+                                        ^^^^^^^^^^^^^^
+<span class="boring">}</span></code></pre>
+</blockquote>
+<p>This concludes the quick tour of the art of loops in LL(1) grammars using Lexigram.</p>
+<p>Considering <code>definitions</code> has no independent term, the <code>*</code> repetition, with or without <code>&lt;L&gt;</code>, seems a good way to handle that language element. The low-latency version offers the advantage of directly doing operations that would otherwise require post-processing the final vector or dictionary, so it may be the better choice here.</p>
+<h2 id="value--recap"><a class="header" href="#value--recap"><code>value</code> &amp; recap</a></h2>
+<p>The <code>value</code> that our constants can represent are varied:</p>
+<ul>
+<li>string literals, for file names, tag names</li>
+<li>unsigned integer literals, for indentation levels</li>
+<li>boolean literals, to enable optional features like spans generation</li>
+<li>identifiers, if one constants equals another</li>
+<li>keywords like <code>stdout</code> which is a possible output code location</li>
+</ul>
+<p>The grammar elements so far are as follows, where some details are not yet defined (the <code>…</code>). This time, we show the full lexicon definitions instead of a simplified grammar:</p>
+<pre><code>lexicon Config;
+
+fragment EscChar        : '\\' [nrt"\\];
+fragment Char           : EscChar | ~[\n\r\t"\\];
+
+// punctuation and operators
+Equal                   : '=';
+Semicolon               : ';';
+
+// keywords
+Def                     : 'def';
+Lexer                   : 'lexer';
+Options                 : 'options';
+Parser                  : 'parser';
+Stdout                  : 'stdout';
+
+// variable terminals
+BoolLiteral             : 'false' | 'true';
+Id                      : [a-zA-Z][a-zA-Z_0-9]*;
+NumLiteral              : [0-9]+;
+StrLiteral              : '"' Char+ '"';
+
+SComment                : '/*' .*? '*/'             -&gt; skip;
+SLineComment            : '//' ~[\r\n]*             -&gt; skip;
+SWhiteSpace             : [ \n\r\t]+                -&gt; skip;
+
+grammar Config;
+
+config:
+    definitions
+    lexer
+    parser
+    options
+;
+
+definitions:
+    (&lt;L=i_def&gt; Def Id Equal value Semicolon)*   // any type
+;
+
+lexer:
+    Lexer …
+;
+
+parser:
+    (Parser …)?
+;
+
+options:
+    (Options …)?
+;
+
+value:
+    BoolLiteral
+|   NumLiteral
+|   StrLiteral
+|   Id
+|   Stdout
+;
+</code></pre>
+<p>A few comments on the lexicon:</p>
+<ul>
+<li>The <code>fragment</code> acts as an alias for lexical rules, or parts of lexical rules, that you intend to use multiple times or that you’d rather write separately for the sake of clarity.</li>
+<li>The rules are expressed like simple regular expressions:
+<ul>
+<li>Matching string literals are between single quotes: <code>'def'</code>.</li>
+<li>Sets of characters can be defined between square brackets (<code>[a-z]</code>) or as ellipsis-separated characters (<code>'a'..'z'</code>). The dot <code>.</code> means any character at all.</li>
+<li>An item can be negated with the prefix <code>~</code> (normally used with character sets).</li>
+<li>Items can be optional (<code>?</code>) or repeated (<code>*</code> or <code>+</code>); non-greedy repetitions are noted <code>*?</code> and <code>+?</code>.</li>
+<li>Escape codes can be used for usual characters: <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\\</code>, <code>\'</code>, and for UTF-8 codes: <code>\u{3b5}</code>.</li>
+</ul>
+</li>
+<li>The fixed keywords are defined before variable tokens like <code>Id</code>, which could conflict with them. For example, “def” corresponds to both the definition of <code>Def</code> and <code>Id</code>. In that case, the first defined keyword prevails, which is what we want here. It means we can’t use “def” as an <code>Id</code>, but that’s a usual limitation in programming languages.</li>
+<li>The last three tokens have a <code>-&gt; skip</code> action—everything after <code>-&gt;</code> is called an <em>action</em>. <code>skip</code> discards the token, so the parser will never receive it. In this case, we use that to discard all the comments and the white spaces and lines between the other tokens. It’s placed after everything so we’re sure those rules have the lowest priority.</li>
+</ul>
+<p>The <code>value</code> productions are straightforward. The four first tokens are variable, so the parsed input is available in the context variants:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CtxValue {   
+    V1 { boolliteral: String }, // value -&gt; BoolLiteral
+    V2 { numliteral: String },  // value -&gt; NumLiteral
+    V3 { strliteral: String },  // value -&gt; StrLiteral
+    V4 { id: String },          // value -&gt; Id
+    V5,                         // value -&gt; "stdout"
+}
+
+pub trait ConfigListener {
+    // ...
+    fn init_value(&amp;mut self) {}
+    fn exit_value(&amp;mut self, ctx: CtxValue) -&gt; SynValue;
+}
+<span class="boring">}</span></code></pre>
+<h2 id="lexer-and-parser"><a class="header" href="#lexer-and-parser"><code>lexer</code> and <code>parser</code></a></h2>
+<p>The lexer and the parser specifications are similar: they include, between brackets, one or more comma-separated options of the type:</p>
+<ul>
+<li><code>combined</code> and <code>input</code>: define the location of the lexicon; in the case of <code>combined</code>, it also contains the grammar.</li>
+<li><code>output</code>: defines the location of the generated code.</li>
+<li><code>header</code>: defines header(s) put in front of the generated code; e.g. inner attributes, comments, … (<code>header: { "#![allow(unused)]", "#![cfg(tests)]" }</code>)</li>
+<li><code>indent</code>: defines the indentation (<code>indent: 4</code>).</li>
+</ul>
+<p>An input location is either</p>
+<ul>
+<li>a filename (<code>input: "config.l"</code>).</li>
+<li>a filename and the name of a tag between square brackets (<code>input: "config.lg" ["lexicon"]</code>).</li>
+</ul>
+<p>An output location can be either</p>
+<ul>
+<li>a filename or <code>stdout</code>.</li>
+<li>a filename or <code>stdout</code>, and the name of a tag between square brackets.</li>
+</ul>
+<p>Since both <code>lexer</code> and <code>parser</code> use the same types of options, we’ll use a common <code>io_options</code> rule to parse them.</p>
+<p>It would be possible to force the grammar to accept either <code>combined</code> or <code>input</code>, and even to accept <code>combined</code> only for the lexer and not the parser, but it would complicate it significantly. It’s much easier to accept a list of any option and to verify them in the listener.</p>
+<p>Similarly, we’ll use <code>value</code> for each argument, even if <code>"indent"</code> only accepts a number (or a constant <code>Id</code> holding a number) and <code>"input"</code> only accepts a string literal. Again, it’s easier to check the correct type in the listener than to surcharge the grammar.</p>
+<p>Here are a few punctual additions to the lexicon:</p>
+<pre><code>Colon                   : ':';
+Comma                   : ',';
+Lbracket                : '{';
+LSbracket               : '[';
+Rbracket                : '}';
+RSbracket               : ']';
+</code></pre>
+<p>and to the grammar:</p>
+<pre><code>lexer:
+    Lexer Lbracket io_options Rbracket
+;
+
+parser:
+    (Parser Lbracket io_options Rbracket)?
+;
+
+io_options:
+    io_option (&lt;L=i_io_opt&gt; Comma io_option)*
+;
+
+io_option:
+    Combined Colon value tag_opt
+|   Input    Colon value tag_opt
+|   Output   Colon value tag_opt
+|   Indent   Colon value
+|   Headers  Colon Lbracket value (Comma value)* Rbracket
+;
+
+tag_opt:
+    (LSbracket value RSbracket)?
+;
+</code></pre>
+<p>The lexer part is simple:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CtxLexer {
+    /// `lexer -&gt; "lexer" "{" io_options "}"`
+    V1 { io_options: SynIoOptions },
+}
+
+pub trait ConfigListener {
+    // ...
+    fn init_lexer(&amp;mut self) {}
+    fn exit_lexer(&amp;mut self, ctx: CtxLexer) -&gt; SynLexer;
+}
+<span class="boring">}</span></code></pre>
+<p>The parser part adds an alternative used when there is no parser (the listener methods are similar to the lexer’s):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CtxParser {
+    /// `parser -&gt; "parser" "{" io_options "}"`
+    V1 { io_options: SynIoOptions },
+    /// `parser -&gt; ε`
+    V2,
+}
+<span class="boring">}</span></code></pre>
+<p>The <code>io_options</code> is a low-latency repetition and has a little surprise in reserve for us:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CtxIoOptions {
+    /// `io_options -&gt; io_option (&lt;L&gt; "," io_option)*`
+    V1 { star: SynIIoOpt },
+}
+
+pub enum InitCtxIIoOpt {
+    /// value of `io_option` before `&lt;L&gt; "," io_option` iteration in 
+    /// `io_options -&gt; io_option ( ►► &lt;L&gt; "," io_option ◄◄ )*`
+    V1 { io_option: SynIoOption },
+}
+
+pub enum CtxIIoOpt {
+    /// `&lt;L&gt; "," io_option` iteration in 
+    /// `io_options -&gt; io_option ( ►► &lt;L&gt; "," io_option ◄◄ )*`
+    V1 { io_option: SynIoOption },
+}
+
+pub trait ConfigListener {
+    // ...
+    fn init_io_options(&amp;mut self) {}
+    fn exit_io_options(&amp;mut self, ctx: CtxIoOptions) -&gt; SynIoOptions;
+    fn init_i_io_opt(&amp;mut self, ctx: InitCtxIIoOpt) -&gt; SynIIoOpt;
+    fn exit_i_io_opt(&amp;mut self, acc: &amp;mut SynIIoOpt, ctx: CtxIIoOpt);
+    fn exitloop_i_io_opt(&amp;mut self, acc: &amp;mut SynIIoOpt) {}
+}
+<span class="boring">}</span></code></pre>
+<p>There’s an extra context type <code>InitCtxIIoOpt</code>, and <code>CtxIoOptions</code> is missing the <code>io_option</code> field for the nonterminal in front of the repetition!</p>
+<p>What happened here is, Lexigram recognized that <code>io_option ("," io_option)*</code> was a list of <code>io_option</code> items separated by a comma. It changed the wrapper to make our work easier with a first call <code>init_i_io_opt(…)</code> handing over the first value (the one before the repetition). The successive calls <code>exit_i_io_opt(…)</code> give the loop items inside the repetition.</p>
+<p>Without that feature, <code>exit_i_io_opt(…)</code> would give items 2 to n, and finally <code>exit_io_options(…)</code> would give item 1 and our accumulator for items 2 to n. If <code>star</code> was a vector and nothing else mattered, we could get away by inserting item 1 in front. But if we needed to check that all the items are given in the correct order or without duplicates, we’d need extra post-processing, so we’d lost the benefit of a low-latency loop. Here, we get all the items in time and in the right order.</p>
+<p>Since it’s an <code>&lt;L&gt;</code> loop, <code>init_i_io_opt(…)</code> returns the first value of the accumulator, and <code>exit_i_io_op(…)</code> gets a mutable reference to it while it’s still on the stack. This is more efficient than popping the accumulator from the stack, moving it into the context and then out again, and finally pushing the modified value on the stack again.</p>
+<p>We find something similar in <code>io_option</code>, although it’s not as conspicuous:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>
+pub enum CtxIoOption {
+    /// `io_option -&gt; "combined" ":" value tag_opt`
+    V1 { value: SynValue, tag_opt: SynTagOpt },
+    /// `io_option -&gt; "input" ":" value tag_opt`
+    V2 { value: SynValue, tag_opt: SynTagOpt },
+    /// `io_option -&gt; "output" ":" value tag_opt`
+    V3 { value: SynValue, tag_opt: SynTagOpt },
+    /// `io_option -&gt; "indent" ":" value`
+    V4 { value: SynValue },
+    /// `io_option -&gt; "headers" ":" "{" value ("," value)* "}"`
+    V5 { star: SynIoOption1 },
+}
+
+pub enum CtxTagOpt {
+    /// `tag_opt -&gt; "[" value "]"`
+    V1 { value: SynValue },
+    /// `tag_opt -&gt; ε`
+    V2,
+}
+
+pub trait ConfigListener {
+    // ...
+    fn init_io_option(&amp;mut self) {}
+    fn exit_io_option(&amp;mut self, ctx: CtxIoOption) -&gt; SynIoOption;
+}
+<span class="boring">}</span></code></pre>
+<p>The <code>value</code> in front of the <code>"headers"</code> repetition is also missing in the context, but there’s no extra context or method this time. Since it’s a non-<code>&lt;L&gt;</code> repetition, the wrapper takes everything in charge to provide us with an ordered vector. If we parse the following input:</p>
+<pre><code>headers: { "a", "b", "c" }
+</code></pre>
+<p>we get a vector <code>vec![a, b, c]</code> in <code>star.0</code>, where <code>a</code> is the <code>SynValue</code> for “a”, and so on.</p>
+<p>This token-separated-items feature is only available for <code>*</code> repetitions, <code>&lt;L&gt;</code> and non-<code>&lt;L&gt;</code>, since it wouldn’t make much sense for <code>+</code>. It’s automatically detected for this pattern:</p>
+<p><code>... α (β α)* ...</code></p>
+<p>where</p>
+<ul>
+<li><code>α</code> is a list of symbols, terminals and/or nonterminals.</li>
+<li><code>β</code> can be any number of terminals, but they can’t hold a value. It also works if there’s no <code>β</code>, but you may as well write <code>α+</code> in that case.</li>
+</ul>
+<p>A proper syntax will likely be added in the future for those repetitions.</p>
+<h2 id="options"><a class="header" href="#options"><code>options</code></a></h2>
+<p>The general options are different from the <code>io_options</code> of the lexer and the parser, although <code>indent</code> and <code>headers</code> are common. They include, between brackets, one or more comma-separated options:</p>
+<ul>
+<li><code>headers</code> and <code>indent</code>: define the headers and the indentation level for all the components; the syntax is the same as before.</li>
+<li><code>libs</code>: defines extra bindings for the wrapper; e.g. <code>libs: { "super::listener_types", "std::collections::HashMap" }</code></li>
+<li><code>nt-value</code> defines which nonterminals hold a value of the type <code>Syn&lt;nonterminal name&gt;</code>:
+<ul>
+<li><code>nt-value: default</code>: the nonterminals defined in the grammar and the <code>&lt;L&gt;</code> nonterminals hold a value (which is the default behaviour).</li>
+<li><code>nt-value: none</code>: all the nonterminals are valueless. They’re not in the context variants, and there’s no value to return from the <code>exit_*(…)</code> methods. It’s a good option if all the values can easily be stored in the listener.</li>
+<li><code>nt-value: parents</code>: only the nonterminals defined in the grammar hold a value. Any nonterminal generated from transformations like left recursion don’t hold any value.</li>
+<li><code>nt-value: set { "a", "b", "c" }</code>: only nonterminals <code>a</code>, <code>b</code>, and <code>c</code> hold a value.</li>
+</ul>
+</li>
+<li><code>spans</code>: followed by a boolean value</li>
+</ul>
+<p>We need a few extra keywords in the lexicon:</p>
+<pre><code>Libs                    : 'libs';
+NTValue                 : 'nt-value';
+Options                 : 'options';
+Spans                   : 'spans';
+</code></pre>
+<p>The main grammar rules follow a similar pattern to what we did for the lexer and parser:</p>
+<pre><code>options:
+    (Options Lbracket global_options Rbracket)?
+;
+
+global_options:
+     global_option (&lt;L=i_global_opt&gt; Comma global_option)*
+;
+
+global_option:
+    Headers Colon Lbracket value (Comma value)* Rbracket
+|   Indent  Colon value
+|   Libs    Colon Lbracket value (Comma value)* Rbracket
+|   NTValue Colon nt_value
+|   Spans   Colon value
+;
+</code></pre>
+<p>For <code>global_options</code>, and for <code>"headers"</code> and the <code>"libs"</code> in <code>global_option</code>, we’re using the same token-separated-items lists as before. Since there’s nothing new, we’re not going to look at the generated code, that we’ll see in the implementation section anyway.</p>
+<p>The last nonterminal to define is <code>nt_value</code>. Here are the last keywords we need for the lexer:</p>
+<pre><code>Default                 : 'default';
+None                    : 'none';
+Parents                 : 'parents';
+Set                     : 'set';
+</code></pre>
+<p>And here is the grammar part. We use <code>value</code> for the nonterminal names instead of <code>Id</code> because we want to avoid collisions with the existing keywords. For example, we wouldn’t be able to use nonterminal names like <code>lexer</code> and <code>parser</code> in that list, since the lexer wouldn’t identify them as <code>Id</code>, but as other tokens. There is a way around that with more advanced features of Lexigram, though, as you can see in the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef"><code>gen_typedef</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef"><code>typedef</code></a> example.</p>
+<pre><code>nt_value:
+    Default
+|   None
+|   Parents
+|   Set Lbracket value (Comma value)* Rbracket
+;
+</code></pre>
+<h2 id="final-grammar"><a class="header" href="#final-grammar">Final grammar</a></h2>
+<pre><code>lexicon Config;
+
+fragment EscChar        : '\\' [nrt"\\];
+fragment Char           : EscChar | ~[\n\r\t"\\];
+
+// punctuation and operators
+Colon                   : ':';
+Comma                   : ',';
+Equal                   : '=';
+Lbracket                : '{';
+LSbracket               : '[';
+Rbracket                : '}';
+RSbracket               : ']';
+Semicolon               : ';';
+
+// keywords
+Combined                : 'combined';
+Def                     : 'def';
+Default                 : 'default';
+Headers                 : 'headers';
+Indent                  : 'indent';
+Input                   : 'input';
+Lexer                   : 'lexer';
+Libs                    : 'libs';
+None                    : 'none';
+NTValue                 : 'nt-value';
+Options                 : 'options';
+Output                  : 'output';
+Parents                 : 'parents';
+Parser                  : 'parser';
+Set                     : 'set';
+Spans                   : 'spans';
+Stdout                  : 'stdout';
+
+// variable terminals
+BoolLiteral             : 'false' | 'true';
+Id                      : [a-zA-Z][a-zA-Z_0-9]*;
+NumLiteral              : [0-9]+;
+StrLiteral              : '"' Char+ '"';
+
+SComment                : '/*' .*? '*/'             -&gt; skip;
+SLineComment            : '//' ~[\r\n]*             -&gt; skip;
+SWhiteSpace             : [ \n\r\t]+                -&gt; skip;
+</code></pre>
+<pre><code>grammar Config;
+
+config:
+    definitions
+    lexer
+    parser
+    options
+;
+
+definitions:
+    (&lt;L=i_def&gt; Def Id Equal value Semicolon)*
+;
+
+lexer:
+    Lexer Lbracket io_options Rbracket
+;
+
+parser:
+    (Parser Lbracket io_options Rbracket)?
+;
+
+options:
+    (Options Lbracket global_options Rbracket)?
+;
+
+io_options:
+    io_option (&lt;L=i_io_opt&gt; Comma io_option)*
+;
+
+io_option:
+    Combined Colon value tag_opt
+|   Input    Colon value tag_opt
+|   Output   Colon value tag_opt
+|   Indent   Colon value
+|   Headers  Colon Lbracket value (Comma value)* Rbracket
+;
+
+tag_opt:
+    (LSbracket value RSbracket)?
+;
+
+global_options:
+     global_option (&lt;L=i_global_opt&gt; Comma global_option)*
+;
+
+global_option:
+    Headers Colon Lbracket value (Comma value)* Rbracket
+|   Indent  Colon value
+|   Libs    Colon Lbracket value (Comma value)* Rbracket
+|   NTValue Colon nt_value
+|   Spans   Colon value
+;
+
+value:
+    BoolLiteral
+|   NumLiteral
+|   StrLiteral
+|   Id
+|   Stdout
+;
+
+nt_value:
+    Default
+|   None
+|   Parents
+|   Set Lbracket value (Comma value)* Rbracket
+;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tut-example.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="tut-ex-impl.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tut-example.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="tut-ex-impl.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
