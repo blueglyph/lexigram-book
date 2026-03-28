@@ -37,7 +37,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3f39279b.js";
+            window.path_to_searchindex_js = "searchindex-48197200.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -178,16 +178,17 @@
                     <main>
                         <h1 id="lexigram"><a class="header" href="#lexigram">Lexigram</a></h1>
 <h2 id="about"><a class="header" href="#about">About</a></h2>
-<p><strong>Lexigram is a lexer / parser generator</strong>. It is written in Rust and generates Rust code.</p>
+<p><strong>Lexigram is a lexer/parser generator</strong>. It is written in Rust and generates Rust code.</p>
 <p>Currently, it generates a predictive, non-recursive LL(1) parser. However, you may write a non-LL(1) grammar, as long as Lexigram can transform it to LL(1). Left-recursive and ambiguous rules are allowed, and left factorization is performed automatically. These transformations are as transparent as possible in the generated code.</p>
 <p>The listener pattern allows your code to interact with the parser by executing user-implemented methods when rules are processed, similarly to ANTLR. It is also somewhat similar to the code written next to each rule in tools like Yacc and Bison, but it’s cleaner and more flexible.</p>
 <p>The project is currently hosted on <a href="https://github.com/blueglyph/lexigram">GitHub</a>.</p>
 <h2 id="this-documentation"><a class="header" href="#this-documentation">This Documentation</a></h2>
-<p>This documentation is composed of several chapters. It covers version <strong>0.9.0</strong> and has been last updated on 28 March 2026.</p>
+<p>This documentation is composed of several chapters.</p>
 <p>The <a href="#introduction">introduction</a> gives a general overview of parsers, their components, how they are designed, how they can be used, and their main types. If you’re not familiar with the design of parsers and the limitations of LL(1) grammars, it is recommended to read it, otherwise it can be skipped.</p>
 <p>The <a href="#tutorial">tutorial</a> shows how to build a small parser step by step. It helps you familiarize yourself with Lexigram using a hands-on approach.</p>
 <p>The <a href="#lexigram-crates">quick overview of the crates</a> presents the main crates of this project.</p>
 <p>The <a href="#lexer-generator-reference-lexi">lexer generator reference</a> and the <a href="#parser-generator-reference-gram">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
+<p>The Lexigram Book covers version <strong>0.9.0</strong> and has been last updated on <strong>28 March 2026</strong>.</p>
 <h2 id="installation-and-dependencies"><a class="header" href="#installation-and-dependencies">Installation and Dependencies</a></h2>
 <p>The <code>lexigram</code> crate contains the executable. You’ll find information on how to install it and its main command-line options in the <a href="#lexigram-1">Lexigram Crates</a> chapter.</p>
 <p>The <code>lexigram-core</code> crate is the only dependency you need with the generated code. You’ll find more details about it in the relevant <a href="#lexigram-core">Lexigram Crates</a> chapter.</p>
