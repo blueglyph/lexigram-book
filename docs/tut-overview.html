@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -181,11 +181,11 @@
 <li>writing the grammar</li>
 <li>generating the code</li>
 <li>implementing the listener</li>
-<li>integrating it into the top of your parser</li>
+<li>integrating it into your top-level parser</li>
 </ul>
-<h2 id="designing-the-grammar"><a class="header" href="#designing-the-grammar">Designing the grammar</a></h2>
+<h2 id="designing-the-grammar"><a class="header" href="#designing-the-grammar">Designing the Grammar</a></h2>
 <p>Writing the grammar is an important step, and one that shouldn’t be underestimated. If the language you need to parse already exists, there’s not a great deal of latitude, but there are still an infinite number of grammars that can describe that language. If you’re using an LL(1) parser, you’ll need to design an LL(1) grammar, and if the language can’t be described with an LL(1) grammar at all, you must use another parser. But many programming languages can, so hopefully it shouldn’t be the case.</p>
-<p>If you create the language, you’ll find that designing the grammar may sometimes push you to adapt the language in order to make it easier (or possible) to parse.</p>
+<p>If you’re designing the language, you’ll find that designing the grammar may sometimes push you to adapt the language in order to make it easier (or possible) to parse.</p>
 <p>We’ll start with this simplified grammar to show how the parts come together:</p>
 <pre><code>s -&gt; Id "=" val | "exit" | "return" val;
 val -&gt; Id | Num;
@@ -193,7 +193,7 @@ val -&gt; Id | Num;
 <blockquote class="blockquote-tag blockquote-tag-note">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p><strong>Notation</strong></p>
-<p>Like in the introduction, we’re often going to use a simplified notation for the grammar which doesn’t fully show the lexicon, for the sake of clarity.</p>
+<p>Like in the introduction, we’re often going to use a simplified notation for the grammar which doesn’t represent the full lexicon, for the sake of clarity.</p>
 <p>In this simplified notation, the terminals are either fixed string literals or capitalized identifiers that represent a variable terminal, like a numeric value. The lowercase identifiers are the nonterminals. In the full notation required by Lexigram, string literals aren’t allowed in the grammar; terminal names must be used instead.</p>
 <p>To distinguish that simplified notation from the full notation, we use <code>-&gt;</code> in the production rules instead of <code>:</code>.</p>
 <p>Here’s the full notation that Lexigram would expect, either in a combined form as below or with the lexicon and the grammar in separate locations:</p>
@@ -212,10 +212,10 @@ val: Id | Num;
 <!--
 Either way, and within the degree of freedom you benefit from, it's often possible to choose productions that are easier to work with once the code is generated. If you try to put as much as possible in a fewer number of rules, you'll probably end up with many alternatives that must be addressed at the same place in the code, which is cumbersome. If you split the productions too much, you'll get many methods in the listener for small things that you'll need to tie together later. Between those two extremes is the ideal balance.
 -->
-<h2 id="generating-the-code"><a class="header" href="#generating-the-code">Generating the code</a></h2>
+<h2 id="generating-the-code"><a class="header" href="#generating-the-code">Generating the Code</a></h2>
 <p>Lexigram generates the code of a lexer/parser based on their “specifications”: a lexicon for the lexer, and a grammar for the parser. There are two main options to generate the code: with the command-line executable or programmatically.</p>
 <p>If you prefer the command-line option, you should install the <a href="crates.html#lexigram">lexigram executable</a>.</p>
-<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon / grammar.</p>
+<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
 <p>Or you could create a <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">build script</a> that generates the code. Again, there’s a choice: the script may either launch the command-line executable, call its public method <code>lexigram::execute</code>, or use the build method as described in the previous paragraph.</p>
 <p>Finally, there’s the more advanced possibility of creating the lexicon and/or the grammar dynamically in a Rust program by using the lower-level API of the <a href="crates.html#lexigram-lib">lexigram-lib crate</a>, but that’s completely outside the scope of this documentation.</p>
 <blockquote class="blockquote-tag blockquote-tag-tip">
@@ -223,11 +223,11 @@ Either way, and within the degree of freedom you benefit from, it's often possib
 <p>If you generate the parser programmatically without a build.rs script, it’s recommended to proceed with two crates: one for the generator and one for the final application that includes the generated code. While it’s possible to put both in the same crate, it would have two drawbacks:</p>
 <ul>
 <li>When the generated code is written to its destination file, it likely prevents you from compiling the code until you have completed the parser or updated it with the latest changes in the grammar. Before that, if you need to modify the grammar again, the code that generates the parser won’t be able to compile.</li>
-<li>The dependencies of the generator are bigger, since you need all the crates (through <code>lexi-gram</code>). You could put the generator in a test config, as we did for the examples of the repository, so only the test dependencies (<code>[dev-dependencies]</code>) would require <code>lexi-gram</code>, and the productino dependency (<code>[dependencies]</code>) would just be <code>lexigram-core</code>. This, however, might create conflicts since <code>lexi-gram</code> has <code>lexigram-core</code> in its own dependencies. Theoretically, there’s no such problem between test code and production code, but you’ll have to be careful not to bind <code>lexigram-core</code> directly in your test code; instead, you must bind <code>lexi_gram::lexigram_lib::lexigram_core</code>.</li>
+<li>The dependencies of the generator are bigger, since you need all the crates (through <code>lexi-gram</code>). You could put the generator in a test config, as we did for the examples of the repository, so only the test dependencies (<code>[dev-dependencies]</code>) would require <code>lexi-gram</code>, and the production dependency (<code>[dependencies]</code>) would just be <code>lexigram-core</code>. This, however, might create conflicts since <code>lexi-gram</code> has <code>lexigram-core</code> in its own dependencies. Theoretically, there’s no such problem between test code and production code, but you’ll have to be careful not to bind <code>lexigram-core</code> directly in your test code; instead, you must bind <code>lexi_gram::lexigram_lib::lexigram_core</code>.</li>
 </ul>
 <p>That’s why we split all the examples in two crates: <code>gen_microcalc</code> and <code>microcalc</code>, <code>gen_watcher</code> and <code>watcher</code>, and so on.</p>
 </blockquote>
-<p>Let’s assume that the combined lexicon / grammar are in a file, <strong>example.lg</strong>:</p>
+<p>Let’s assume that the combined lexicon/grammar are in a file, <strong>example.lg</strong>:</p>
 <pre><code>lexicon Example;
 Equal:  '=';
 Exit:   'exit';
@@ -257,9 +257,9 @@ OK
 </ul>
 <blockquote class="blockquote-tag blockquote-tag-tip">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>Adding those two templates to your repository isn’t a bad idea. Each time the grammar is modified and the code regenerated, you can more easily spot the differences and copy the new bits in your code.</p>
+<p>Adding those two templates to your repository can prove helpful. Each time the grammar is modified and the code regenerated, you can more easily spot the differences and copy the new bits into your code.</p>
 </blockquote>
-<h2 id="implementing-the-listener"><a class="header" href="#implementing-the-listener">Implementing the listener</a></h2>
+<h2 id="implementing-the-listener"><a class="header" href="#implementing-the-listener">Implementing the Listener</a></h2>
 <p>The code generated by Lexigram is a trait that you must implement.</p>
 <p>The generated code includes, among other things, the listener trait and the custom parameter types:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -398,7 +398,7 @@ impl ExampleListener for Listener {
     }
 }
 <span class="boring">}</span></code></pre>
-<h2 id="top-integration"><a class="header" href="#top-integration">Top integration</a></h2>
+<h2 id="top-integration"><a class="header" href="#top-integration">Top Integration</a></h2>
 <p>In the generated code, you’ll find the following components:</p>
 <ul>
 <li>a <code>build_lexer()</code> method that returns a lexer of type <code>Lexer</code>. That object is generic, but the tables are specific to the lexicon.</li>
@@ -447,8 +447,8 @@ impl ExampleParser&lt;'_, '_&gt; {
     }
 }
 <span class="boring">}</span></code></pre>
-<h3 id="before-going-any-further"><a class="header" href="#before-going-any-further">Before going any further…</a></h3>
-<p>In the following subsections, we’re giving an overview of the top-level components, including the listener. If you like to get a better idea of how the components are integrated, you may find it useful.</p>
+<h3 id="before-going-any-further"><a class="header" href="#before-going-any-further">Before Going Any Further…</a></h3>
+<p>In the following subsections, we’re giving an overview of the top-level components, including the listener. If you’d like to get a better idea of how the components are integrated, you may find it useful.</p>
 <p>If you’d rather see more practical examples before tackling those aspects, you may just have a quick glance or skip it entirely for now.</p>
 <h3 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h3>
 <p>The lexer type has two generic parameters:</p>
@@ -462,15 +462,15 @@ impl ExampleParser&lt;'_, '_&gt; {
 <pre><code>pub struct Parser&lt;'a&gt;
 </code></pre>
 <p>Like the lexer, this lifetime is for the table references, which are static with <code>build_parser()</code>.</p>
-<h3 id="interaction-between-components"><a class="header" href="#interaction-between-components">Interaction between components</a></h3>
+<h3 id="interaction-between-components"><a class="header" href="#interaction-between-components">Interaction Between Components</a></h3>
 <p>The <strong>lexer</strong> extracts the tokens <code>"return"</code> and <code>Id("x")</code>, that it sends to the <strong>parser</strong> on demand. <code>Lexer::tokens(…)</code> returns an iterator, so you can intercept the tokens if you like. In the code example, we used a <code>keep_channel0(…)</code> method before giving the tokens to the parser:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let tokens = self.lexer.tokens().keep_channel0();
 <span class="boring">}</span></code></pre>
-<p>The lexer indeed allows you to output tokens on several channels by using the <code>-&gt; channel(&lt;channel ID&gt;)</code> action after defining a token. It can be used to keep the comments or other ancilliary information apart from the grammar. Here, we don’t use that, so we simply filter out everything that doesn’t belong to the default channel (ID = 0).</p>
-<p>The (low-level) generic table-driven <strong>parser</strong> consumes the tokens, predicts the production rules, and calls the <strong>wrapper</strong> at key moments, like when a production has been predicted and it about to be parsed, or when it has been fully parsed.</p>
-<p>The wrapper’s code is generated accordingly to the grammar. It calls the trait methods of the <strong>listener</strong>, so that you can get the values of all the symbols in a production once it’s fully parsed. For example, the values of <code>Id</code> and <code>val</code> once <code>s -&gt; Id "=" val</code> is parsed.</p>
+<p>The lexer indeed allows you to output tokens on several channels by using the <code>-&gt; channel(&lt;channel ID&gt;)</code> action after defining a token. It can be used to keep the comments or other ancillary information apart from the grammar. Here, we don’t use that, so we simply filter out everything that doesn’t belong to the default channel (ID = 0).</p>
+<p>The (low-level) generic table-driven <strong>parser</strong> consumes the tokens, predicts the production rules, and calls the <strong>wrapper</strong> at key moments, like when a production has been predicted and is about to be parsed, or when it has been fully parsed.</p>
+<p>The wrapper’s code is generated according to the grammar. It calls the trait methods of the <strong>listener</strong>, so that you can get the values of all the symbols in a production once it’s fully parsed. For example, the values of <code>Id</code> and <code>val</code> once <code>s -&gt; Id "=" val</code> is parsed.</p>
 <p>Those values are either the content of variable terminals like <code>Id</code> or the value of nonterminals like <code>val</code> and <code>s</code>, which you determine in <code>exit_val(…)</code> and <code>exit_s(…)</code>. They are kept on a value stack between those calls. Symbols that have no value, like fixed terminals (<code>"="</code>) and valueless nonterminals are not managed by the wrapper.</p>
 <p>Let’s see what happens using a short example of input, using the same grammar as before:</p>
 <pre><code class="language-text">return x
@@ -479,11 +479,11 @@ impl ExampleParser&lt;'_, '_&gt; {
 <ul>
 <li>The parser first expects a nonterminal <code>s</code>, which is the starting nonterminal of the grammar. The first token is <code>"return"</code>, so the parser predicts the production <code>s -&gt; "return" val</code>, and queues <code>"return"</code>, <code>val</code>.
 <ul>
-<li>The parser calls the wrapper with that information: we enter that production.</li>
+<li>The parser calls the wrapper with this information: we enter that production.</li>
 <li>The wrapper calls your listener method <code>init_s(…)</code>.</li>
 </ul>
 </li>
-<li>The next item in the queue is <code>"return"</code>, which matches the token (normal, since it was used to predict the production!), so it’s dismissed.</li>
+<li>The next item in the queue is <code>"return"</code>, which matches the token (normal, since it was used to predict the production!), so it’s consumed.</li>
 <li>The next item is <code>val</code>. Since the next token is <code>Id("x")</code>, the production <code>val -&gt; Id</code> is predicted. <code>Id</code> is queued.
 <ul>
 <li>The parser calls the wrapper.</li>
@@ -493,7 +493,7 @@ impl ExampleParser&lt;'_, '_&gt; {
 <li>The next item is <code>Id</code>, which matches the next token.</li>
 <li>At this point, the production <code>val</code> is complete.
 <ul>
-<li>The parser calls the wrapper with the information: we exit that production, and we got an <code>Id("x")</code>.</li>
+<li>The parser calls the wrapper with the information: we exit that production, and we get an <code>Id("x")</code>.</li>
 <li>The wrapper calls <code>exit_val(CtxVal::V1 { id: "x" })</code>, which returns a value for <code>val</code> of type <code>SynVal</code>, and the wrapper keeps it on the value stack.</li>
 </ul>
 </li>
@@ -504,8 +504,8 @@ impl ExampleParser&lt;'_, '_&gt; {
 </ul>
 </li>
 </ul>
-<h3 id="the-wrapper"><a class="header" href="#the-wrapper">The wrapper</a></h3>
-<p>The wrapper implements a few public methods, among which you’ll recognize a few in the code exerpt of the top-level we gave earlier (<code>T</code> is the listener type):</p>
+<h3 id="the-wrapper"><a class="header" href="#the-wrapper">The Wrapper</a></h3>
+<p>The wrapper implements a few public methods, among which you’ll recognize a few in the code excerpt of the top-level we gave earlier (<code>T</code> is the listener type):</p>
 <ul>
 <li>
 <p><code>new(listener: T, verbose: bool) -&gt; Self</code></p>
@@ -529,8 +529,8 @@ impl ExampleParser&lt;'_, '_&gt; {
 </ul>
 <p>Since the listener is owned by the wrapper while the input is parsed, it’s easier to keep all the data you need during that phase in the listener itself. Then, you can take the result back in the top parser when the parsing is complete.</p>
 <p>If you want to parse several inputs, you have the choice of how long the wrapper and the listener live: you can create them each time, or you can keep the same listener and move it back and forth each time, or you can keep the same wrapper/listener.</p>
-<h3 id="the-listener"><a class="header" href="#the-listener">The listener</a></h3>
-<p>Besides the specific nonterminal enter / exit methods already discussed before, the listener trait provides a few general methods:</p>
+<h3 id="the-listener"><a class="header" href="#the-listener">The Listener</a></h3>
+<p>Besides the specific nonterminal enter/exit methods already discussed before, the listener trait provides a few general methods:</p>
 <ul>
 <li>
 <p><code>get_log_mut(&amp;mut self) -&gt; &amp;mut impl Logger</code></p>
@@ -540,7 +540,7 @@ impl ExampleParser&lt;'_, '_&gt; {
 <li>
 <p><code>exit(&amp;mut self, program: SynProgram) {}</code></p>
 <p>Is called after the exit method of the starting nonterminal, once everything is parsed. You can implement this method if you want to separate the post-processing from what is done in <code>exit_&lt;starting nonterminal&gt;(…)</code>.</p>
-<p>The method isn’t called if the parsing is aborted (see below), or if a lexical / syntax error is detected.</p>
+<p>The method isn’t called if the parsing is aborted (see below), or if a lexical/syntax error is detected.</p>
 </li>
 <li>
 <p><code>check_abort_request(&amp;self) -&gt; Terminate { Terminate::None }</code></p>
@@ -589,7 +589,7 @@ impl ExampleListener for Listener {
 <p>Is called each time a token is taken from the lexer. By default, this is optimized away, but you can use it if you need to change the value of tokens dynamically. This is an advanced feature, so we won’t elaborate on it in this tutorial.</p>
 </li>
 <li>
-<p><code>fn hook(&amp;mut self, token: TokenId, text: &amp;str) -&gt; TokenId {{ token }}</code></p>
+<p><code>fn hook(&amp;mut self, token: TokenId, text: &amp;str) -&gt; TokenId { token }</code></p>
 <p>Is an optional method generated if hooks were declared in the lexicon. Like <code>intercept_token(…)</code>, it allows to intercept tokens, but only at selected spots in the grammar, which is more efficient. This is also an advanced feature, so we won’t elaborate on it in this tutorial either.</p>
 </li>
 </ul>

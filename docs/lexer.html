@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -200,7 +200,7 @@ StringLiteral : '"' (~('"'|'\n'|'\r') | '""')* '"';
 </code></pre>
 <p>From the lexicon, Lexi generates the source code of the lexer:</p>
 <ul>
-<li>The symbol and the finite state machine tables, other data.</li>
+<li>The symbol and the finite state machine tables, other supporting data.</li>
 <li>A <code>build_lexer()</code> method that creates a <code>Lexer</code> from those data.</li>
 </ul>
 <h3 id="lexicon-structure"><a class="header" href="#lexicon-structure">Lexicon Structure</a></h3>
@@ -208,7 +208,7 @@ StringLiteral : '"' (~('"'|'\n'|'\r') | '""')* '"';
 <p>It begins with an optional <strong>header</strong>:</p>
 <pre><code>lexicon LexiLexer;
 </code></pre>
-<p>After the optional header, the lexicon is a list of items, each of which being an option, a rule, or a declaration.</p>
+<p>After the optional header, the lexicon is a list of items, each of which is an option, a rule, or a declaration.</p>
 <p>The only <strong>option</strong> currently implemented is a list of additional <a href="#channels">channels</a>:</p>
 <pre><code>channels { COMMENTS_CHANNEL, ATTRIBUTE_CHANNEL }
 </code></pre>
@@ -216,11 +216,11 @@ StringLiteral : '"' (~('"'|'\n'|'\r') | '""')* '"';
 <pre><code>fragment DIGIT  : [0-9];
 Number          : DIGIT+;           
 </code></pre>
-<p>The only <strong>declaration</strong> currently implemented is the <a href="#modes">mode</a> section, in which the rules are effective only when that mode is the current one. The starting mode, <code>DEFAULT_MODE</code>, is implicitly declared at the top, and thus the default mode of the lexer.</p>
+<p>The only <strong>declaration</strong> currently implemented is the <a href="#modes">mode</a> section, in which rules are active only when that mode is the current one. The starting mode, <code>DEFAULT_MODE</code>, is implicitly declared at the top, and thus the default mode of the lexer.</p>
 <pre><code>mode COMMENT_MODE; 
 </code></pre>
 <h3 id="matching-rule"><a class="header" href="#matching-rule">Matching rule</a></h3>
-<p>Among the rules of the current mode, the one that matches the longer input is selected to issue a token. If you need the keywords <code>"down"</code>, <code>"downto"</code>, and <code>"to"</code> in your language, you can safely define the three tokens in whichever order suits you best. The resulting lexer will be the same, and it won’t cut the input “downto” in two tokens <code>"down"</code> and <code>"to"</code>.</p>
+<p>Among the rules of the current mode, the one that matches the longest input is selected to issue a token. If you need the keywords <code>"down"</code>, <code>"downto"</code>, and <code>"to"</code> in your language, you can safely define the three tokens in whichever order you prefer. The resulting lexer will be the same, and it won’t cut the input <code>"downto"</code> in two tokens <code>"down"</code> and <code>"to"</code>.</p>
 <pre><code>Down:   'down';
 DownTo: 'downto';
 To:     'to';
@@ -232,19 +232,19 @@ To:     'to';
 Id:     [_a-z][_a-z0-9]*;
 </code></pre>
 <ul>
-<li>“to” is scanned as <code>To</code>. There is a conflict between <code>To</code> and <code>Id("to")</code>, so <code>To</code> is selected because it’s defined first.</li>
-<li>“total” is scanned as <code>Id("total")</code>. There is no conflict after reading the first two characters “to” because <code>*</code> and <code>+</code> are greedy by default, so <code>Id</code> captures the whole word “total”. The lexer chooses the token matching the longer input, which is <code>Id("total")</code>.</li>
+<li><code>"to"</code> is scanned as <code>To</code>. There is a conflict between <code>To</code> and <code>Id("to")</code>, so <code>To</code> is selected because it’s defined first.</li>
+<li><code>"total"</code> is scanned as <code>Id("total")</code>. There is no conflict after reading the first two characters <code>"to"</code> because <code>*</code> and <code>+</code> are greedy by default, so <code>Id</code> captures the whole word <code>"total"</code>. The lexer chooses the token matching the longer input, which is <code>Id("total")</code>.</li>
 </ul>
 <p>Were <code>Id</code> defined first, none of the other tokens would ever be selected. However, Lexigram would see that some tokens are never output, so it would produce an error before generating the lexer, suggesting to re-order the definitions.</p>
-<p>With a non-greedy repetition, we would get a different result for “total”: Once the first two characters “to” are read by the lexer, <code>To</code> and <code>Id("to")</code> and in conflict, this time:</p>
+<p>With a non-greedy repetition, we would get a different result for <code>"total"</code>: Once the first two characters <code>"to"</code> are read by the lexer, <code>To</code> and <code>Id("to")</code> are in conflict this time:</p>
 <pre><code>To:     'to';
 Id:     [_a-z][_a-z0-9]*?;
 </code></pre>
 <ul>
-<li>“to” is scanned as <code>To</code>. Like above, there is conflict between <code>To</code> and <code>Id</code>, which is resolved by taking the first definition.</li>
-<li>“total” is scanned as <code>To</code>, <code>Id("tal")</code>. Once the first two characters “to” are read, there is a conflict because of the non-greedy <code>*?</code>. <code>To</code> is selected because it’s defined first, which leaves the rest of the input “tal”. That remaining part is scanned as <code>Id("tal")</code></li>
+<li><code>"to"</code> is scanned as <code>To</code>. Like above, there is a conflict between <code>To</code> and <code>Id</code>, which is resolved by taking the first definition.</li>
+<li><code>"total"</code> is scanned as <code>To</code>, <code>Id("tal")</code>. Once the first two characters <code>"to"</code> are read, there is a conflict because of the non-greedy <code>*?</code>. <code>To</code> is selected because it’s defined first, which leaves the rest of the input <code>"tal"</code>. That remaining input is scanned as <code>Id("tal")</code></li>
 </ul>
-<p>In conclusion, the usual way to design a lexicon is to put the fixed tokens first and the variable tokens last, unless there is not risk of conflict.</p>
+<p>In conclusion, the usual way to design a lexicon is to put the fixed tokens first and the variable tokens last, unless there is no risk of conflict.</p>
 <h3 id="fragments"><a class="header" href="#fragments">Fragments</a></h3>
 <p>The <code>fragment</code> keyword defines a fragment of lexemes that may be used several times, like an alias or a constant. It can also be used to split a rule into more explicit components.</p>
 <pre><code>fragment DIGIT        : [0-9];
@@ -254,11 +254,11 @@ fragment HEX_INTEGER  : HEX_DIGIT ('_' | HEX_DIGIT)* HEX_DIGIT | HEX_DIGIT;
                       
 Integer               : DEC_INTEGER | '0x' HEX_INTEGER;
 </code></pre>
-<p>Fragments are global: any fragment can be used in any mode section.</p>
+<p>Fragments are globally accessible, so they can be used in any mode section.</p>
 <h3 id="regular-expressions"><a class="header" href="#regular-expressions">Regular Expressions</a></h3>
 <p>The regular expressions used in each rule or fragment can include the following elements:</p>
 <ul>
-<li><code>'a'</code>, <code>'script'</code>: string literals that must be matched entirely (single quotes are used indifferently for characters and strings)
+<li><code>'a'</code>, <code>'script'</code>: string literals that must be matched entirely (single quotes are used for both characters and strings)
 <ul>
 <li><code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\'</code>, and <code>\\</code>: common escape codes for characters inside string literals</li>
 <li><code>\u{0}</code>-<code>\u{d7ff}</code>, <code>\u{e000}</code>-<code>\u{10ffff}</code>: general Unicode escape codes</li>
@@ -280,31 +280,30 @@ Integer               : DEC_INTEGER | '0x' HEX_INTEGER;
 </li>
 <li>valid both inside and outside square brackets:
 <ul>
-<li><code>\w</code>: represents a single word character: <code>[a-zA-Z]</code></li>
-<li><code>\s</code>: represents a space character: <code>[ \t\r\n]</code></li>
+<li><code>\w</code>: represents a single word character: <code>[_0-9A-Za-z]</code></li>
 <li><code>\d</code>: represents a decimal digit: <code>[0-9]</code></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><code>(</code> and <code>)</code> around item(s): groups the content to avoid conflicts of precedence with other operators</li>
-<li><code>~</code>: negates the character set on the right
+<li><code>~</code>: negates the character set on the right:
 <ul>
 <li><code>~[ \t\n\r]</code>: any non-space character</li>
 <li><code>~( 'a' | 'b' | 'c' )</code>: any character but ‘a’, ‘b’, or ‘c’, equivalent to <code>~'a'..'c'</code></li>
 </ul>
 </li>
-<li><code>*</code>: zero or more instances of the item on the left
+<li><code>*</code>: zero or more instances of the item on the left:
 <ul>
 <li><code>[a-z]*</code>: zero or several letters</li>
 <li><code>ab*</code>: ‘a’ followed by zero or more ‘b’ characters</li>
 <li><code>('--'|'==')*</code>: zero or more pairs of ‘-’ or ‘=’</li>
 </ul>
 </li>
-<li><code>+</code>: one or more instances of item on the left (same principle as <code>*</code>)</li>
-<li><code>?</code>: zero or one instances of item on the left (same principle as <code>*</code>)
+<li><code>+</code>: one or more instances of the item on the left (same principle as <code>*</code>)</li>
+<li><code>?</code>: zero or one instance of the item on the left (same principle as <code>*</code>)
 <ul>
-<li>after <code>*</code> or <code>+</code>: lazy repetition; for example, <code>'/*' .*? '*/'</code> (avoids the ending “*/” characters to be captured by <code>.*</code>)</li>
+<li>after <code>*</code> or <code>+</code>: lazy repetition; for example, <code>'/*' .*? '*/'</code> (avoids the ending <code>"*/"</code> characters to be captured by <code>.*</code>)</li>
 </ul>
 </li>
 <li><code>|</code>: alternative between several items; for example, <code>'if' | 'while' | [a-z]+</code></li>
@@ -325,10 +324,10 @@ Integer               : DEC_INTEGER | '0x' HEX_INTEGER;
 <li><code>Comma</code> and <code>Keyword</code> tokens are output on channel #0.</li>
 <li><code>CommentLine</code> tokens are output on channel #1 (<code>COMMENTS_CHANNEL</code>).</li>
 </ul>
-<p>The lexer outputs the tokens through two methods:</p>
+<p>The lexer provides two methods to output the tokens:</p>
 <ul>
 <li><code>get_token(&amp;mut self) -&gt; Result&lt;Option&lt;LexerToken&gt;, LexerError&gt;</code></li>
-<li><code>tokens(&amp;mut self) -&gt; LexInterpretIter</code>, which is an iterator of <code>LexerToken</code> items</li>
+<li><code>tokens(&amp;mut self) -&gt; LexInterpretIter</code>, which returns an iterator of <code>LexerToken</code> items.</li>
 </ul>
 <p>Both methods provide <code>LexerToken</code> items, defined as the following tuple, where the channel is the 2nd element:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -353,13 +352,13 @@ Minus2          : '-'                       -&gt; type(Minus);
 SetChar         : (ESC_SET_CHAR | ~[\n\r\t\\\]\-]);
 FixedSet2       : ('\\w' | '\\d')           -&gt; type(FixedSet);
 </code></pre>
-<p>When the next input character is “[”, the <code>LSbracket</code> token is emitted and the lexer switches to <code>SET_CHAR_MODE</code>. In that mode:</p>
+<p>When the next input character is <code>"["</code>, the <code>LSbracket</code> token is emitted and the lexer switches to <code>SET_CHAR_MODE</code>. In that mode:</p>
 <ul>
 <li><code>\w</code>, <code>\d</code>, and <code>-</code> emit the same tokens as they would in the default mode</li>
-<li>unescaped “]” emits <code>RSbracket</code> and returns to the default mode</li>
+<li>unescaped <code>"]"</code> emits <code>RSbracket</code> and returns to the default mode</li>
 <li>other valid characters and escape sequences emit <code>SetChar</code>.</li>
 </ul>
-<p>If that had to be written as a single rule, it would require a complex repetition of both escaped and unescaped codes—of different lengths—while avoiding an accidental capture of the ending “]”. It would also emit a single token for the whole expression, so the parser would have to interpret it on its side.</p>
+<p>If this had to be written as a single rule, it would require a complex repetition of both escaped and unescaped codes—of different lengths—while avoiding an accidental capture of the ending <code>"]"</code>. It would also emit a single token for the whole expression, so the parser would have to interpret it on its side.</p>
 <p>With the use of this separate mode, the definitions are simple, and the separate components are sent to the parser, simplifying its job considerably. Here is the relevant part of Lexi’s grammar:</p>
 <pre><code>char_set:
     LSbracket (char_set_one)+ RSbracket
@@ -373,7 +372,7 @@ char_set_one:
 ;
 </code></pre>
 <h3 id="actions"><a class="header" href="#actions">Actions</a></h3>
-<p>When a rule is matched, the default action of the lexer is to emit the token. Other actions can be specified by writing them on the right side of a <code>-&gt;</code> symbol. Several actions are separated by a comma:</p>
+<p>When a rule is matched, the default action of the lexer is to emit the token. Other actions can be specified by placing them on the right side of a <code>-&gt;</code> symbol. Several actions are separated by a comma:</p>
 <pre><code>TagOpen: '&lt;' -&gt; mode(TAG_MODE), more;
 </code></pre>
 <p>List of actions:</p>
@@ -429,7 +428,7 @@ FixedSet2             : ('\\w' | '\\d') -&gt; type(FixedSet);
 </code></pre>
 </li>
 </ul>
-<p>If <code>skip</code> or <code>more</code> is in the list of actions, no token is emitted. Otherwise, the rule emits the token corresponding to the rule name or, if specified, to the <code>type(&lt;token&gt;)</code> action. In the example below, the <code>String</code> and <code>StringContent</code> rules don’t emit anything; they accumulate the input characters. The <code>StringClose</code> rule emits the final <code>String</code> token with all the accumulated characters, including the double quotes.</p>
+<p>If <code>skip</code> or <code>more</code> is in the list of actions, no token is emitted. Otherwise, the rule emits a token corresponding to the rule name or, if specified, to the <code>type(&lt;token&gt;)</code> action. In the example below, the <code>String</code> and <code>StringContent</code> rules don’t emit any token; they accumulate the input characters. The <code>StringClose</code> rule emits the final <code>String</code> token with all the accumulated characters, including the surrounding double quotes.</p>
 <pre><code>String          : '"'         -&gt; push(STRING_MODE), more;
 
 mode STRING_MODE;
@@ -437,7 +436,7 @@ StringClose     : '"'         -&gt; pop, type(String);
 StringContent   : [ -z]*      -&gt; more;
 </code></pre>
 <h3 id="fixed--variable-tokens"><a class="header" href="#fixed--variable-tokens">Fixed / Variable Tokens</a></h3>
-<p>Tokens can correspond to a fixed string literal, like <code>"-"</code>, or to an expression that can match different strings, like <code>[a-z]+</code> or <code>"a" | "A"</code>. In the documentation, we call them respectively fixed and variable tokens (or terminals). The distinction is important if you get the symbol table from Lexi, or when you implement the listener generated by Lexigram.</p>
+<p>Tokens can correspond to a fixed string literal, like <code>"-"</code>, or to an expression that can match different strings, like <code>[a-z]+</code> or <code>"a" | "A"</code>. In the documentation, we call them fixed and variable tokens (or terminals), respectively. The distinction is important if you get the symbol table from Lexi, or when implementing the listener generated by Lexigram.</p>
 <p>Fixed tokens have an associated (constant) string literal in the symbol table, and they’re not represented in the context argument of the <code>exit_*(…)</code> listener methods. Variable tokens don’t have an associated string in the symbol table, but they’re represented in the context arguments with the captured input, which is generally useful for the parser: an identifier’s name, an integer literal, and so on.</p>
 <p>For example, with the following lexicon / grammar:</p>
 <pre><code>lexicon Example;
@@ -477,8 +476,8 @@ A  : 'A' -&gt; skip;
 </code></pre>
 <p>the generated lexer is such that the input</p>
 <ul>
-<li>“a” emits the token 0 = <code>(A, Some("a"))</code>, not <code>(A, None)</code>, so it won’t be in the context of the listener methods.</li>
-<li>“A” is valid but emits no token.</li>
+<li><code>"a"</code> emits the token 0 = <code>(A, Some("a"))</code>, not <code>(A, None)</code>, so it won’t be in the context of the listener methods.</li>
+<li><code>"A"</code> is valid but emits no token.</li>
 </ul>
 </blockquote>
 <h2 id="advanced-concepts"><a class="header" href="#advanced-concepts">Advanced Concepts</a></h2>
@@ -495,10 +494,10 @@ Other: 'y' -&gt; skip;
 </code></pre>
 produces a lexer such that the input
 <ul>
-<li>“0” emits token 0 = <code>(Zero, Some("0"))</code></li>
-<li>“1” emits token 1 = <code>(One, Some("1"))</code></li>
-<li>“x” emits token 2 = <code>(Other, Some("x"))</code></li>
-<li>“y” is valid but doesn’t emit anything</li>
+<li><code>"0"</code> emits token 0 = <code>(Zero, Some("0"))</code></li>
+<li><code>"1"</code> emits token 1 = <code>(One, Some("1"))</code></li>
+<li><code>"x"</code> emits token 2 = <code>(Other, Some("x"))</code></li>
+<li><code>"y"</code> is valid but doesn’t emit any token</li>
 </ul>
 </li>
 </ul>
@@ -553,7 +552,7 @@ inst:
 <p>In the grammatical definition of <code>decl</code> above, the <code>Type</code> in the first alternative is “competing” with the <code>Typedef</code> of the second alternative. Therefore, the method could get <code>Term::Type</code> or <code>Term::Typedef</code>. That’s not all: <code>inst</code> is competing with <code>decl</code> as next predicted nonterminal in <code>program</code>, so ``Let<code>and</code>Print<code>are two other arguments that</code>hook(…)`  receive.</p>
 </blockquote>
 <p>The listener offers another way to intercept all the tokens: the parser calls the listener’s <code>intercept_token(…)</code> method each time it receives a token from the lexer. Its default implementation is empty, so it’s optimized out by the compiler. Implementing it to intercept tokens may have a bigger performance impact than <code>hook(…)</code>, and it requires to take all the incoming tokens into account.</p>
-<p>See also the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef">gen_typedef</a> and <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef">typedef</a> examples, which illustrate both interception methods.</p>
+<p>See also the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef">gen_typedef</a> and <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef">typedef</a> examples, which illustrate the two interception methods.</p>
 <h2 id="formal-grammar-definition"><a class="header" href="#formal-grammar-definition">Formal Grammar Definition</a></h2>
 <p>Here are the lexicon and the grammar of Lexi, using the Lexigram syntax. Those files can be found in the repository, in the <code>build-stage1</code> directory.</p>
 <h3 id="lexis-lexicon"><a class="header" href="#lexis-lexicon">Lexi’s Lexicon</a></h3>
@@ -599,7 +598,6 @@ Skip            : 'skip';
 Type            : 'type';
 Channel         : 'channel';
 Hook            : 'hook';
-//SymEof          : 'EOF';
 
 SComment        : BLOCK_COMMENT             -&gt; skip;
 SLineComment    : LINE_COMMENT              -&gt; skip;
@@ -645,7 +643,7 @@ option:
 rule:
     rule_fragment_name Colon match Semicolon
 |   rule_terminal_name Colon match (Arrow actions)? Semicolon
-    // only reserve the token, but doesn't add a rule to scan it:
+    // only reserves the token, but doesn't add a rule to scan it:
 |   Lparen rule_terminal_name Rparen opt_str_lit (Arrow Hook)? Semicolon
     // "grammar" Id ";" =&gt; start of grammar section
 |   rule_terminal_name Id Semicolon

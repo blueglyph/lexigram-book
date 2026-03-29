@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -177,10 +177,10 @@
                     <main>
                         <h1 id="listener-implementation"><a class="header" href="#listener-implementation">Listener implementation</a></h1>
 <p>Now that the grammar has been designed, we’ll generate the code and implement the parser.</p>
-<p>We’d like our configuration parser to give an <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/struct.Options.html"><code>Options</code></a> object, ready to be used to generate a parser from Rust code:</p>
+<p>We’d like our configuration parser to give an <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/struct.Options.html"><code>Options</code></a> object, ready to be used with <code>try_gen_parser(…)</code> to generate a parser from Rust code:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let options = ... ; // what comes from the parser
+</span>let options = ... ; // what's returned by the parser
 match try_gen_parser(Action::Generate, options) {
     Ok(log) =&gt; {
         println!("Code generated");
@@ -192,8 +192,8 @@ match try_gen_parser(Action::Generate, options) {
     Err(build_error) =&gt; panic!("{build_error}"),
 }
 <span class="boring">}</span></code></pre>
-<h2 id="starting-point"><a class="header" href="#starting-point">Starting point</a></h2>
-<p>Let’s first generate the lexer, parser, and the wrapper. It would also be good to keep a template of the user types and listener implementation; if we change the grammar at some point, it’s easier to update the listener code by checking how the templates changed. Those templates are generated with the code on demand.</p>
+<h2 id="starting-point"><a class="header" href="#starting-point">Starting Point</a></h2>
+<p>Let’s first generate the lexer, parser, and the wrapper. It would also be good to keep a template of the user types and listener implementation; if we change the grammar at some point, it’s easier to update the listener code by checking how the templates changed. Those templates are generated alongside the code on demand.</p>
 <p>Create a new library project, then add <code>src/parser.rs</code> and <code>src/test.rs</code>. For now, add the <code>lexigram-core</code> dependency.</p>
 <p>Apart from the top-level parser definitions, we intend to have a few modules in <code>parser.rs</code>:</p>
 <ul>
@@ -202,8 +202,8 @@ match try_gen_parser(Action::Generate, options) {
 <li><code>config_lexer</code>: the generated lexer.</li>
 <li><code>config_parser</code>: the generated low-level parser.</li>
 </ul>
-<p>You can of course change the structure, but that’s what we’ll assume in the code samples below.</p>
-<p>Here’s how the initial <code>parser.rs</code> file should look like. We’re adding attributes to avoid unnecessary warnings about unused items at this point; we’ll remove that later.</p>
+<p>You can change the structure, of course, but that’s what we’ll assume in the code samples below.</p>
+<p>Here’s how the initial <code>parser.rs</code> file should look like. We’re adding attributes to avoid unnecessary warnings about unused items for now; we’ll remove that later.</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// top-level parser
@@ -229,7 +229,7 @@ mod config_parser {
     // [config_parser]
 }
 <span class="boring">}</span></code></pre>
-<p>Create another file in the project directory, <code>templates.txt</code>, with two pairs of tags for the templates:</p>
+<p>Create another file in the project’s root directory, <code>templates.txt</code>, with two pairs of tags for the templates:</p>
 <pre><code class="language-text">// -----------------------------------------------------------------------------
 // [template_user_types]
 // [template_user_types]
@@ -238,10 +238,10 @@ mod config_parser {
 // [template_listener_impl]
 // -----------------------------------------------------------------------------
 </code></pre>
-<p>Add those files to the version control (git, …), so you can see the differences each time you generate a new version of the parser.</p>
-<h3 id="generating-from-code"><a class="header" href="#generating-from-code">Generating from code</a></h3>
+<p>Add those files to version control (e.g. Git), so you can see the differences each time you generate a new version of the parser.</p>
+<h3 id="generating-from-code"><a class="header" href="#generating-from-code">Generating From Code</a></h3>
 <p>If you want to create the code programmatically, create an additional binary crate <code>gen_config</code> and add it as workspace member. It needs <code>lexi-gram</code> as dependency, too.</p>
-<p>Write the code that generates the parser in <code>main.rs</code>, with pathnames relative to the main project’s directory (that’s where the binary should be run from):</p>
+<p>Write the code that generates the parser in <code>main.rs</code>, with paths relative to the main project’s directory (that’s where the binary should be run from):</p>
 <pre class="playground"><code class="language-rust">use lexi_gram::lexigram_lib;
 
 use lexi_gram::{gencode, genspec};
@@ -282,7 +282,7 @@ fn main() {
         Err(build_error) =&gt; panic!("{build_error}"),
     }
 }</code></pre>
-<h3 id="generating-from-cli"><a class="header" href="#generating-from-cli">Generating from CLI</a></h3>
+<h3 id="generating-from-cli"><a class="header" href="#generating-from-cli">Generating From CLI</a></h3>
 <p>Make sure you have <a href="crates.html#lexigram">installed the Lexigram binary</a>.</p>
 <p>If the project has a single crate, with the lexicon and grammar files in the <code>src</code> subdirectory, the following command should generate the same code:</p>
 <pre><code class="language-shell">lexigram --indent 4\
@@ -292,14 +292,14 @@ fn main() {
   --listener templates.txt tag template_listener_impl\
   --lib "super::listener_types::*" --spans
 </code></pre>
-<h3 id="basic-parser"><a class="header" href="#basic-parser">Basic parser</a></h3>
-<p>Before implementing the full parser, it’s a good idea to test an empty shell with all the generated code.</p>
+<h3 id="basic-parser"><a class="header" href="#basic-parser">Basic Parser</a></h3>
+<p>Before implementing the full parser, it’s a good idea to test a minimal implementation with all the generated code.</p>
 <p>We can start by copying the content of the templates</p>
 <ul>
 <li><code>[template_user_types]</code>: copy what’s between the tags into the <code>listener_types</code> module.</li>
 <li><code>[template_listener_impl]</code>: copy what’s between the tags into the <code>listener</code> module.</li>
 </ul>
-<p>The parser needs a field for the lexer, the parser, and the wrapper. The listener is inside the wrapper, so you don’t need a field for it at the top.</p>
+<p>The parser needs a field for the lexer, parser, and wrapper. The listener is inside the wrapper, so you don’t need a field for it at the top.</p>
 <p>We’ll provide the input as a <code>&amp;str</code>, so we need an extra lifetime <code>'ls</code>:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -309,7 +309,7 @@ fn main() {
     wrapper: Option&lt;Wrapper&lt;Listener&lt;'ls&gt;&gt;&gt;,
 }
 <span class="boring">}</span></code></pre>
-<p>In the <code>listener</code> module, let’s add a reference to the input in the listener, as a vector of references to each line. It’s not mandatory, but we’ll show an easy way to give a proper indication of where an error occurs in the input. We should also add bindings for <code>PosSpan</code> and <code>Logger</code>, and everything above, which are not generated automatically in the template.</p>
+<p>In the <code>listener</code> module, let’s add a reference to the input in the listener, as a vector of references to each line. It’s not mandatory, but we’ll show a simple way to point at the error by annotating the relevant input lines. We should also add bindings for <code>PosSpan</code> and <code>Logger</code>, and everything above, which are not generated automatically in the template.</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>mod listener {
@@ -387,8 +387,8 @@ impl&lt;'l, 'ls: 'l&gt; ConfigParser&lt;'l, '_, 'ls&gt; {
     }
 }
 <span class="boring">}</span></code></pre>
-<p>The idea we’re following is to put the wrapper inside an <code>Option</code> (yes, we’re wrapping the wrapper). That way, we can keep the same parser object, even if we parse several inputs in a loop. Each time, a new wrapper / listener is created with the references to the new input, and it’s destroyed them after the parsing is done. It makes it easier to deal with the lifetimes, and it avoids reusing a listener which may have remnants of the previous input.</p>
-<p>All we need now is a test. Add this to <code>tests.rs</code>:</p>
+<p>The idea we’re following is to put the wrapper inside an <code>Option</code> (yes, we’re wrapping the wrapper). That way, we can keep the same parser object, even if we parse several inputs in a loop. Each time, a new wrapper/listener is created with the references to the new input, and it’s destroyed after the parsing is done. It makes it easier to deal with the lifetimes, and it avoids reusing a listener which may have remnants of the previous input.</p>
+<p>All we need now is a test. Add this to <code>src/tests.rs</code>:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span>#![cfg(test)]
 
@@ -448,7 +448,7 @@ options {
 "#;
 <span class="boring">}</span></code></pre>
 <p>You can launch the test to verify that it works. Then corrupt one of the inputs to verify that the error is detected.</p>
-<h2 id="storing-the-options"><a class="header" href="#storing-the-options">Storing the options</a></h2>
+<h2 id="storing-the-options"><a class="header" href="#storing-the-options">Storing the Options</a></h2>
 <p>Since <code>Options</code> and its fields are public, we’ll simply store an instance in the listener and set its fields accordingly to what is parsed.</p>
 <p>By default, the generated code relies only on the <code>lexigram-core</code> crate. That’s what we used in our first test. But <code>Options</code> is in <code>lexi-gram</code>, which also depends on <code>lexigram-core</code>, as we explain in the <a href="crates.html">Lexigram crates chapter</a>.</p>
 <p>Rather than using two dependencies, we’ll use only <code>lexi-gram</code>, from which we’ll take <code>lexigram-core</code>. For example with this binding:</p>
@@ -517,7 +517,7 @@ impl&lt;'ls&gt; Listener&lt;'ls&gt; {
 <span class="boring">}</span></code></pre>
 <p>Check that everything compiles and that the tests still run.</p>
 <p>Now we’re ready to modify the listener implementation.</p>
-<h2 id="storing-the-constants"><a class="header" href="#storing-the-constants">Storing the constants</a></h2>
+<h2 id="storing-the-constants"><a class="header" href="#storing-the-constants">Storing the Constants</a></h2>
 <p>The next task is to store the constants that are defined at the beginning. They can be used anywhere, so they could contain any type of value defined in the grammar.</p>
 <p>In the <code>listener_types</code> module, we define the type that holds any type of value, and we add a field to the listener (which also needs to be initialized in <code>new(…)</code>):</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -527,7 +527,7 @@ impl&lt;'ls&gt; Listener&lt;'ls&gt; {
 pub(super) enum SynValue {
     Error,
     Bool(bool),
-    Num(u32),
+    Num(usize),
     Str(String),
     CodeStdout,
 }
@@ -637,7 +637,7 @@ tag_opt:
 <p>We have two possible approaches.</p>
 <p>In the first one, we store in a new field of the listener whether we’re parsing the lexer or the parser when we enter those rules (<code>init_lexer(…)</code> and <code>init_parser(…)</code>). In <code>io_option</code>, we set the appropriate values of <code>self.options</code> depending on the production alternative and the subject (lexer/parser). The nonterminals <code>io_options</code> and <code>io_option</code> don’t hold a value.</p>
 <p>In the second approach, we store in <code>io_option</code> a new type that contains the possible options (<a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/enum.Specification.html"><code>Specification</code></a>, <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/enum.CodeLocation.html"><code>CodeLocation</code></a>, <code>usize</code>, …). We fold the values in <code>io_options</code> and detect repetitions, then we store the same type in <code>io_options</code>, and <code>lexer</code>/<code>parser</code> detect other errors and store the options in <code>self.options</code>.</p>
-<p>Both work, but we’ll choose the second approach because it’s more there’s less coupling, and the responsibilities are better located.</p>
+<p>Both work, but we’ll choose the second approach because there’s less coupling and the responsibilities are better separated.</p>
 <p>For <code>io_option</code>, we define the following type in the <code>listener_types</code> module (<code>Specifications</code> and <code>CodeLocation</code> must be imported):</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -917,7 +917,7 @@ fn exit_i_io_opt(&amp;mut self, acc: &amp;mut SynIIoOpt, ctx: CtxIIoOpt, spans: 
 <li>if the indentation is specified for any of those parts of code, it has more priority over the default indentation level.</li>
 </ul>
 <p>Thus, <code>lexigram --indent 4 -x lexicon.l -l lexer.rs --indent 0</code> doesn’t indent the lexer code.</p>
-<p>But in our grammar, the global options are specified after <code>lexer</code> and <code>parser</code>, so we might erase their specific indentation by the global, default value. To avoid those conflicts, we’ll store the specific values in separate fields of the listener, then we’ll deconflict after parsing everything:</p>
+<p>But in our grammar, the global options are specified after <code>lexer</code> and <code>parser</code>, so we might erase their specific indentation by the global, default value. To avoid those conflicts, we’ll store the specific values in separate fields of the listener, then we’ll resolve conflicts after parsing everything:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub(super) struct Listener&lt;'ls&gt; {
@@ -926,7 +926,7 @@ fn exit_i_io_opt(&amp;mut self, acc: &amp;mut SynIIoOpt, ctx: CtxIIoOpt, spans: 
     parser_indent: Option&lt;usize&gt;,
 }
 <span class="boring">}</span></code></pre>
-<p>The only other singularity in <code>exit_lexer(…)</code> is copying the specifications (the location of the lexicon/grammar) into the <code>self.options.parser_spec</code> field:</p>
+<p>The only other particularity in <code>exit_lexer(…)</code> is copying the specifications (the location of the lexicon/grammar) into the <code>self.options.parser_spec</code> field:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn exit_lexer(&amp;mut self, ctx: CtxLexer, spans: Vec&lt;PosSpan&gt;) -&gt; SynLexer {
@@ -1247,7 +1247,66 @@ fn exit_i_global_opt(&amp;mut self, acc: &amp;mut SynIGlobalOpt, ctx: CtxIGlobal
     if let Some(indent) = self.parser_indent { self.options.parser_indent = indent };
 }
 <span class="boring">}</span></code></pre>
-<h2 id="wrapping-it-up"><a class="header" href="#wrapping-it-up">Wrapping it up</a></h2>
+<h2 id="annotating-the-input"><a class="header" href="#annotating-the-input">Annotating the Input</a></h2>
+<p>The current error messages show the position of the error. It’s nice, but seeing the erroneous input is more helpful.</p>
+<p>For example, try parsing the following input:</p>
+<pre><code>def SOURCE_FILENAME = "../watcher/src/lib.rs";
+
+lexer {
+    combined: "src/watcher.lg",
+    output: SOURCE_FILENAMES ["watcher_lexer"],
+    indent: 4
+}
+</code></pre>
+<p>You’ll get this error in the log:</p>
+<pre><code>- ERROR  : at 5:13-28, SOURCE_FILENAMES is not defined
+</code></pre>
+<p>Let’s modify the listener to annotate the error in the input text. There are a few helpers for that in <code>lexigram_core::text_span</code>, but the listener must implement the <code>GetLine</code> trait:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use lexi_gram::lexigram_lib::lexigram_core::text_span::GetLine;
+
+// ...
+
+impl&lt;'ls&gt; GetLine for Listener&lt;'ls&gt; {
+    fn get_line(&amp;self, n: usize) -&gt; &amp;str {
+        self.lines.as_ref().unwrap()[n - 1]
+    }
+}
+<span class="boring">}</span></code></pre>
+<p>Then, when errors are detected, <code>self.extract_text(…)</code> can be used to get the offending line(s) or <code>self.annotate_text(…)</code> to emphasize the erroneous parts in them.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use lexi_gram::lexigram_lib::lexigram_core::text_span::GetTextSpan;
+
+// ...
+impl ConfigListener for Listener&lt;'_&gt; {
+
+    fn exit_value(&amp;mut self, ctx: CtxValue, spans: Vec&lt;PosSpan&gt;) -&gt; SynValue {
+        match ctx {
+            // ...
+          
+            // value -&gt; Id
+            CtxValue::V4 { id } =&gt; {
+                if let Some(v) = self.consts.get(&amp;id) {
+                    v.clone()
+                } else {
+                    //self.log.add_error(format!("at {}, {id} is not defined", spans[0]));
+                    let text = self.annotate_text(&amp;spans[0]);
+                    self.log.add_error(format!("{id} is not defined:\n\n{text}\n"));
+                    SynValue::Error
+                }
+            }
+    // ...
+<span class="boring">}</span></code></pre>
+<p>Now, the error looks like this (in the current crate version, the actual output changes the colour of <code>SOURCE_FILENAMES</code>, so you need an ANSI-friendly terminal):</p>
+<pre><code>- ERROR  : SOURCE_FILENAMES is not defined:
+
+   6:     output: SOURCE_FILENAMES ["watcher_lexer"],
+                  ^^^^^^^^^^^^^^^^
+</code></pre>
+<p>It’s not perfect: the parser and the lexer can only give the position when they detect an error, since they’re unaware of what the listener implements. In a future version, it will be possible to intercept their errors to customize the output, but it’s not implemented yet.</p>
+<h2 id="wrapping-it-up"><a class="header" href="#wrapping-it-up">Wrapping It Up</a></h2>
 <p>The parser can now return the options instead of just the log. Maybe it’s better to put that in a single object:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -1292,10 +1351,10 @@ fn test_run() {
     }
 }
 <span class="boring">}</span></code></pre>
-<h2 id="possible-improvements"><a class="header" href="#possible-improvements">Possible improvements</a></h2>
+<h2 id="possible-improvements"><a class="header" href="#possible-improvements">Possible Improvements</a></h2>
 <p>That’s a good first step. It’s not complete: there are other options that are not yet accessible from the configuration file parser, like the templates and some switches.</p>
 <p>The templates of the user types and the listener behave like the <code>lexer</code> and <code>parser</code> options, so they could be additional groups with their own generated code location and indentation. Feel free to add those features to the existing grammar and implementation, using the <code>templates.txt</code> file to more easily spot the required changes.</p>
-<h3 id="valueless-nonterminals"><a class="header" href="#valueless-nonterminals">Valueless nonterminals</a></h3>
+<h3 id="valueless-nonterminals"><a class="header" href="#valueless-nonterminals">Valueless Nonterminals</a></h3>
 <p>Some of the nonterminals don’t need a value: you can remove them with the <code>--nt-value</code> command-line option:</p>
 <pre><code class="language-shell">lexigram --indent 4\
   -x src/config.l -l "src/parser.rs" tag config_lexer\
@@ -1330,7 +1389,7 @@ fn gen_source_config_l_g(action: Action) {
     // ...
 <span class="boring">}</span></code></pre>
 <p>With the help of the template, removing the <code>Syn*</code> types and updating the relevant <code>exit_*(…)</code> methods should be easy.</p>
-<h3 id="trailing-comma-in-lists"><a class="header" href="#trailing-comma-in-lists">Trailing comma in lists</a></h3>
+<h3 id="trailing-comma-in-lists"><a class="header" href="#trailing-comma-in-lists">Trailing Comma in Lists</a></h3>
 <p>The options in the lexer, parser, and options group are separated by a comma, and so are some list elements like <code>headers</code>, <code>libs</code>, and <code>nt-value set</code>.</p>
 <p>However, the grammar doesn’t allow for a trailing comma at the end of the list:</p>
 <pre><code>options {

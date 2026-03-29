@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -228,10 +228,15 @@
 </li>
 <li><code>-p|--parser</code>: location of the generated parser and the wrapper for the user listener (same principle as above)</li>
 </ul>
-<p>There are a few options that give you control over the generated code. Mainly:</p>
+<p>Alongside the code of the lexer and parser, Lexigram can optionally generate a code template for the user types and the listener implementation. The location follows the same syntax as the options <code>--lexer</code> and <code>--parser</code>:</p>
+<ul>
+<li><code>--types</code>: location of the user types template</li>
+<li><code>--listener</code>: location of the listener implementation</li>
+</ul>
+<p>There are a few global options that give you control over the generated code. Mainly:</p>
 <ul>
 <li><code>--header</code>: extra headers to be put in front of the generated code</li>
-<li><code>--indent</code>: the indentation</li>
+<li><code>--indent</code>: the default indentation</li>
 <li><code>--nt-value</code>: list or category of nonterminals which hold a value</li>
 <li><code>--lib</code>: extra library required by the listener; typically the location where the types of the nonterminals are defined, when they hold a value. Can be used multiple times to add several libraries</li>
 <li><code>--log</code>: detailed log, which contains useful information like the list of terminals and nonterminals, or code that can be copied/pasted the first time, like the nonterminal types used in the generated code and a skeleton implementation of the listener</li>
@@ -245,9 +250,17 @@
 <p>It’s worth noting that</p>
 <ul>
 <li>The options <code>--lexicon</code> and <code>--lexer</code> must be given before <code>--grammar</code> and <code>--parser</code>.</li>
+<li>The template options <code>--types</code> and <code>--listener</code> are best given after <code>--parser</code></li>
 <li>If the lexicon and the grammar are combined, <code>--combined</code> must be given first, then <code>--lexer</code>, and finally <code>--parser</code></li>
 <li>The options <code>--header</code> and <code>--indent</code> apply to the previously mentioned part: they apply to the lexer after <code>--lexer</code> and to the parser after <code>--parser</code>. If you want the same headers or indentation for both, you can put those options in front.</li>
 </ul>
+<p><strong>In short, follow this order</strong>:</p>
+<ul>
+<li><code>--lexer</code>, <code>--parser</code>, <code>--types</code>, <code>--listener</code>, then other global options.</li>
+<li><code>--indent</code> in front as a default value</li>
+<li><code>--header</code> in front if it must apply to both lexer and parser</li>
+</ul>
+<p>Example:</p>
 <pre><code>lexigram -c calc.lg --indent 4 -l lexer.rs --header "#![cfg(test)]" \ 
   -p parser parser.rs --header "#![allow(unused)"
 </code></pre>

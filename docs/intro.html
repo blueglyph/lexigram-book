@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -178,7 +178,7 @@
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>This chapter gives a gentle introduction to parsers and how the tool can help you build one. Its only purpose is to make sure the user is aware of how lexers and parsers work, and what the limitations of the grammar are.</p>
 <p>If you’re already familiar with those notions, you can skip this introduction.</p>
-<h2 id="components-of-a-parser"><a class="header" href="#components-of-a-parser">Components of a parser</a></h2>
+<h2 id="components-of-a-parser"><a class="header" href="#components-of-a-parser">Components of a Parser</a></h2>
 <p>A parser is split in two main components: the <em>lexical analyzer</em> and the <em>syntax analyzer</em>. We also call them respectively <em>lexer</em>, or <em>scanner</em>, and <em>parser</em>. The term “parser” is sometimes used more loosely to refer to both the lexer and the parser, as we did before.</p>
 <p>To give an intuitive view, the lexer reads the input and transforms it into a sequence of <em>tokens</em>, which are the basic symbols of the language. Those words can be variable, like a number, or they can be fixed, like a keyword or a punctuation symbol. The parser gets the sequence of tokens from the lexer and verifies that they fit the grammatical rules.</p>
 <p>Here is a simple example to illustrate the difference:</p>
@@ -207,7 +207,7 @@ value -&gt; Id | Num;
 </ul>
 <p>The <em>parse tree</em>, also called <em>production graph</em>, is only a representation of the order in which the productions are arranged to match the input (to derive the input). It’s not necessarily an actual object built by the parser, but rather a representation of the parser flow through the productions and the received tokens. Quite commonly, the parser helps build an abstract syntax tree, which better corresponds to the needs of the application. We’ll see how in the next section.</p>
 <p>When the parser can’t match the input with the grammar, it generates a <em>syntax error</em>, ideally with enough information to tell the user where it fails and why. Similarly, when the lexer can’t extract any token from the input, it generates a <em>lexical error</em>.</p>
-<h2 id="how-parsers-are-used"><a class="header" href="#how-parsers-are-used">How parsers are used</a></h2>
+<h2 id="how-parsers-are-used"><a class="header" href="#how-parsers-are-used">How Parsers Are Used</a></h2>
 <p>Parsers are used in any application that needs to read an input in a specific language. It could be a programming language, a configuration file, or an HTML page. Sometimes, they’re written manually, but for more complex parsers, or types of parsers that are hard to write by hand, a parser generator is preferably used.</p>
 <p>Parsers are usually known as the first part of a compiler, which reads the source of a program and produces an executable. In a nutshell, a compiler has the following parts:</p>
 <ul>
@@ -223,7 +223,7 @@ value -&gt; Id | Num;
 <p>In the <em>visitor</em> pattern, the generated code also provides a base class with methods that correspond to the nonterminals. The top nonterminal visitor is called at some point, and the user code can then inspect the data matched by the parser in that production, and call the visitor of the nonterminals to go deeper. In our example above, the user would call <code>visit_value()</code> from <code>visit_assign()</code>, so that the whole tree is visited by the user code.</p>
 <p>The listener approach is more automatic and natural, while the visitor approach allows the user to skip entire parts of the tree that are not relevant. For example, if there are several parsing passes, the first visitor implementation will collect all the declarations, but it will disregard the fine details of the definitions (e.g. not calling <code>visit_value()</code>). In the second pass, it will read everything, already knowing all the names that have been declared, even if that declaration comes later in the input.</p>
 <p>At this time, Lexigram generates the code for a listener only, creating a custom trait that you can implement for a listener object. This allows you to intercept the parser flow with the trait methods and to build an abstract syntax tree very efficiently.</p>
-<h2 id="lexicon-and-grammar"><a class="header" href="#lexicon-and-grammar">Lexicon and grammar</a></h2>
+<h2 id="lexicon-and-grammar"><a class="header" href="#lexicon-and-grammar">Lexicon and Grammar</a></h2>
 <p>We saw earlier the specification of a simple language:</p>
 <pre><code>Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
@@ -251,7 +251,7 @@ value: Id | Num;
 <li>The tool allows to generate only a lexer; later, it will allow the user to use another, external lexer, so having separate lexicons and grammars is necessary.</li>
 </ul>
 <p>But for the sake of conciseness, we’ll often use the simplified form with string literals in small examples, where the concerns above don’t really apply. When we do that, we’re using <code>-&gt;</code> in the grammar instead of <code>:</code> (you may have spotted that clue earlier already).</p>
-<h2 id="where-to-draw-the-line"><a class="header" href="#where-to-draw-the-line">Where to draw the line?</a></h2>
+<h2 id="where-to-draw-the-line"><a class="header" href="#where-to-draw-the-line">Where to Draw the Line?</a></h2>
 <p>Knowing where the lexer’s job ends and where the parser’s job is taking over isn’t always easy when you’re not used to it. For instance, if you declare a variable, it’s possible to rely on the lexer to scan the whole declaration:</p>
 <pre><code>Decl: 'let' [ \t]+ [_a-z][_0-9a-z0-9]* [ \t]* ':' [ \t]* [_a-z][_0-9a-z0-9]*;
 </code></pre>
@@ -306,13 +306,13 @@ declaration: Let Id Colon Id;
 <p>Processing the escape codes and Unicode values is actually done as described above; you can see how it’s done by checking Lexi’s lexicon, grammar, and listener implementation (Lexi is the lexer generator; Gram is the parser generator).</p>
 <p>And, before you ask, yes: Lexigram generates its own lexer and parser.</p>
 </blockquote>
-<h2 id="theres-parser-and-parser"><a class="header" href="#theres-parser-and-parser">There’s parser and parser</a></h2>
+<h2 id="theres-parser-and-parser"><a class="header" href="#theres-parser-and-parser">There’s Parser and Parser</a></h2>
 <p>We have another important matter to tackle: there are different parser types, which support different classes of grammars, and so different subsets of possible languages. It’s worth knowing the basics in order to choose the right parser for the desired language, or, conversely, to design the language so that its grammar is supported by a type of parser.</p>
 <p>There are several ways to classify parsers, but if we consider a practical perspective, the derivation order, there are three classes of parsers for context-free grammars: <em>top-down</em>, <em>bottom-up</em>, and <em>universal</em>. The most common parser types are top-down and bottom-up because they’re more efficient.</p>
 <p>Currently, Lexigram generates a top-down parser. More precisely, a table-driven LL(1) parser, which belongs to the category of top-down parsers. As we’ll see, those parsers can’t process left recursion (<code>a -&gt; a B | C</code>) nor alternative productions beginning with the same symbols (<code>a -&gt; B C | B D</code>), but it’s possible to systematically transform the grammar to remove them. Thankfully, Lexigram performs these transformations automatically and as transparently as possible, so that you don’t have to bother about those limitations.</p>
 <p>In practice, top-down parsers are widely used in compilers because they’re relatively simple to make and to maintain. They’re often written manually using a recursive implementation, in which case they’re called recursive descent parsers. Some generators, like ANTLR, also write a recursive descent parser instead of a non-recursive, table-driven one.</p>
 <p>The next two sections give a general idea of each parser type.</p>
-<h2 id="top-down-parsers"><a class="header" href="#top-down-parsers">Top-down parsers</a></h2>
+<h2 id="top-down-parsers"><a class="header" href="#top-down-parsers">Top-Down Parsers</a></h2>
 <p>A top-down parser starts from the top production and deduces the items from the grammar, looking at the next symbol(s) to predict the production when there are several alternatives.</p>
 <p>Let’s illustrate that with an example:</p>
 <pre><code>Id: [A-Za-z][A-Za-z0-9]*;
@@ -491,7 +491,7 @@ a_1 -&gt; B | C;
 <p>This is only a general rule; there are exceptions: the ANTLR generates a recursive descent parser where the ambiguities are solved using Clarke’s technique.</p>
 <p>As we said earlier, Lexigram modifies the grammar automatically in those three situations. Other parser generators, like ANTLR, do it too, but some generators will expect you to provide an LL(k) grammar. Either way, it’s worth keeping the grammar limitations in mind, because those transformations, even if they’re automatic, create extra nonterminals.</p>
 <p>We’ll come back on those transformations and on the performance aspects of a grammar when we discuss how Lexigram works.</p>
-<h2 id="bottom-up-parser"><a class="header" href="#bottom-up-parser">Bottom-up parser</a></h2>
+<h2 id="bottom-up-parser"><a class="header" href="#bottom-up-parser">Bottom-Up Parser</a></h2>
 <p>A bottom-up parser starts from the tokens and deduces the production from them. It accumulates the incoming tokens until it recognizes a production and <em>reduces</em> that part of the input to a nonterminal. Then, it checks if further reductions can be made, consuming more tokens if necessary.</p>
 <p>Let’s take the same grammar again:</p>
 <pre><code>Id: [A-Za-z][A-Za-z0-9]*;

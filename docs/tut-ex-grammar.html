@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-48197200.js";
+            window.path_to_searchindex_js = "searchindex-34a33c15.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-d7ab1a61.js"></script>
@@ -184,10 +184,10 @@
 <li>parser specifications (<code>"parser"</code>)</li>
 <li>general options (<code>"options"</code>)</li>
 </ul>
-<p>The definitions contain zero or more of items that all have the same format, so it’s pretty simple. We want to be able to use those “constants” for any value, so there are different types, like a string literal (filename or tag name), an integer literal (indent level), and other possibilities we’ll discover as we come across all the options.</p>
+<p>The definitions contain zero or more items that all have the same format, so it’s pretty simple. We want to be able to use those “constants” for any value, so there are different types, like a string literal (filename or tag name), an integer literal (indent level), and other possibilities we’ll discover as we come across all the options.</p>
 <p>The lexer, parser, and general options contain between brackets a list of comma-separated options. We’ll see the inner options when we tackle those nonterminals.</p>
-<p>How are the top-level items organized? They could either follow one another in the order shown above, or there could just be a succession of those items in no particular order and with possible repetitions. The latter would offer more flexibility, but we’ll choose the former syntax because it’s cleaner.</p>
-<h2 id="optional-items"><a class="header" href="#optional-items">Optional items</a></h2>
+<p>How are the top-level items organized? They could either follow one another in the order shown above, or there could just be a succession of those items in no particular order and with possible repetitions. The latter would offer more flexibility, but we’ll choose the former because it’s cleaner.</p>
+<h2 id="optional-items"><a class="header" href="#optional-items">Optional Items</a></h2>
 <p>The starting nonterminal, that we’re naming <code>config</code>, simply lists the four parts:</p>
 <pre><code>config:
     definitions
@@ -196,7 +196,7 @@
     options
 ;
 </code></pre>
-<p><code>lexer</code> is mandatory, but <code>parser</code> and <code>options</code> are optional; we can require either a lexer or the whole lexer + parser + wrapper code. Since Lexigram offers a few elements of syntactic sugar for optional and repetitive items, such as <code>α?</code>, <code>α*</code>, and <code>α+</code>, we can use that in the defintion of <code>parser</code> and <code>options</code>: (we have omitted the actual content of the grammatical rules for now)</p>
+<p><code>lexer</code> is mandatory, but <code>parser</code> and <code>options</code> are optional; we can require either a lexer or the whole lexer + parser + wrapper code. Since Lexigram offers a few elements of syntactic sugar for optional and repetitive items, such as <code>α?</code>, <code>α*</code>, and <code>α+</code>, we can use that in the definition of <code>parser</code> and <code>options</code>: (we have omitted the actual content of the grammatical rules for now)</p>
 <pre><code>definitions:  …;
 lexer:        …;
 parser:       (…)?;
@@ -219,8 +219,8 @@ options -&gt; …
 options -&gt; ε
 </code></pre>
 </blockquote>
-<p><code>parser</code> and <code>options</code> have an empty alternative, which is fine. It’s reflected directly in the listener trait methods as two variations of an <code>enum</code> context type, so the user knows there and then whether the option is used or not.</p>
-<p>There’s another way to write the grammar: it could be tempting to put the <code>?</code> directly in <code>config</code>:</p>
+<p><code>parser</code> and <code>options</code> have an empty alternative, which is fine. It’s reflected directly in the listener trait methods as two variants of an <code>enum</code> context type, so the user knows immediately whether the option is used or not.</p>
+<p>There’s another way to write the grammar: it could be tempting to put the <code>?</code> directly into <code>config</code>:</p>
 <pre><code>config:
     definitions
     lexer
@@ -241,7 +241,7 @@ config -&gt; definitions lexer options
 config -&gt; definitions lexer
 </code></pre>
 </blockquote>
-<p>It’s not too long—though we’d have eight of them if the lexer specs were optional too—but it’s cumbersome. And it’s not all; since those alternatives need <a href="intro.html#limitations">left factorization</a>, the rule would be transformed again later:</p>
+<p>It’s not too long—though we’d have eight alternatives if the lexer specs were also optional—but it’s cumbersome. And that’s not all; since those alternatives need to be <a href="intro.html#limitations">left-factorized</a>, the rule would be transformed again later:</p>
 <blockquote>
 <pre><code>config -&gt; definitions lexer config_1
 . config_1 -&gt; parser config_2       
@@ -326,12 +326,12 @@ value:
 value -&gt; NumLiteral | StrLiteral | Id;
 </code></pre>
 <p>But how can we express 0 or more repetitions of <code>definition</code>? It’s time to see the different ways of doing grammar loops.</p>
-<h3 id="right-recursion"><a class="header" href="#right-recursion">Right recursion</a></h3>
+<h3 id="right-recursion"><a class="header" href="#right-recursion">Right Recursion</a></h3>
 <p>The right recursion is the only valid loop in an LL(1) grammar.</p>
 <p>If we use this rule for <code>definitions</code>:</p>
 <pre><code>definitions -&gt; "def" Id "=" value ";" definitions | ;
 </code></pre>
-<p>The missing symbols on the right of <code>|</code> simply means it’s empty. Since the syntax is recursive, we need to give an alternative to end the recursion: here, we end it with “nothing”. In practice, the parser will check the next token after <code>";"</code> to predict which alternative of <code>productions</code> follows.</p>
+<p>The missing symbols on the right of <code>|</code> simply means it’s empty. Since the syntax is recursive, we need an alternative to end the recursion: here, we use an empty production. In practice, the parser will check the next token after <code>";"</code> to predict which alternative of <code>productions</code> follows.</p>
 <ul>
 <li>If the token is <code>"def"</code>, it predicts the left, recursive alternative.</li>
 <li>If it’s <code>"lexer"</code>, it predicts the right, empty alternative. Indeed, when the alternative is “nothing”, the parser looks at the next possibilities in the <code>config</code> nonterminal. Here, <code>config</code> expects <code>lexer</code> after <code>definitions</code>, and the <code>lexer</code> syntax begins with the terminal <code>"lexer"</code> (even though we haven’t written that explicitly yet).</li>
@@ -432,10 +432,10 @@ impl ConfigListener for Listener {
     // ...
 }
 <span class="boring">}</span></code></pre>
-<p>The wrapper implements the glue logic to collect each item of the repetition and push it into a <code>Vec</code>. When we implement <code>exit_definitions(…)</code>, we get a vector <code>star</code> that contains all the (<code>id</code>, <code>value</code>) pairs. It’s often the most convenient way for small list of items.</p>
+<p>The wrapper implements the glue logic to collect each item of the repetition and push it into a <code>Vec</code>. When we implement <code>exit_definitions(…)</code>, we get a vector <code>star</code> containing all the (<code>id</code>, <code>value</code>) pairs. It’s often the most convenient way for small lists of items.</p>
 <p>As we’ve already seen in the <a href="tut-overview.html">overview</a>, valueless symbols like <code>"def"</code>, <code>"="</code>, and <code>";"</code> are not given in the context variants, so they’re not stored in repetition vectors either.</p>
 <p>If there are alternatives in the repetition, like <code>x -&gt; (α | β)*</code>, the type inside the vector is an enum with the variants, so that each item can be either <code>α</code> or <code>β</code>. It can be very handy in simple situations, but it’s not to be abused; when the repeated item becomes too complex, another loop type may be preferable.</p>
-<p>At this point, something might be bothering you: isn’t <code>definitions_1</code> right-recursive? And didn’t we say that a right recursion produced the results in reverse order and had a few other downsides? Are we getting the items in reverse order here too?</p>
+<p>At this point, you might be wondering: isn’t <code>definitions_1</code> right-recursive? And didn’t we say that a right recursion produced the results in reverse order and had a few other downsides? Are we getting the items in reverse order here too?</p>
 <p>While it’s indeed right-recursive, which is the only way to loop in LL(1), the original rule wasn’t <em>meant</em> as a right recursion. Therefore, Lexigram knows that the trailing <code>definitions_1</code> of production 1 below doesn’t need to be known before using the items <code>Id</code> and <code>value</code>.</p>
 <blockquote>
 <pre><code>0: definitions -&gt; definitions_1                          
@@ -443,7 +443,7 @@ impl ConfigListener for Listener {
 2: . definitions_1 -&gt; ε                                   
 </code></pre>
 </blockquote>
-<p>Let’s see what happens in more details:</p>
+<p>Let’s see what happens in more detail:</p>
 <ul>
 <li>When the production 1 is predicted, the wrapper pushes an empty “loop” vector on the value stack.</li>
 <li>The production symbols are then parsed, and those that have a value are pushed on the wrapper stack; here, <code>Id</code> and <code>value</code>.</li>
@@ -490,7 +490,7 @@ The parser would then pop the next symbol and, depending on its nature:</p>
 .   definitions_2 -&gt; ε                                 
 </code></pre>
 </blockquote>
-<h3 id="left-recursion"><a class="header" href="#left-recursion">Left recursion</a></h3>
+<h3 id="left-recursion"><a class="header" href="#left-recursion">Left Recursion</a></h3>
 <p>As we saw in the <a href="intro.html#limitations">LL(1) grammar limitations</a>, left recursion is transformed as a right recursion, too.</p>
 <pre><code>definitions -&gt; 
     definitions "def" Id "=" value ";" 
@@ -561,7 +561,7 @@ definitions "def" Id("a") "=" value("0") ";"
 <li><code>exit_definitions(CtxDefinitions::V1 { id: "c", value: "2", definitions: y }) -&gt; z</code></li>
 <li><code>exitloop_definitions(&amp;mut z)</code></li>
 </ul>
-<h3 id="left-vs-right"><a class="header" href="#left-vs-right">Left vs right</a></h3>
+<h3 id="left-vs-right"><a class="header" href="#left-vs-right">Left vs Right</a></h3>
 <p>Our need to encode the loop for <code>definitions</code> didn’t quite illustrate a subtlety between left and right recursion because we had an empty alternative. To remove any confusion and stress the difference between left and right, let’s introduce a non-empty alternative in each case.</p>
 <p>Here is a <strong>right-recursive</strong> version that ends with an “end”:</p>
 <pre><code>defs -&gt; "def" Id "=" value ";" defs | "end" Id; 
@@ -580,7 +580,7 @@ end loop
 <p>This would generate those successive calls:</p>
 <ul>
 <li><code>init_defs()</code></li>
-<li><code>exit_defs(CtxDefs::V2 { id: "loop") -&gt; x</code></li>
+<li><code>exit_defs(CtxDefs::V2 { id: "loop" } -&gt; x</code></li>
 <li><code>exit_defs(CtxDefs::V1 { id: "b", value: "1", defs: x }) -&gt; y</code></li>
 <li><code>exit_defs(CtxDefs::V1 { id: "a", value: "0", defs: y }) -&gt; z</code></li>
 </ul>
@@ -611,7 +611,7 @@ def b = 1;
 <li><code>exitloop_definitions(&amp;mut z)</code></li>
 </ul>
 <h3 id="latency"><a class="header" href="#latency">Latency</a></h3>
-<p>To close the loop, we’ll have a quick look at a variant of right recursion and <code>*</code>/<code>+</code> repetitions. We saw that both those loop constructs had a higher latency. The right recursion puts everything in the stack until the last iteration, and only then starts calling the listener methods. And the repetitions delivery the vector of collected items once the loop has ended.</p>
+<p>To close the loop, we’ll have a quick look at a variant of right recursion and <code>*</code>/<code>+</code> repetitions. We saw that both those loop constructs had a higher latency. The right recursion puts everything in the stack until the last iteration, and only then starts calling the listener methods. And the repetitions deliver the vector of collected items once the loop has ended.</p>
 <p>Yet they provide useful alternatives to left recursion, by allowing independent terms at the end for the right recursion and none at all for the repetition. Wouldn’t it be worth having a way to get the loop items earlier?</p>
 <p>That’s why the “low-latency” attribute was introduced.</p>
 <p>In a <strong>low-latency right recursion</strong>, the rule has to be written as follows (the <code>&lt;L&gt;</code> can be placed anywhere in the recursive alternative):</p>
@@ -651,7 +651,7 @@ impl ConfigListener for Listener {
 <li><code>self.init_definitions()</code> returns the initial value of the loop variable; for example, an empty vector.</li>
 <li><code>self.exit_definitions(acc, ctx)</code> is called after parsing the independent term and each iteration.</li>
 </ul>
-<p>At first, calling <code>init_definitions(…)</code>, then <code>exit_definitions(…)</code> on the indepedent term may sound redundant, since both could provide the initial value, but they allow to separate the initialization of the nonterminal, before any part of it is parsed, and adjust it with the independent term if necessary. The other reason to do so is the mutable reference to the loop variable, <code>acc</code>, which is usually more efficient than moving its value at each iteration.</p>
+<p>At first, calling <code>init_definitions(…)</code>, then <code>exit_definitions(…)</code> on the independent term may sound redundant, since both could provide the initial value, but they allow to separate the initialization of the nonterminal, before any part of it is parsed, and adjust it with the independent term if necessary. The other reason to do so is the mutable reference to the loop variable, <code>acc</code>, which is usually more efficient than moving its value at each iteration.</p>
 <p>Since it’s a right recursion, there is still no way to know when it’s the last iteration, but now the data can be processed directly in the incoming order. The example of code above will provide a vector containing the items in the correct order. It would also allow you to check that <code>Id</code> hasn’t already been defined before and, if so, to return the appropriate error message. And it would allow you to use an already defined <code>Id</code> as value, without using a second pass.</p>
 <p>The <strong>low-latency repetition</strong> is written a little differently, since the name of the loop nonterminal is given explicitly this time:</p>
 <pre><code>definitions -&gt; (&lt;L=i_def&gt; "def" Id "=" value ";")*;
@@ -680,7 +680,7 @@ impl ConfigListener for Listener {
         SynIDef(vec![])
     }
 
-    fn exit_i_def(&amp;mut self, acc: &amp;mut SynI, ctx: CtxIDef) {
+    fn exit_i_def(&amp;mut self, acc: &amp;mut SynIDef, ctx: CtxIDef) {
         // `&lt;L&gt; "def" Id "=" value ";"` iteration in 
         // `definitions -&gt; ( ►► &lt;L&gt; "def" Id "=" value ";" ◄◄ )*`
         let CtxIDef::V1 { id, value } = ctx;
@@ -706,7 +706,7 @@ impl ConfigListener for Listener {
 </blockquote>
 <p>This concludes the quick tour of the art of loops in LL(1) grammars using Lexigram.</p>
 <p>Considering <code>definitions</code> has no independent term, the <code>*</code> repetition, with or without <code>&lt;L&gt;</code>, seems a good way to handle that language element. The low-latency version offers the advantage of directly doing operations that would otherwise require post-processing the final vector or dictionary, so it may be the better choice here.</p>
-<h2 id="value--recap"><a class="header" href="#value--recap"><code>value</code> &amp; recap</a></h2>
+<h2 id="value--recap"><a class="header" href="#value--recap"><code>value</code> &amp; Recap</a></h2>
 <p>The <code>value</code> that our constants can represent are varied:</p>
 <ul>
 <li>string literals, for file names, tag names</li>
@@ -915,9 +915,9 @@ pub trait ConfigListener {
 }
 <span class="boring">}</span></code></pre>
 <p>There’s an extra context type <code>InitCtxIIoOpt</code>, and <code>CtxIoOptions</code> is missing the <code>io_option</code> field for the nonterminal in front of the repetition!</p>
-<p>What happened here is, Lexigram recognized that <code>io_option ("," io_option)*</code> was a list of <code>io_option</code> items separated by a comma. It changed the wrapper to make our work easier with a first call <code>init_i_io_opt(…)</code> handing over the first value (the one before the repetition). The successive calls <code>exit_i_io_opt(…)</code> give the loop items inside the repetition.</p>
+<p>What happened here is that Lexigram recognized that <code>io_option ("," io_option)*</code> was a list of <code>io_option</code> items separated by a comma. It changed the wrapper to make our work easier with a first call <code>init_i_io_opt(…)</code> handing over the first value (the one before the repetition). The successive calls <code>exit_i_io_opt(…)</code> give the loop items inside the repetition.</p>
 <p>Without that feature, <code>exit_i_io_opt(…)</code> would give items 2 to n, and finally <code>exit_io_options(…)</code> would give item 1 and our accumulator for items 2 to n. If <code>star</code> was a vector and nothing else mattered, we could get away by inserting item 1 in front. But if we needed to check that all the items are given in the correct order or without duplicates, we’d need extra post-processing, so we’d lost the benefit of a low-latency loop. Here, we get all the items in time and in the right order.</p>
-<p>Since it’s an <code>&lt;L&gt;</code> loop, <code>init_i_io_opt(…)</code> returns the first value of the accumulator, and <code>exit_i_io_op(…)</code> gets a mutable reference to it while it’s still on the stack. This is more efficient than popping the accumulator from the stack, moving it into the context and then out again, and finally pushing the modified value on the stack again.</p>
+<p>Since it’s an <code>&lt;L&gt;</code> loop, <code>init_i_io_opt(…)</code> returns the first value of the accumulator, and <code>exit_i_io_opt(…)</code> gets a mutable reference to it while it’s still on the stack. This is more efficient than popping the accumulator from the stack, moving it into the context and then out again, and finally pushing the modified value on the stack again.</p>
 <p>We find something similar in <code>io_option</code>, although it’s not as conspicuous:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -1013,7 +1013,7 @@ Set                     : 'set';
 |   Set Lbracket value (Comma value)* Rbracket
 ;
 </code></pre>
-<h2 id="final-grammar"><a class="header" href="#final-grammar">Final grammar</a></h2>
+<h2 id="final-grammar"><a class="header" href="#final-grammar">Final Grammar</a></h2>
 <pre><code>lexicon Config;
 
 fragment EscChar        : '\\' [nrt"\\];
