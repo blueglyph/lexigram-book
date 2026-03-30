@@ -37,10 +37,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-34a33c15.js";
+            window.path_to_searchindex_js = "searchindex-47640deb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-d7ab1a61.js"></script>
+        <script src="toc-7e4ce1fa.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,8 +187,8 @@
 <p>The <a href="#introduction">introduction</a> gives a general overview of parsers, their components, how they are designed, how they can be used, and the main parser types. If you’re not familiar with the design of parsers and the limitations of LL(1) grammars, it is recommended to read it, otherwise it can be skipped.</p>
 <p>The <a href="#tutorial">tutorial</a> shows how to build a small parser step by step. It helps you familiarize yourself with Lexigram using a hands-on approach.</p>
 <p>The <a href="#lexigram-crates">quick overview of the crates</a> presents the main crates of this project.</p>
-<p>The <a href="#lexer-generator-reference-lexi">lexer generator reference</a> and the <a href="#parser-generator-reference-gram">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
-<p>The Lexigram Book covers version <strong>0.9.0</strong> and has been last updated on <strong>29 March 2026</strong>.</p>
+<p>The <a href="#lexer-generator-reference">lexer generator reference</a> and the <a href="#parser-generator-reference">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
+<p>The Lexigram Book covers version <strong>0.9.0</strong> and has been last updated on <strong>30 March 2026</strong>.</p>
 <h2 id="installation-and-dependencies"><a class="header" href="#installation-and-dependencies">Installation and Dependencies</a></h2>
 <p>The <code>lexigram</code> crate contains the executable. You’ll find information on how to install it and its main command-line options in the <a href="#lexigram-1">Lexigram Crates</a> chapter.</p>
 <p>The <code>lexigram-core</code> crate is the only dependency you need with the generated code. There are more details about it in the <a href="#lexigram-core">relevant Lexigram Crates chapter</a>.</p>
@@ -3292,8 +3292,8 @@ a_2 -&gt; Id a_1 | ε;
 <p>Hopefully, this tutorial has provided a good overview of the Lexigram tool and how to use it to build a parser.</p>
 <p>The <strong>reference documentation</strong> provides a complete overview of the features:</p>
 <ul>
-<li>The <a href="#lexer-generator-reference-lexi">Lexi Reference: Lexer</a></li>
-<li>The <a href="#parser-generator-reference-gram">Gram Reference: Parser</a></li>
+<li>The <a href="#lexer-generator-reference">Lexi Reference: Lexer</a></li>
+<li>The <a href="#parser-generator-reference">Gram Reference: Parser</a></li>
 </ul>
 <p>Don’t miss the <a href="#lexigram-crates"><strong>crate documentation</strong></a>, which briefly presents the different crates.</p>
 <p>To see <strong>practical examples</strong>, you can look at the <a href="https://github.com/blueglyph/lexigram">GitHub repository</a>. You’ll find an example directory with a few illustrations of common and more advanced features. Each example is divided into two parts: a <code>gen_&lt;name&gt;</code> crate with the grammar and the parser generator, and the <code>&lt;name&gt;</code> crate with the parser implementation. At the time of writing, the following examples are available:</p>
@@ -3480,7 +3480,7 @@ fn gen_source_microcalc_lg(action: Action) {
 <p><a href="https://docs.rs/lexigram-lib">Link to the crate documentation</a></p>
 <p><code>lexigram-lib</code> is normally not meant to be used for other purposes than a dependency of <code>lexigram</code> and <code>lexi-gram</code>, unless you want to create the lexicon and the grammar yourself as objects; for example, if you want to generate them programmatically.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="lexer-generator-reference-lexi"><a class="header" href="#lexer-generator-reference-lexi">Lexer Generator Reference: Lexi</a></h1>
+<h1 id="lexer-generator-reference"><a class="header" href="#lexer-generator-reference">Lexer Generator Reference</a></h1>
 <p>Lexi is the part of Lexigram that generates a lexer.</p>
 <p>The lexer, or scanner, is the very front-end of a parser. It reads the input text, recognizes symbols, and outputs a stream of tokens corresponding to those symbols. The lexer isn’t aware of the syntax of the input language, only of its lexical rules. The stream of tokens is generally read by a parser, but it can also be used directly in a user application.</p>
 <p>The lexical rules are defined in a lexicon, in a human-readable language described in this reference. The code of the lexer proper already exists in the <code>lexigram-core</code> crate; its main object is <a href="https://docs.rs/lexigram-core/latest/lexigram_core/lexer/struct.Lexer.html">Lexer</a>. Lexi takes a lexicon and generates the data required by <code>Lexer</code> to scan the language.</p>
@@ -4021,7 +4021,7 @@ char_set_one:
 ;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="parser-generator-reference-gram"><a class="header" href="#parser-generator-reference-gram">Parser Generator Reference: Gram</a></h1>
+<h1 id="parser-generator-reference"><a class="header" href="#parser-generator-reference">Parser Generator Reference</a></h1>
 <p>Gram is the part of Lexigram that generates a parser.</p>
 <p>The parser consumes an input stream of tokens issued by the lexer and verifies that it can be generated by the grammar. During that process, the derivations let the parser call grammar-related trait methods, which allows the user to retrieve the correspondence between grammar elements (nonterminals and terminals) and the input text.</p>
 <p>The grammar production rules are defined in a human-readable language described in this reference. Similarly to the lexer, the code of the “low-level” parser already exists in the <code>lexigram-core</code> crate; its main object is <a href="https://docs.rs/lexigram-core/latest/lexigram_core/parser/struct.Parser.html">Parser</a>. Gram takes a grammar and generates the data required by <code>Parser</code> and the source code that allows the user to interact with <code>Parser</code> while it parses the input.</p>
@@ -5115,6 +5115,22 @@ prod_atom:
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>
