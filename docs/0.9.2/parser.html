@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-781aca2c.js";
+            window.path_to_searchindex_js = "searchindex-1a203afc.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a4a0a8d4.js"></script>
+        <script src="toc-6a866ded.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -343,29 +343,22 @@ let s = listener.exit_s(CtxS::V3 { val });
 </span>pub trait TestListener {
     fn check_abort_request(&amp;self) -&gt; bool { false }
     fn get_mut_log(&amp;mut self) -&gt; &amp;mut impl Logger;
-    fn handle_msg(&amp;mut self, span_opt: Option&lt;&amp;PosSpan&gt;, msg: LogMsg) {
-        self.get_log_mut().add(msg);
-    }
     fn exit(&amp;mut self, _s: SynS) {}
     // ...
 }
 <span class="boring">}</span></code></pre>
-<p>The <code>check_abort_request(&amp;self)</code> method is called after each init and exit call. It can be used to return <code>true</code> if an error is detected; for example, if <code>Num</code> cannot be parsed as a number or <code>Id</code> hasn’t been declared. This requests the parser to abort its parsing procedure immediately. It’s the user’s choice to use this request or to manage the errors on their own, but it’s often easier to abort if there’s a risk that an undefined symbol generates too many problems down the line.</p>
+<p>The <code>check_abort_request(&amp;self)</code> method is called after each init and exit call. It can be used to return <code>true</code> if an error is detected; for example, if <code>Num</code> cannot be parsed as a number or <code>Id</code> hasn’t been declared. This requests the parser to abort its parsing procedure immediately. It’s the user’s choice to use this request or to manage the errors on their own, but it’s often easier to abort if there’s a risk that an undefined symbol generates too much problems down the line.</p>
 <p>A simple way to use the abort request is to set an <code>abort</code> flag in the listener object and to return its value in that method:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl TestListener for MyTestListener {
+<pre><code>impl TestListener for MyTestListener {
     fn check_abort_request(&amp;self) -&gt; bool {
         self.abort
     }
     
     // ...
 }
-<span class="boring">}</span></code></pre>
+</code></pre>
 <p>For practical reasons, the listener must own a log object, in which all the warnings and errors will be recorded. The <code>get_mut_log(&amp;mut self)</code> method returns a reference to that log object whenever the parser needs to record something.</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub struct MyTestListener {
+<pre><code>pub struct MyTestListener {
     log: BufLog,
     
     // ...
@@ -378,37 +371,7 @@ impl TestListener for MyTestListener {
     
     // ...
 }
-<span class="boring">}</span></code></pre>
-<p>Related to the log is the <code>handle_msg(…)</code> method, which allows to intercept the log messages issued by the low-level parser. The default implementation outputs those messages to tthe log, but it’s possible to modify the messages or even disable them.</p>
-<p>For example, the listener implementations of Lexigram use it to show the errors in the input file:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl GramParserListener for GramListener&lt;'_&gt; {
-    // ...
-    
-    fn handle_msg(&amp;mut self, span_opt: Option&lt;&amp;PosSpan&gt;, mut msg: LogMsg) {
-        if let Some(span) = span_opt {
-            if let Some(msg_text) = msg.get_inner_str_mut() {
-                let text = self.annotate_text_ascii(&amp;span);
-                *msg_text = format!("{msg_text}\n\n{text}\n");
-            }
-        }
-        self.get_log_mut().add(msg);
-    }
-  
-    // ...
-}
-<span class="boring">}</span></code></pre>
-<blockquote class="blockquote-tag blockquote-tag-tip">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>The method <code>annotate_text_ascii(…)</code> in the example above is a trait method that becomes available when the listener implements the trait <code>lexigram_core::text_span::GetLine</code>. It returns the lines that include the text in <code>span</code>, emphasizing the relevant part:</p>
-<pre><code>- ERROR  : at 62:9-11, &lt;L=fun_params&gt; uses the rule nonterminal instead of a new one for the loop:
-
-|   62|     Id (&lt;L&gt; Comma Id)*
-|     |         ^^^
 </code></pre>
-<p>Another method, <code>annotate_text(…)</code>, uses ANSI colours to emphasize the relevant part. In the current version, Lexigram actually use one or the other depending on the command-line ANSI mode.</p>
-</blockquote>
 <p>Finally, the <code>exit(&amp;mut self, s: SynS)</code> method is called once the top rule exits, and gives the value of its nonterminal, if it exists, as a <code>SynS</code> type. There is a default empty implementation, which makes it optional. It can be used to store the final result of the parsing in the listener object or to call any post-processing required at that level, like finalizing the AST tree.</p>
 <p>So the entire series of calls, if the parsed text is “return 5”, is actually closer to the following sequence:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -1312,6 +1275,22 @@ prod_atom:
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>
