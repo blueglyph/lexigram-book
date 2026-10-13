@@ -37,7 +37,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-613faaa8.js";
+            window.path_to_searchindex_js = "searchindex-ccc71438.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-22746fb9.js"></script>
@@ -179,9 +179,9 @@
                         <h1 id="lexigram"><a class="header" href="#lexigram">Lexigram</a></h1>
 <h2 id="about"><a class="header" href="#about">About</a></h2>
 <p><strong>Lexigram is a lexer/parser generator</strong>. It is written in Rust and generates Rust code.</p>
-<p>It takes a grammar and generates the Rust source code to parse the corresponding language, providing a custom listener trait as user interace. This interface allows your code to interact with the parser by executing user-implemented callback methods when the rules are reduced, like ANTLR. It is also somewhat similar to the code written next to each rule in tools like Yacc and Bison, but it’s cleaner and more flexible.</p>
-<p>Two types of parser can be generated: top-down and bottom-up.</p>
-<p>The top-down option generate a predictive, non-recursive LL(1) parser. You may write non-LL(1) grammars as long as Lexigram can transform it into LL(1): left-recursive and ambiguous rules such as binary expressions are supported, and left factorization is performed automatically. The grammar also supports extended syntax such as repetition, token-separated repetitions, and so on. The generated interface hides those transformation by referring to the original rules as much as possible.</p>
+<p>It takes a grammar and generates the Rust source code to parse the corresponding language, providing a custom listener trait as user interface. This interface allows your code to interact with the parser by executing user-implemented callback methods when the rules are reduced, as in ANTLR. It is also somewhat similar to the code written next to each rule in tools like Yacc and Bison, but it’s cleaner and more flexible.</p>
+<p>Two parser types can be generated: top-down and bottom-up.</p>
+<p>The top-down option generates a predictive, non-recursive LL(1) parser. You may write non-LL(1) grammars as long as Lexigram can transform it into LL(1): left-recursive and ambiguous rules such as binary expressions are supported, and left factorization is performed automatically. The grammar also supports extended syntax such as repetition, token-separated repetitions, and so on. The generated interface hides those transformations by referring to the original rules as much as possible.</p>
 <p>The bottom-up option currently generates an LALR(1) parser. Ambiguous rules are resolved with the same simple grammar notation used in LL(1) grammars. In general, Lexigram makes it relatively straightforward to move from LL to LALR.</p>
 <p>The project is currently hosted on <a href="https://github.com/blueglyph/lexigram">GitHub</a>.</p>
 <h2 id="this-documentation"><a class="header" href="#this-documentation">This Documentation</a></h2>
@@ -190,7 +190,7 @@
 <p>The <a href="#tutorial">tutorial</a> gives a brief overview of the flow, and then shows how to build a small parser step by step. It helps you familiarize yourself with Lexigram using a hands-on approach.</p>
 <p>The <a href="#lexigram-crates">quick overview of the crates</a> presents the main crates of this project.</p>
 <p>The <a href="#lexer-generator-reference">lexer generator reference</a> and the <a href="#parser-generator-reference">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
-<p>The Lexigram Book covers versions <strong>0.10.0</strong>; it has been last updated on <strong>13 October 2026</strong>.</p>
+<p>The Lexigram Book covers versions <strong>0.10.0</strong> and <strong>0.10.1</strong>; it has been last updated on <strong>13 October 2026</strong>.</p>
 <h3 id="older-versions"><a class="header" href="#older-versions">Older versions</a></h3>
 <ul>
 <li><a href="0.9.3/index.html">0.9.3 - 0.9.4</a></li>
