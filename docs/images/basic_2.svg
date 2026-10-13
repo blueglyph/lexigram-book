@@ -13,7 +13,7 @@
                 <rect x="830.626" y="416.082" width="164.941" height="3.516" style="fill:rgb(116,0,0);"/>
             </g>
             <g transform="matrix(1,0,0,1,-90.1771,21.8208)">
-                <text x="702.204px" y="583.724px" style="font-family:'Consolas', monospace;font-size:50px;fill:rgb(0,131,0);">&quot;let&quot;  Id  &quot;=&quot;</text>
+                <text x="702.204px" y="583.724px" style="font-family:'Consolas', monospace;font-size:50px;fill:rgb(0,131,0);">&apos;let&apos;  Id  &apos;=&apos;</text>
                 <g transform="matrix(50,0,0,50,1279.5,583.724)">
                 </g>
                 <text x="1142.05px" y="583.724px" style="font-family:'Consolas', monospace;font-size:50px;fill:rgb(116,0,0);">value</text>
@@ -41,7 +41,7 @@
             <g transform="matrix(1,0,0,1,-24.5137,-22.5577)">
                 <g transform="matrix(33.3333,0,0,33.3333,1348.49,947.613)">
                 </g>
-                <text x="597.093px" y="947.613px" style="font-family:'Consolas', monospace;font-size:33.333px;fill:rgb(13,20,168);">&quot;let&quot;   Id(&quot;velocity&quot;)   &quot;=&quot;   Num(&quot;125&quot;)</text>
+                <text x="597.093px" y="947.613px" style="font-family:'Consolas', monospace;font-size:33.333px;fill:rgb(13,20,168);">&apos;let&apos;   Id(&quot;velocity&quot;)   &apos;=&apos;   Num(&quot;125&quot;)</text>
             </g>
             <g transform="matrix(1,0,0,1,-1.13687e-13,14.7638)">
                 <rect x="590.551" y="531.496" width="177.165" height="88.583" style="fill:rgb(13,20,168);fill-opacity:0.15;stroke:rgb(13,20,168);stroke-width:1.88px;"/>

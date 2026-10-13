@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-1a4e6431.css">
+        <link rel="stylesheet" href="custom-4bc6388c.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-781aca2c.js";
+            window.path_to_searchindex_js = "searchindex-613faaa8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a4a0a8d4.js"></script>
+        <script src="toc-22746fb9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -184,9 +184,7 @@
   --lib "super::user_types::*"  
 </code></pre>
 <p>And here is the equivalent if the parser is generated programmatically:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>static GRAMMAR_FILENAME: &amp;str = "example.lg";
+<pre><code class="language-rust">static GRAMMAR_FILENAME: &amp;str = "example.lg";
 static PARSER_FILENAME: &amp;str = "parser.rs";
 let options = OptionsBuilder::new()
     .indent(4)
@@ -208,11 +206,12 @@ match try_gen_parser(action, options) {
             log.get_warnings().join("\n"));
     }
     Err(build_error) =&gt; panic!("{build_error}"),
-}
-<span class="boring">}</span></code></pre>
+}</code></pre>
 <p>What we would like is a text-based input that specifies the same options, and which could be stored in a configuration file, or maybe combined with the lexicon and the grammar:</p>
 <pre><code class="language-text">def GRAMMAR_FILENAME = "example.lg";
 def PARSER_FILENAME = "parser.rs";
+def INDENT = 4;
+
 lexer {
     combined: GRAMMAR_FILENAME,
     output: PARSER_FILENAME ["example_lexer"]
@@ -222,9 +221,10 @@ parser {
 }
 options {
     libs: { "super::user_types::*" },    
-    indent: 4
+    indent: INDENT
 }
 </code></pre>
+<p>The full code of that example can be found in the repository, in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_config">examples/gen_config</a> for the parser generation, and in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/config">examples/config</a> for the listener implementations and the test. There’s one implementation for the LL1 parser version and one for the LALR parser version, but the user’s listener implementations are identical.</p>
 
                     </main>
 
@@ -270,11 +270,11 @@ options {
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-1a4e6431.css">
+        <link rel="stylesheet" href="custom-4bc6388c.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-781aca2c.js";
+            window.path_to_searchindex_js = "searchindex-613faaa8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a4a0a8d4.js"></script>
+        <script src="toc-22746fb9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -184,49 +184,27 @@
 <li>integrating it into your top-level parser</li>
 </ul>
 <h2 id="designing-the-grammar"><a class="header" href="#designing-the-grammar">Designing the Grammar</a></h2>
-<p>Writing the grammar is an important step, and one that shouldn’t be underestimated. If the language you need to parse already exists, there’s not a great deal of latitude, but there are still an infinite number of grammars that can describe that language. If you’re using an LL(1) parser, you’ll need to design an LL(1) grammar, and if the language can’t be described with an LL(1) grammar at all, you must use another parser. But many programming languages can, so hopefully it shouldn’t be the case.</p>
+<p>Writing the grammar is an important step, and one that shouldn’t be underestimated. If the language you need to parse already exists, there’s not a great deal of latitude, but there are still an infinite number of grammars that can describe that language.</p>
 <p>If you’re designing the language, you’ll find that designing the grammar may sometimes push you to adapt the language in order to make it easier (or possible) to parse.</p>
-<p>We’ll start with this simplified grammar to show how the parts come together:</p>
-<pre><code>s -&gt; Id "=" val | "exit" | "return" val;
-val -&gt; Id | Num;
-</code></pre>
-<blockquote class="blockquote-tag blockquote-tag-note">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p><strong>Notation</strong></p>
-<p>Like in the introduction, we’re often going to use a simplified notation for the grammar which doesn’t represent the full lexicon, for the sake of clarity.</p>
-<p>In this simplified notation, the terminals are either fixed string literals or capitalized identifiers that represent a variable terminal, like a numeric value. The lowercase identifiers are the nonterminals. In the full notation required by Lexigram, string literals aren’t allowed in the grammar; terminal names must be used instead.</p>
-<p>To distinguish that simplified notation from the full notation, we use <code>-&gt;</code> in the production rules instead of <code>:</code>.</p>
-<p>Here’s the full notation that Lexigram would expect, either in a combined form as below or with the lexicon and the grammar in separate locations:</p>
-<pre><code>lexicon Example;
-Equal:  '=';
-Exit:   'exit';
-Return: 'return';
-Id:     [a-z][_0-9a-z]*;
-Num:    [0-9]+;
-
-grammar Example;
-s:   Id Equal val | Exit | Return val;
-val: Id | Num;
-</code></pre>
-</blockquote>
-<!--
-Either way, and within the degree of freedom you benefit from, it's often possible to choose productions that are easier to work with once the code is generated. If you try to put as much as possible in a fewer number of rules, you'll probably end up with many alternatives that must be addressed at the same place in the code, which is cumbersome. If you split the productions too much, you'll get many methods in the listener for small things that you'll need to tie together later. Between those two extremes is the ideal balance.
--->
+<p>First, you’ll need to decide whether to generate a top-down LL(1) parser or a bottom-up LALR parser. The restrictions of LL(1) grammars and the differences between those two types are explained in the <a href="intro.html">introduction</a>. Switching from top-down to bottom-up shouldn’t have a big impact on your part of the code, so if you find yourself in a spot of trouble with an LL(1) parser, you can always consider to change the type of generated parser. The differences are exposed in the <a href="tut-example.html">full example</a> and in the <a href="parser.html">parser reference</a>.</p>
+<p>Here, we’ll use a simple grammar to show how the parts come together.</p>
 <h2 id="generating-the-code"><a class="header" href="#generating-the-code">Generating the Code</a></h2>
-<p>Lexigram generates the code of a lexer/parser based on their “specifications”: a lexicon for the lexer, and a grammar for the parser. There are two main options to generate the code: with the command-line executable or programmatically.</p>
-<p>If you prefer the command-line option, you should install the <a href="crates.html#lexigram">lexigram executable</a>.</p>
-<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
-<p>Or you could create a <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">build script</a> that generates the code. Again, there’s a choice: the script may either launch the command-line executable, call its public method <code>lexigram::execute</code>, or use the build method as described in the previous paragraph.</p>
-<p>Finally, there’s the more advanced possibility of creating the lexicon and/or the grammar dynamically in a Rust program by using the lower-level API of the <a href="crates.html#lexigram-lib">lexigram-lib crate</a>, but that’s completely outside the scope of this documentation.</p>
-<blockquote class="blockquote-tag blockquote-tag-tip">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>If you generate the parser programmatically without a build.rs script, it’s recommended to proceed with two crates: one for the generator and one for the final application that includes the generated code. While it’s possible to put both in the same crate, it would have two drawbacks:</p>
+<p>Lexigram generates the code of a lexer/parser based on their “specifications”: a <em>lexicon</em> for the lexer, and a <em>grammar</em> for the parser. Both can either be combined in a single file or be on their own in separate files.</p>
+<p>Once the lexicon and the grammar are written, there are a few ways to generate the parser code.</p>
 <ul>
-<li>When the generated code is written to its destination file, it likely prevents you from compiling the code until you have completed the parser or updated it with the latest changes in the grammar. Before that, if you need to modify the grammar again, the code that generates the parser won’t be able to compile.</li>
-<li>The dependencies of the generator are bigger, since you need all the crates (through <code>lexi-gram</code>). You could put the generator in a test config, as we did for the examples of the repository, so only the test dependencies (<code>[dev-dependencies]</code>) would require <code>lexi-gram</code>, and the production dependency (<code>[dependencies]</code>) would just be <code>lexigram-core</code>. This, however, might create conflicts since <code>lexi-gram</code> has <code>lexigram-core</code> in its own dependencies. Theoretically, there’s no such problem between test code and production code, but you’ll have to be careful not to bind <code>lexigram-core</code> directly in your test code; instead, you must bind <code>lexi_gram::lexigram_lib::lexigram_core</code>.</li>
+<li>
+<p>If you prefer the command-line option, you should install the <a href="crates.html#lexigram">lexigram executable</a>. That’s the option we’ll take in this overview.</p>
+</li>
+<li>
+<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
+</li>
+<li>
+<p>Or you could create a <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">build script</a> that generates the code. Again, there’s a choice: the script may either launch the command-line executable, call its public method <code>lexigram::execute</code>, or use the build method as described in the previous paragraph.</p>
+</li>
+<li>
+<p>Finally, there’s the more advanced possibility of creating the lexicon and/or the grammar dynamically in a Rust program by using the lower-level API of the <a href="crates.html#lexigram-lib">lexigram-lib crate</a>, but that’s completely outside the scope of this documentation.</p>
+</li>
 </ul>
-<p>That’s why we split all the examples in two crates: <code>gen_microcalc</code> and <code>microcalc</code>, <code>gen_watcher</code> and <code>watcher</code>, and so on.</p>
-</blockquote>
 <p>Let’s assume that the combined lexicon/grammar are in a file, <strong>example.lg</strong>:</p>
 <pre><code>lexicon Example;
 Equal:  '=';
@@ -236,82 +214,110 @@ Id:     [a-z][_0-9a-z]*;
 Num:    [0-9]+;
 
 grammar Example;
-s:   Id Equal val | Exit | Return val;
+s:   Id '=' val | 'exit' | 'return' val;
 val: Id | Num;
 </code></pre>
+<p>To keep things simple, we’ll generate all the code in a single file. Lexigram can write the generated code for the lexer and the parser between tags in an existing file, so we’ll take advantage of that possibility.</p>
+<p>We need to create a <strong>parser.rs</strong> file with this content:</p>
+<pre><code class="language-rust">pub mod lexer {
+    use super::*;
+
+    // [example_lexer]
+    // [example_lexer]
+}
+
+pub mod parser {
+    use super::*;
+
+    // [example_parser]
+    // [example_parser]
+}</code></pre>
 <p>The parser can be generated with this command:</p>
-<pre><code class="language-shell">$ lexigram -c example.lg -l lexer.rs -p parser.rs \
-  --listener listener.txt --types types.txt
-55 note(s)
-23 info(s)
+<pre><code class="language-shell">$ lexigram -c example.lg --indent 4 -l parser.rs tag example_lexer -p parser.rs tag example_parser \
+    --listener listener.txt --types types.txt --spans
+54 note(s)
+24 info(s)
 0 warning(s)
 0 error(s)
 OK
 </code></pre>
-<p>It creates 4 files:</p>
+<p>Since we didn’t specify the type, Lexigram generates an LL(1) parser. If you need an LALR parser, you must add the <code>-t LALR</code> argument.</p>
+<p>It writes / modifies 3 files:</p>
 <ul>
-<li><strong>lexer.rs</strong>: the lexer</li>
-<li><strong>parser.rs</strong>: the parser and the wrapper, which is the interface between the parser and the user-defined listener</li>
+<li><strong>parser.rs</strong>: the lexer, the parser, and the wrapper (the wrapper is the interface between the parser and the user-defined listener)</li>
 <li><strong>listener.txt</strong>: a template of the listener implementation, that you can use as a starting point</li>
 <li><strong>types.txt</strong>: a template of the nonterminal types, that you can also copy and modify</li>
 </ul>
 <blockquote class="blockquote-tag blockquote-tag-tip">
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
-<p>Adding those two templates to your repository can prove helpful. Each time the grammar is modified and the code regenerated, you can more easily spot the differences and copy the new bits into your code.</p>
+<p>Adding those two templates to your repository can prove helpful. Each time the grammar is modified and the code is regenerated, you can more easily spot the differences and copy the new bits into your code.</p>
 </blockquote>
 <h2 id="implementing-the-listener"><a class="header" href="#implementing-the-listener">Implementing the Listener</a></h2>
-<p>The code generated by Lexigram is a trait that you must implement.</p>
-<p>The generated code includes, among other things, the listener trait and the custom parameter types:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub enum CtxS {
-    /// `s -&gt; Id "=" val`
-    V1 { id: String, val: SynVal },
-    /// `s -&gt; "exit"`
-    V2,
-    /// `s -&gt; "return" val`
-    V3 { val: SynVal },
-}
+<p>The code generated by Lexigram is a trait that you must implement. That’s how your own code is interfaced with the parser.</p>
+<p>The generated code in <strong>parser.rs</strong> includes, among other things, the listener trait and the custom context types:</p>
+<pre><code class="language-rust">pub mod parser {
+    use super::*;
 
-pub enum CtxVal {
-    /// `val -&gt; Id`
-    V1 { id: String },
-    /// `val -&gt; Num`
-    V2 { num: String },
-}
-
-enum EnumSynValue { S(SynS), Val(SynVal) }
-
-pub trait ExampleListener {
+    // [example_parser]
+    
     // ...
-    fn init_s(&amp;mut self) {}
-    fn exit_s(&amp;mut self, ctx: CtxS) -&gt; SynS;
-    fn init_val(&amp;mut self) {}
-    fn exit_val(&amp;mut self, ctx: CtxVal) -&gt; SynVal;
-}
-<span class="boring">}</span></code></pre>
+    
+    pub enum CtxS {
+        /// `s -&gt; Id "=" val`
+        V1 { id: String, val: SynVal },
+        /// `s -&gt; "exit"`
+        V2,
+        /// `s -&gt; "return" val`
+        V3 { val: SynVal },
+    }
+    
+    pub enum CtxVal {
+        /// `val -&gt; Id`
+        V1 { id: String },
+        /// `val -&gt; Num`
+        V2 { num: String },
+    }
+    
+    enum EnumSynValue { S(SynS), Val(SynVal) }
+    
+    pub trait ExampleListener {
+        // ...
+        fn init_s(&amp;mut self) {}
+        fn exit_s(&amp;mut self, ctx: CtxS) -&gt; SynS;
+        fn init_val(&amp;mut self) {}
+        fn exit_val(&amp;mut self, ctx: CtxVal) -&gt; SynVal;
+    }
+
+    // ...
+
+    // [example_parser]
+}</code></pre>
 <p>The principle is simple:</p>
 <ul>
 <li>Each time a production is predicted to come next, the <code>init_&lt;nonterminal&gt;(…)</code> method is called by the parser.</li>
-<li>Each time the production has been fully parsed, <code>exit_&lt;nonterminal&gt;(…)</code> is called, giving you the contextual information about the parsed elements in <code>ctx</code>.</li>
+<li>Each time the production has been fully parsed, <code>exit_&lt;nonterminal&gt;(…)</code> is called, giving you the values of the parsed symbols in <code>ctx</code>. The variant (<code>V1</code>, <code>V2</code>, …) also tells you which production was used in each rule.</li>
 </ul>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>If you generate a bottom-up parser, like LALR, the <code>init_s</code> and <code>init_val</code> methods aren’t available because productions aren’t predicted before they’re parsed. That’s the main difference in the generated interface; there are a few others, which are detailed in the <a href="parser.html">parser reference</a>. The rest remains the same.</p>
+</blockquote>
 <p>Implementing these trait methods allows you to process the input in a structured way.</p>
 <p>Here, we assumed that both <code>s</code> and <code>val</code> had a value, which is represented by the types <code>SynS</code> and <code>SynVal</code>. It’s up to you to define their type, and which value they take in the <code>exit_*(…)</code> methods. You can declare that some nonterminals don’t have a value, if you want. Here, if we declare that <code>val</code> has no value, <code>exit_val(…)</code> won’t return any type, and <code>val</code> won’t appear in the <code>CtxS::V1</code> and <code>CtxS::V3</code> variants. Similarly, terminals that don’t hold a value, like <code>"="</code>, are not present in the context variants.</p>
-<p>Lexigram optionally produces a template to help with the implementation, that you can copy and complete (the attributes and some details have been omitted):</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>/// User-defined type for `s`
+<p>The templates in <strong>types.txt</strong> and <strong>listener.txt</strong> contain a basic implementation source code that you can copy the first time. They don’t include any <code>use</code> statement, though, so you’ll have to add them manually:</p>
+<pre><code class="language-rust">/// User-defined type for `s`
 pub struct SynS();
 
 /// User-defined type for `val`
-pub struct SynVal();
-
-struct Listener {
+pub struct SynVal();</code></pre>
+<pre><code class="language-rust">struct Listener {
     log: BufLog,
 }
 
 impl ExampleListener for Listener {
-    // ...
+    fn get_log_mut(&amp;mut self) -&gt; &amp;mut impl Logger {
+        &amp;mut self.log
+    }
+  
     fn exit_s(&amp;mut self, ctx: CtxS, spans: Vec&lt;PosSpan&gt;) -&gt; SynS {
         match ctx {
             // s -&gt; Id "=" val
@@ -333,12 +339,15 @@ impl ExampleListener for Listener {
         }
         SynVal()
     }
-}
-<span class="boring">}</span></code></pre>
-<p>If you want to store local variables <code>Id</code>, you can add a field to <code>Listener</code> that holds them and their variable ID. Here’s the implementation of a very simplified AST generator:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub enum SynS {
+}</code></pre>
+<p>If you want to store local variables <code>Id</code>, you can add a field to <code>Listener</code> that holds them and their variable ID. Here’s the implementation of a very simplified AST generator, that we write at the top of the <strong>parser.rs</strong> file, before the <code>lexer</code> and <code>parser</code> modules:</p>
+<pre><code class="language-rust">use std::collections::HashMap;
+use std::str::FromStr;
+use lexigram_core::lexer::PosSpan;
+use lexigram_core::log::{BufLog, Logger};
+use parser::*;
+
+pub enum SynS {
     Assign(usize, SynVal),
     Exit,
     Return(SynVal),
@@ -353,6 +362,12 @@ pub enum SynVal {
 struct Listener {
     log: BufLog,
     vars: HashMap&lt;String, usize&gt;,
+}
+
+impl Listener {
+    pub fn new() -&gt; Listener {
+        Listener { log: BufLog::new(), vars: HashMap::new() }
+    }
 }
 
 #[allow(unused)]
@@ -397,7 +412,11 @@ impl ExampleListener for Listener {
         }
     }
 }
-<span class="boring">}</span></code></pre>
+
+// ... (lexer and parser modules)
+pub mod parser {
+    use super::*;
+    ...</code></pre>
 <h2 id="top-integration"><a class="header" href="#top-integration">Top Integration</a></h2>
 <p>In the generated code, you’ll find the following components:</p>
 <ul>
@@ -409,13 +428,21 @@ impl ExampleListener for Listener {
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>We use the term “Parser” to design either the low-level parser, so the table-driven LL(1) parser of type <code>Parser</code> defined in <code>lexigram-core</code>, or the “top-level” parser which is your own, complete application. The context should normally indicate which is which, but we’ll use “low-level” and “top-level” when it needs clarifying.</p>
 </blockquote>
-<p>The typical way to implement the top-level parser is to create an object that keeps the lexer, the parser, the wrapper and the listener (the listener being itself a field of the wrapper):</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub struct ExampleParser&lt;'l, 'p&gt; {
+<p>The typical way to implement the top-level parser is to create an object that keeps the lexer, the parser, the wrapper and the listener (the listener being itself a field of the wrapper). Let’s add the following code at the top of <strong>parser.rs</strong> (with the modified <code>use</code>s):</p>
+<pre><code class="language-rust">use std::collections::HashMap;
+use std::io::Cursor;
+use std::str::FromStr;
+use lexigram_core::lexer::{Lexer, PosSpan, TokenSpliterator};
+use lexigram_core::log::{BufLog, Logger, LogStatus};
+use lexigram_core::parser::ll1::LLParser;
+use lexigram_core::char_reader::CharReader;
+use parser::*;
+use lexer::build_lexer;
+
+pub struct ExampleParser&lt;'l, 'p&gt; {
     lexer: Lexer&lt;'l, Cursor&lt;String&gt;&gt;,
-    parser: Parser&lt;'p&gt;,
-    wrapper: Wrapper&lt;ExampleListener&gt;,
+    parser: LLParser&lt;'p&gt;,
+    wrapper: Wrapper&lt;Listener&gt;,
 }
 
 impl ExampleParser&lt;'_, '_&gt; {
@@ -427,7 +454,7 @@ impl ExampleParser&lt;'_, '_&gt; {
     pub fn new() -&gt; Self {
         let lexer = build_lexer();
         let parser = build_parser();
-        let wrapper = Wrapper::new(ExampleListener::new(), VERBOSE_WRAPPER);
+        let wrapper = Wrapper::new(Listener::new(), false);
         ExampleParser { lexer, parser, wrapper }
     }
 
@@ -446,7 +473,19 @@ impl ExampleParser&lt;'_, '_&gt; {
         }
     }
 }
-<span class="boring">}</span></code></pre>
+
+// ... (what we wrote before)
+pub enum SynS {
+    ...</code></pre>
+<p>And that’s it! Now, you can create an <code>ExampleParser</code> and parse a string with its <code>parse</code> method.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>If you generate an LALR parser, you must make those two changes:</p>
+<ul>
+<li><code>use lexigram_core::parser::ll1::LLParser;</code> becomes <code>use lexigram_core::parser::lr::LRParser;</code></li>
+<li><code>parser: LLParser&lt;'p&gt;,</code> becomes <code>parser: LRParser&lt;'p, lexigram_core::LALR&gt;,</code></li>
+</ul>
+</blockquote>
 <h3 id="before-going-any-further"><a class="header" href="#before-going-any-further">Before Going Any Further…</a></h3>
 <p>In the following subsections, we’re giving an overview of the top-level components, including the listener. If you’d like to get a better idea of how the components are integrated, you may find it useful.</p>
 <p>If you’d rather see more practical examples before tackling those aspects, you may just have a quick glance or skip it entirely for now.</p>
@@ -459,15 +498,12 @@ impl ExampleParser&lt;'_, '_&gt; {
 <li><code>R: Read</code> is the input. If you read from a string, it’s usually <code>Cursor&lt;String&gt;</code>. If the input is itself a reference, like <code>&amp;str</code>, you may have a <code>Cursor&lt;&amp;str&gt;</code> and so another lifetime in your top parser type. You’ll find an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/typedef/src/typedef_id_type.rs">examples/typedef</a>.</li>
 </ul>
 <p>The parser has only a lifetime generic parameter:</p>
-<pre><code>pub struct Parser&lt;'a&gt;
+<pre><code>pub struct LLParser&lt;'a&gt;
 </code></pre>
 <p>Like the lexer, this lifetime is for the table references, which are static with <code>build_parser()</code>.</p>
 <h3 id="interaction-between-components"><a class="header" href="#interaction-between-components">Interaction Between Components</a></h3>
 <p>The <strong>lexer</strong> extracts the tokens <code>"return"</code> and <code>Id("x")</code>, that it sends to the <strong>parser</strong> on demand. <code>Lexer::tokens(…)</code> returns an iterator, so you can intercept the tokens if you like. In the code example, we used a <code>keep_channel0(…)</code> method before giving the tokens to the parser:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let tokens = self.lexer.tokens().keep_channel0();
-<span class="boring">}</span></code></pre>
+<pre><code class="language-rust">let tokens = self.lexer.tokens().keep_channel0();</code></pre>
 <p>The lexer indeed allows you to output tokens on several channels by using the <code>-&gt; channel(&lt;channel ID&gt;)</code> action after defining a token. It can be used to keep the comments or other ancillary information apart from the grammar. Here, we don’t use that, so we simply filter out everything that doesn’t belong to the default channel (ID = 0).</p>
 <p>The (low-level) generic table-driven <strong>parser</strong> consumes the tokens, predicts the production rules, and calls the <strong>wrapper</strong> at key moments, like when a production has been predicted and is about to be parsed, or when it has been fully parsed.</p>
 <p>The wrapper’s code is generated according to the grammar. It calls the trait methods of the <strong>listener</strong>, so that you can get the values of all the symbols in a production once it’s fully parsed. For example, the values of <code>Id</code> and <code>val</code> once <code>s -&gt; Id "=" val</code> is parsed.</p>
@@ -475,9 +511,9 @@ impl ExampleParser&lt;'_, '_&gt; {
 <p>Let’s see what happens using a short example of input, using the same grammar as before:</p>
 <pre><code class="language-text">return x
 </code></pre>
-<p>Here is how the components interact with one another:</p>
+<p>Here is how the components interact with one another in the case of an LL(1) parser:</p>
 <ul>
-<li>The parser first expects a nonterminal <code>s</code>, which is the starting nonterminal of the grammar. The first token is <code>"return"</code>, so the parser predicts the production <code>s -&gt; "return" val</code>, and queues <code>"return"</code>, <code>val</code>.
+<li>The parser first expects a nonterminal <code>s</code>, which is the start nonterminal of the grammar. The first token is <code>"return"</code>, so the parser predicts the production <code>s -&gt; "return" val</code>, and queues <code>"return"</code>, <code>val</code>.
 <ul>
 <li>The parser calls the wrapper with this information: we enter that production.</li>
 <li>The wrapper calls your listener method <code>init_s(…)</code>.</li>
@@ -504,6 +540,7 @@ impl ExampleParser&lt;'_, '_&gt; {
 </ul>
 </li>
 </ul>
+<p>There are a few differences with an LALR parser, but the idea remains the same. Mainly, <code>init_s</code> and <code>init_val</code> don’t exist, and the parser uses another technique to determine the productions from the tokens, as explained in the <a href="intro.html">introduction</a>.</p>
 <h3 id="the-wrapper"><a class="header" href="#the-wrapper">The Wrapper</a></h3>
 <p>The wrapper implements a few public methods, among which you’ll recognize a few in the code excerpt of the top-level we gave earlier (<code>T</code> is the listener type):</p>
 <ul>
@@ -539,15 +576,13 @@ impl ExampleParser&lt;'_, '_&gt; {
 </li>
 <li>
 <p><code>exit(&amp;mut self, program: SynProgram) {}</code></p>
-<p>Is called after the exit method of the starting nonterminal, once everything is parsed. You can implement this method if you want to separate the post-processing from what is done in <code>exit_&lt;starting nonterminal&gt;(…)</code>.</p>
+<p>Is called after the exit method of the start nonterminal, once everything is parsed. You can implement this method if you want to separate the post-processing from what is done in <code>exit_&lt;start nonterminal&gt;(…)</code>.</p>
 <p>The method isn’t called if the parsing is aborted (see below), or if a lexical/syntax error is detected.</p>
 </li>
 <li>
 <p><code>check_abort_request(&amp;self) -&gt; Terminate { Terminate::None }</code></p>
 <p>Checks if an abort is requested by the listener. The method is called after each step of the low-level parser; typically after calling each nonterminal’s enter/exit method. If you detect an irrecoverable error in the listener, you can set an <code>abort</code> flag and return the appropriate value with that method:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>struct Listener {
+<pre><code class="language-rust">struct Listener {
     log: BufLog,
     vars: HashMap&lt;String, usize&gt;,
     abort: bool,
@@ -574,8 +609,7 @@ impl ExampleListener for Listener {
     }
 
     // ...
-}
-<span class="boring">}</span></code></pre>
+}</code></pre>
 <p>Another return value, <code>Terminate::Conclude</code>, makes the parser stop as if everything had been successfully parsed. It can be used if you intend to parse an input that may be longer than what you need and if it’s too difficult to cut that input before giving it to the parser. There’s an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/watcher/src/lib.rs">examples/watcher</a></p>
 <p>Keep in mind that aborting the parsing, even with <code>Terminate::Conclude</code> will not call the exit methods of the pending nonterminals, nor the final <code>exit()</code> method. Instead, it will call <code>abort()</code>. For example, if you aborted in <code>exit_val(…)</code>, the <code>exit_s(…)</code> method wouldn’t be called.</p>
 </li>
@@ -593,38 +627,6 @@ impl ExampleListener for Listener {
 <p>Is an optional method generated if hooks were declared in the lexicon. Like <code>intercept_token(…)</code>, it allows to intercept tokens, but only at selected spots in the grammar, which is more efficient. This is also an advanced feature, so we won’t elaborate on it in this tutorial either.</p>
 </li>
 </ul>
-<!-- wrapper / listener: use once vs use same objects for several inputs:
-  If you parse a reference (`&str` instead of `String`), you'll find that keeping the same wrapper/listener to parse several inputs is difficult to achieve than creating a new wrapper/listener each time, since the reference's lifetime may be more difficult to express: it must ideally live longer than the wrapper from the perspective of the wrapper's methods, but from the perspective of the top-level, the wrapper lives longer. Both aren't always easy to conciliate.
--->
-<!-- To put at the end, or to interleave with the tutorial?
-
-    ## Developing a parser
-    
-    Developing a parser is generally done in several steps.
-    
-    ### Writing the grammar
-    
-    The first step focuses on the grammar—in the broader sense, which includes the lexicon. This is a critical step, since the code and the interaction with the grammar dictates how you'll write the parser. 
-    
-    If you're not used to writing grammars, here are a few tips. Some of them will only make full sense later, so don't panic if you don't see what they mean right now.
-    
-    * Define the lexicon only after you have a clear idea of the grammar.
-    * Try to see the structure of the grammar that corresponds to the language you want to parse, at least in the general lines.
-    * To write the actual grammar, start with a small subset, then proceed incrementally. It pays off to test it regularly with the generator or any grammar verification tool, to see if there are ambiguities or other problems that need solving before going further; "fixing" a whole grammar is more difficult.
-    * If you can make changes to the language and some bits prove too difficult to define as an LL(1) grammar, you'll have to decide whether you adapt the language or use another type of parser. It's another reason to make regular verifications, to make sure you understand the limitations before applying impossible patterns in several places.
-    * There are several ways of doing loops; e.g. if you need a list of variable size: function parameters, variable declarations, instructions in a function body, and so on. You can use left- and right-recursive rules, and other forms that are supported by Lexigram. Each has a specific implementation behaviour in the generated code, so it's worth knowing the differences. 
-    
-    We'll try to illustrate those points while developing the example in this tutorial.
-    
-    ### Generating the code
-    
-    In a second step, you generate the code, either with a generator like Lexigram or by hand. Here, we'll focus on the generator approach, obviously.
-    
-    At the beginning, don't hesitate to generate the code before your grammar is finished, just to get a better feeling of how the parser will have to be written. Maybe you'll see that you prefer another approach and change the grammar accordingly. Or maybe you'll see that a production becomes more convenient if it's split. Generating the code from a partial grammar still requires that it stands on its own and is self-contained, so you may have to introduce a few fake rules or to comment out a few others, but it's worth it. 
-    
-    * See which nonterminals need a value; usually the default configuration is fine, but maybe you don't need any value at all.
-    * Don't implement the listener too early if you think you must still bring significant changes to the grammar, unless it's just for test. If you need to change the grammar after implementing the listener, it's worth generating the template in a separate file with the option `--listener`, and compare it before / after the changes. This will show you what's been modified, and how you must modify your own implementation accordingly to the new listener trait and types.
--->
 
                     </main>
 
@@ -670,11 +672,11 @@ impl ExampleListener for Listener {
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

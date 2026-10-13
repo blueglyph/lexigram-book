@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-1a4e6431.css">
+        <link rel="stylesheet" href="custom-4bc6388c.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-781aca2c.js";
+            window.path_to_searchindex_js = "searchindex-613faaa8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a4a0a8d4.js"></script>
+        <script src="toc-22746fb9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -179,30 +179,35 @@
 <p>This chapter gives a gentle introduction to parsers and how the tool can help you build one. Its only purpose is to make sure the user is aware of how lexers and parsers work, and what the limitations of the grammar are.</p>
 <p>If you’re already familiar with those notions, you can skip this introduction.</p>
 <h2 id="components-of-a-parser"><a class="header" href="#components-of-a-parser">Components of a Parser</a></h2>
-<p>A parser is split in two main components: the <em>lexical analyzer</em> and the <em>syntax analyzer</em>. We also call them respectively <em>lexer</em>, or <em>scanner</em>, and <em>parser</em>. The term “parser” is sometimes used more loosely to refer to both the lexer and the parser, as we did before.</p>
+<p>A parser is split in two main components: the <em>lexical analyser</em> and the <em>syntax analyser</em>. We also call them respectively <em>lexer</em>, or <em>scanner</em>, and <em>parser</em>. The term “parser” is sometimes used more loosely to refer to both the lexer and the parser, as we did before.</p>
 <p>To give an intuitive view, the lexer reads the input and transforms it into a sequence of <em>tokens</em>, which are the basic symbols of the language. Those words can be variable, like a number, or they can be fixed, like a keyword or a punctuation symbol. The parser gets the sequence of tokens from the lexer and verifies that they fit the grammatical rules.</p>
 <p>Here is a simple example to illustrate the difference:</p>
-<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+<pre><code>// lexicon
+Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
 Space: [ \n\r\t]+ -&gt; skip;
 
-assign -&gt; "let" Id "=" value;
-value -&gt; Id | Num;
+// grammar
+assign: 'let' Id '=' value;
+value: Id | Num;
 </code></pre>
 <p>For the vocabulary, the grammar rules are called production rules or, more simply, <em>productions</em>. The part on the left side of the arrow is the <em>head</em>, and the part on the right is the <em>body</em>. The tokens are also called <em>terminals</em>, especially when they’re considered in a production. The production names, like “assign” and “value”, are referred to as <em>nonterminals</em>, as opposed to terminals.</p>
-<p>The tokens recognized by the lexer are <code>Id</code>, <code>Num</code>, <code>"let"</code>, and <code>"="</code>. The first two are a little more complicated since their regular expressions can match many different strings. The others are given literally.</p>
-<p>The <code>Space</code> terminal is a little special. We must often use something to separate the tokens, because they could otherwise be merged; for example, if the input starts with “letvelocity” instead of “let velocity”, it’ll match <code>Id</code> instead of matching the sequence <code>"let"</code>, <code>Id</code>. By introducing <code>Space</code>, we allow the other tokens to be separated by space characters, even allowing for tabs and new lines. The <code>-&gt; skip</code> action makes the lexer discard those tokens, so that the parser gets <code>"let"</code>, <code>Id</code> instead of <code>"let"</code>, <code>Space</code>, <code>Id</code>, which would be tedious to handle.</p>
-<p>The productions used by the parser are <code>assign -&gt; …</code> and <code>value -&gt; …</code>. They specify how the tokens coming from the lexer may be arranged syntactically in the source language. When a production matches a sequence of tokens, we say that it <em>derives</em> the input from the nonterminal on the left-hand side. Some of those terms are somewhat abstract and formal, but we mention them because they’re often used in the context of parsers.</p>
+<p>The tokens recognized by the lexer are <code>Id</code>, <code>Num</code>, <code>'let'</code>, and <code>'='</code>. The first two are a little more complicated since their regular expressions can match many different strings. The others are given literally.</p>
+<p>The <code>Space</code> terminal is a little special. We must often use something to separate the tokens, because they could otherwise be merged; for example, if the input starts with “letvelocity” instead of “let velocity”, it’ll match <code>Id</code> instead of matching the sequence <code>'let'</code>, <code>Id</code>. By introducing <code>Space</code>, we allow the other tokens to be separated by space characters, even allowing for tabs and new lines. The <code>-&gt; skip</code> action makes the lexer discard those tokens, so that the parser gets <code>'let'</code>, <code>Id</code> instead of <code>'let'</code>, <code>Space</code>, <code>Id</code>, which would be tedious to handle.</p>
+<p>The productions used by the parser are <code>assign: …</code> and <code>value: …</code>. They specify how the tokens coming from the lexer may be arranged syntactically in the source language. When a production matches a sequence of tokens, we say that it <em>derives</em> the input from the nonterminal on the left-hand side. Some of those terms are somewhat abstract and formal, but we mention them because they’re often used in the context of parsers.</p>
 <p>We use the convention that the top nonterminal is the first to be defined. In this case, <code>assign</code> is the top nonterminal.</p>
 <p>Let’s see with an example how an input gets parsed:</p>
 <pre><code>let velocity = 125
 </code></pre>
 <p>The lexer outputs the following sequence of tokens:</p>
-<p><code>"let"</code>, <code>Id("velocity")</code>, <code>"="</code>, <code>Num("125")</code></p>
+<p><code>'let'</code>, <code>Id("velocity")</code>, <code>'='</code>, <code>Num("125")</code></p>
 <p>The parser determines the parse tree that makes the productions correspond to the input:</p>
-<p><img src="./images/basic_2.svg" alt="Image"></p>
+<div style="text-align: center">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/basic_2.svg" alt="Image"><span class="img-wrapper"><img src="./images/basic_2.svg" alt="Image"></span></label></p>
+</div>
+
 <ul>
-<li>The top nonterminal is <code>assign</code>. The three leftmost terminals match the input tokens <code>"let"</code>, <code>Id</code>, and <code>"="</code>.</li>
+<li>The top nonterminal is <code>assign</code>. The three leftmost terminals match the input tokens <code>'let'</code>, <code>Id</code>, and <code>'='</code>.</li>
 <li>The fourth element is the nonterminal <code>value</code>, which contains two alternative productions: <code>value -&gt; Id</code> or <code>value -&gt; Num</code>. The derivation <code>value -&gt; Num</code> matches the input.</li>
 </ul>
 <p>The <em>parse tree</em>, also called <em>production graph</em>, is only a representation of the order in which the productions are arranged to match the input (to derive the input). It’s not necessarily an actual object built by the parser, but rather a representation of the parser flow through the productions and the received tokens. Quite commonly, the parser helps build an abstract syntax tree, which better corresponds to the needs of the application. We’ll see how in the next section.</p>
@@ -212,7 +217,7 @@ value -&gt; Id | Num;
 <p>Parsers are usually known as the first part of a compiler, which reads the source of a program and produces an executable. In a nutshell, a compiler has the following parts:</p>
 <ul>
 <li>a lexer and a parser</li>
-<li>a <em>semantic analyzer</em>, that uses the productions of the parser to build an <em>abstract syntax tree</em> (AST), a representation easier to process</li>
+<li>a <em>semantic analyser</em>, that uses the productions of the parser to build an <em>abstract syntax tree</em> (AST), a representation easier to process</li>
 <li>an <em>intermediate code generator</em>, which, based on the AST, creates a sequence of basic code that we call <em>intermediate representation</em> (IR)</li>
 <li>an optional <em>optimizer</em>, that produces a better sequence of IR</li>
 <li>a <em>code generator</em>, which transforms the IR into machine code for the target architecture (possibly followed by an optimizer for that particular architecture)</li>
@@ -225,32 +230,33 @@ value -&gt; Id | Num;
 <p>At this time, Lexigram generates the code for a listener only, creating a custom trait that you can implement for a listener object. This allows you to intercept the parser flow with the trait methods and to build an abstract syntax tree very efficiently.</p>
 <h2 id="lexicon-and-grammar"><a class="header" href="#lexicon-and-grammar">Lexicon and Grammar</a></h2>
 <p>We saw earlier the specification of a simple language:</p>
-<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
+<pre><code>// lexicon
+Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
+Space: [ \n\r\t]+ -&gt; skip;
 
-assign -&gt; "let" Id "=" value;
-value -&gt; Id | Num;
+// grammar
+assign: 'let' Id '=' value;
+value: Id | Num;
 </code></pre>
 <p>You may have already seen the specification of a programming language in one form or another. One that we often see is the Backus–Naur form (BNF), which originated from the collaborative design of ALGOL 58 and evolved to the syntax we know today. Several variants of Extended Backus-Naur form (EBNF) exist, which add regular-expression-like niceties such as repetitions and optional items.</p>
 <p>We’ll be using our own language to describe the tokens the lexer must extract, which is the <em>lexicon</em>, and the productions the parser must use, which is the <em>grammar</em>. The syntax we’re using is inspired by ANTLR; it tries to be flexible and easy to read.</p>
 <p>Here is what the lexicon of the above example would be; note the names of the terminals are upper camel case:</p>
-<pre><code>Let: "let";
-Equal: "=";
+<pre><code>Let: 'let';
+Equal: '=';
 Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
+Space: [ \n\r\t]+ -&gt; skip;
 </code></pre>
 <p>And here is the grammar, in which the names of the nonterminals are snake case, to distinguish them from the terminals:</p>
 <pre><code>assign: Let Id Equal value;
 value: Id | Num;
 </code></pre>
-<p>We like to separate both when we generate a parser with Lexigram, for several reasons:</p>
-<ul>
-<li>Using string literals for keywords like “let” and punctuation like “,” or “;” introduces a risk of discrepancy if there’s a typo somewhere. If each statement is ended by a semicolon, you may have to repeat that string literal in several productions, and if you decide to change that later, there’s a risk to miss some of them.</li>
-<li>Using string literals doesn’t give them a name, which is annoying when you have to process terminals in the code, as you’ll see later.</li>
-<li>Using string literals doesn’t specify in which order they’re defined. This can be limiting when the order is used to clarify ambiguities. Above, we see that <code>Let</code> and <code>Id</code> overlap since “let” matches <code>[A-Za-z][A-Za-z0-9]*</code>, but since <code>Let</code> is defined first, the lexer knows that “let” must be extracted as the <code>Let</code> token. Having a full lexicon improves the clarity and the precision.</li>
-<li>The tool allows to generate only a lexer; later, it will allow the user to use another, external lexer, so having separate lexicons and grammars is necessary.</li>
-</ul>
-<p>But for the sake of conciseness, we’ll often use the simplified form with string literals in small examples, where the concerns above don’t really apply. When we do that, we’re using <code>-&gt;</code> in the grammar instead of <code>:</code> (you may have spotted that clue earlier already).</p>
+<p>The literal form of the terminals can be used in the grammar, too, but they must still be defined in the lexicon. This is possible for fixed terminals only.</p>
+<pre><code>assign: 'let' Id '=' value;
+value: Id | Num;
+</code></pre>
+<p>Using terminal names like <code>Let</code> and <code>Equal</code> instead of <code>'let'</code> and <code>'='</code> has the advantage of being simpler if one decides to change them (e.g. <code>':='</code> instead of <code>'='</code>), but it’s less clear in the grammar, so the user has the choice.</p>
 <h2 id="where-to-draw-the-line"><a class="header" href="#where-to-draw-the-line">Where to Draw the Line?</a></h2>
 <p>Knowing where the lexer’s job ends and where the parser’s job is taking over isn’t always easy when you’re not used to it. For instance, if you declare a variable, it’s possible to rely on the lexer to scan the whole declaration:</p>
 <pre><code>Decl: 'let' [ \t]+ [_a-z][_0-9a-z0-9]* [ \t]* ':' [ \t]* [_a-z][_0-9a-z0-9]*;
@@ -265,7 +271,7 @@ Id: [_a-z][_0-9a-z0-9]*;
 SkipSpaces: [ \t]+ -&gt; skip;
 </code></pre>
 <pre><code>// grammar
-declaration: Let Id Colon Id; 
+declaration: 'let' Id ':' Id; 
 </code></pre>
 <p>At first glance, it’s more work, but you won’t have to split anything in the parser. In the listener’s <code>exit_declaration()</code> method, you’ll receive the strings for the variable and the type, and you don’t have to worry about the rest. If you decide your statements can be split across several lines, it’s fine: just add “\n” once to <code>SkipSpaces</code>. And if you want to support comments everywhere, just add this to the lexicon:</p>
 <pre><code>SkipComment: '/*' .*? '*/' -&gt; skip; 
@@ -292,12 +298,11 @@ declaration: Let Id Colon Id;
 <pre><code>char_value: Char | Escape | Unicode; 
 </code></pre>
 <p>Then, you’ll need to implement its listener method:</p>
-<pre><code>let chr = match context {
+<pre><code class="language-rust">let chr = match context {
     CtxCharValue::V1 { char } =&gt; { ... }
     CtxCharValue::V2 { escape } =&gt; { ... }
     CtxCharValue::V3 { unicode } =&gt; { ... }
-}    
-</code></pre>
+};</code></pre>
 <p>In fact, this isn’t too bad since each branch knows how to handle the attribute: take as-is, unescape, or convert the hex code to a Unicode character. If you process only single characters, it’s a good way to do it, but what if you must handle string literals, too?</p>
 <p>Another way to deal with it, since there is some processing that goes beyond the job of the lexer, is to let those codes in string and character literals, and have a Rust method that unescapes those codes. That method can be used for both characters and strings. If you decide to add more escape codes, you’ll just have to add them in one line in the lexicon, and to update that method; the parser won’t require an additional alternative in the rule and a new branch in the listener implementation.</p>
 <blockquote class="blockquote-tag blockquote-tag-note">
@@ -309,8 +314,10 @@ declaration: Let Id Colon Id;
 <h2 id="theres-parser-and-parser"><a class="header" href="#theres-parser-and-parser">There’s Parser and Parser</a></h2>
 <p>We have another important matter to tackle: there are different parser types, which support different classes of grammars, and so different subsets of possible languages. It’s worth knowing the basics in order to choose the right parser for the desired language, or, conversely, to design the language so that its grammar is supported by a type of parser.</p>
 <p>There are several ways to classify parsers, but if we consider a practical perspective, the derivation order, there are three classes of parsers for context-free grammars: <em>top-down</em>, <em>bottom-up</em>, and <em>universal</em>. The most common parser types are top-down and bottom-up because they’re more efficient.</p>
-<p>Currently, Lexigram generates a top-down parser. More precisely, a table-driven LL(1) parser, which belongs to the category of top-down parsers. As we’ll see, those parsers can’t process left recursion (<code>a -&gt; a B | C</code>) nor alternative productions beginning with the same symbols (<code>a -&gt; B C | B D</code>), but it’s possible to systematically transform the grammar to remove them. Thankfully, Lexigram performs these transformations automatically and as transparently as possible, so that you don’t have to bother about those limitations.</p>
+<p>Currently, Lexigram generates top-down and bottom-up parsers.</p>
+<p>The top-down parsers are table-driven and support LL(1) grammars. As we’ll see, they can’t process left recursion (<code>a: a B | C;</code>) nor alternative productions beginning with the same symbols (<code>a: B C | B D;</code>), but it’s possible to systematically transform a grammar to remove these forms. Thankfully, Lexigram performs these transformations automatically and as transparently as possible, so that you don’t have to bother about those limitations.</p>
 <p>In practice, top-down parsers are widely used in compilers because they’re relatively simple to make and to maintain. They’re often written manually using a recursive implementation, in which case they’re called recursive descent parsers. Some generators, like ANTLR, also write a recursive descent parser instead of a non-recursive, table-driven one.</p>
+<p>The bottom-up parsers are table-driven, too, and are currently LALR(1). They’re more powerful and don’t suffer from the same grammar limitations, but the tables can get bigger. Also, the user interface lacks a few minor features available in top-down.</p>
 <p>The next two sections give a general idea of each parser type.</p>
 <h2 id="top-down-parsers"><a class="header" href="#top-down-parsers">Top-Down Parsers</a></h2>
 <p>A top-down parser starts from the top production and deduces the items from the grammar, looking at the next symbol(s) to predict the production when there are several alternatives.</p>
@@ -318,34 +325,34 @@ declaration: Let Id Colon Id;
 <pre><code>Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
 
-statement -&gt; assign ";" | print ";"; 
-assign -&gt; "let" Id "=" value;
-print -&gt; "print" value;
-value -&gt; Id | Num;
+statement: assign ';' | print ';'; 
+assign: 'let' Id '=' value;
+print: 'print' value;
+value: Id | Num;
 </code></pre>
-<p>which we can rewrite with each production alternative on its own line:</p>
-<pre><code>Id: [A-Za-z][A-Za-z0-9]*;
-Num: [0-9]+;
-
-statement -&gt; assign ";";
-statement -&gt; print ";"; 
-assign -&gt; "let" Id "=" value;
-print -&gt; "print" value;
-value -&gt; Id;
-value -&gt; Num;
+<p>Let’s rewrite the rules by isolating each production alternative on its own line. This isn’t a valid Lexigram syntax, but this representation is often used in explanations on how parsers work, and that’s how productions are representated internally. We’ll use the <code>-&gt;</code> symbol and double-quoted terminals to distinguish both notations:</p>
+<pre><code>statement -&gt; assign ";"
+statement -&gt; print ";"
+assign -&gt; "let" Id "=" value
+print -&gt; "print" value
+value -&gt; Id
+value -&gt; Num
 </code></pre>
 <p>A top-down parser processes the input “let a = 10;” as follows:</p>
 <ul>
-<li>The top nonterminal is <code>statement</code>, but there are two alternatives. The first token is “<code>let</code>”, so <code>statement -&gt; assign ";"</code> is predicted since <code>assign</code> starts with that token. The symbols <code>assign</code> and <code>";"</code> of the production are queued to check that the incoming tokens match them.</li>
-<li>The next symbol in the queue is the nonterminal <code>assign</code>, and the pending token is still <code>"let"</code>, so the parser predicts the production <code>assign -&gt; "let" Id "=" value</code>. <code>assign</code> is removed from the queue and replaced with the symbols of the production body, so the queue is now <code>"let"</code>, <code>Id</code>, <code>"="</code>, <code>value</code>, <code>";"</code>.</li>
-<li>The next 3 tokens match the terminals in the queue: <code>"let"</code>, <code>Id("a")</code>, and <code>"="</code>. They’re removed from the queue, leaving <code>value</code> and <code>";"</code>.</li>
+<li>The top nonterminal is <code>statement</code>, but there are two alternatives. The first token is <code>'let'</code>, so <code>statement -&gt; assign ";"</code> is predicted since <code>assign</code> starts with that token. The symbols <code>assign</code> and <code>';'</code> of the production are queued to check that the incoming tokens match them.</li>
+<li>The next symbol in the queue is the nonterminal <code>assign</code>, and the pending token is still <code>'let'</code>, so the parser predicts the production <code>assign -&gt; "let" Id "=" value</code>. <code>assign</code> is removed from the queue and replaced with the symbols of the production body, so the queue is now <code>'let'</code>, <code>Id</code>, <code>'='</code>, <code>value</code>, <code>';'</code>.</li>
+<li>The next 3 tokens match the terminals in the queue: <code>'let'</code>, <code>Id("a")</code>, and <code>'='</code>. They’re removed from the queue, leaving <code>value</code> and <code>';'</code>.</li>
 <li>Since the next symbol in the queue is a nonterminal, <code>value</code>, the parser looks at the incoming token, <code>Num("10")</code>, and predicts that the next production is <code>value -&gt; Num</code>. <code>value</code> is replaced by <code>Num</code> in the queue.</li>
-<li>The <code>Num</code> symbol of the queue matches the incoming token <code>Num("10")</code>, so it’s removed. The queue now contains <code>";"</code>.</li>
-<li>The next token from the lexer is <code>";"</code>. It matches the last item in the queue, so it’s removed.</li>
+<li>The <code>Num</code> symbol of the queue matches the incoming token <code>Num("10")</code>, so it’s removed. The queue now contains <code>';'</code>.</li>
+<li>The next token from the lexer is <code>';'</code>. It matches the last item in the queue, so it’s removed.</li>
 <li>The queue is empty, and there are no more tokens from the lexer, so the parser has finished and the result is successful.</li>
 </ul>
 <p>The equivalent parse tree is shown below:</p>
-<p><img src="./images/basic_3.svg" alt="Image"></p>
+<div style="text-align: center">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/basic_3.svg" alt="Image"><span class="img-wrapper"><img src="./images/basic_3.svg" alt="Image"></span></label></p>
+</div>
+
 <p>You can see that it’s indeed built from the top down, by incrementally attaching nonterminal branches and terminal leaves following a preorder, depth-first search.</p>
 <p>Another way to see it is that the input is derived from left to right, matching the tokens in that order with the productions.</p>
 <p>The “LL” in “LL(k) parser” stands for “scanning <strong>L</strong>eft-to-right, <strong>L</strong>eftmost derivation”, and <em>k</em> is the number of tokens the parser can look ahead to predict the next derivation. Similarly, an LL(k) grammar needs to look at maximum k following tokens to the right to predict a unique derivation. So an LL(k) parser can parse an LL(k) grammar (and also any LL(i) grammar, for i &lt; k). When k isn’t mentioned, it normally means LL(1).</p>
@@ -356,18 +363,14 @@ value -&gt; Num;
 <p>The grammar above can be parsed by looking only at the next token, so it’s an LL(1) grammar, which can be parsed by an LL(1) parser. Easy enough.</p>
 <h3 id="implementations"><a class="header" href="#implementations">Implementations</a></h3>
 <p>LL(k) parsers can be implemented in different ways, the most common being either <em>recursive-descent</em> or <em>table-driven</em> parsers.</p>
-<ul>
-<li><strong>Recursive-descent parsers</strong></li>
-</ul>
+<p><strong>Recursive-descent parsers</strong></p>
 <p>This implementation has one method for each nonterminal. Each method begins by inspecting as many lookahead tokens as it requires to predict the production when there are several alternatives. Then, for each symbol of the production:</p>
 <ul>
 <li>if it’s a terminal, the method consumes the next token and verifies that it matches;</li>
 <li>if it’s a nonterminal, it calls the corresponding method.</li>
 </ul>
 <p>Here is an example of pseudocode for the recursive-descent implementation of the first two nonterminals:</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl Parser {
+<pre><code class="language-rust">impl Parser {
     fn statement(&amp;mut self) -&gt; Statement {
         let stmt = match self.peek_token() {
             Terminal::Let =&gt; self.assign(),
@@ -388,15 +391,18 @@ value -&gt; Num;
     }
     
     // ...
-}
-<span class="boring">}</span></code></pre>
+}</code></pre>
 <p>Many compiler projects start with a recursive-descent parser because it’s intuitive to write, and it’s easy to increase the lookahead capability without changing much. The Rust compiler is written that way. Another advantage is that you don’t depend on a tool.</p>
 <p>The drawbacks are the lack of visibility of the grammar, the difficulty to change it, and the risk of overflowing the stack. It also requires a mechanism to exit gracefully if you meet syntax errors or if you want to abort the parsing.</p>
 <p><strong>Table-driven parsers</strong> try to address those issues by using a stack-based finite state machine (also called pushdown automaton) and a single loop. The grammar is transformed into a parsing table, which predicts the next production as a function of the nonterminal on the stack and the next token. A local stack stores the pending terminals that must match the incoming tokens and the nonterminals that must be transformed by predicting their production.</p>
 <ul>
 <li>If a terminal is on the stack, it’s popped and must match the next token.</li>
-<li>If a nonterminal is on the stack, it’s popped, and the table is used to predict the production, whose symbols are then pushed on the stack.</li>
+<li>If a nonterminal is on the stack, it’s popped, and the table is used to predict the next production, whose symbols are then pushed on the stack (in reverse order).</li>
 </ul>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>A website that calculates the table of an LL(1) parser can be found at <a href="https://jsmachines.sourceforge.net/machines/ll1.html">this URL</a>. It also shows how the input is parsed, step by step.</p>
+</blockquote>
 <p>Here is the parsing table for the grammar above:</p>
 <div class="table-wrapper">
 <table>
@@ -412,118 +418,342 @@ value -&gt; Num;
 </table>
 </div>
 <p>where the numbers are the indices of the production alternatives:</p>
-<pre><code>0: statement -&gt; assign ";";
-1: statement -&gt; print ";"; 
-2: assign -&gt; "let" Id "=" value;
-3: print -&gt; "print" value;
-4: value -&gt; Id;
-5: value -&gt; Num;
+<pre><code>0: statement -&gt; assign ";"
+1: statement -&gt; print ";"
+2: assign -&gt; "let" Id "=" value
+3: print -&gt; "print" value
+4: value -&gt; Id
+5: value -&gt; Num
 </code></pre>
-<p>Here’s the pseudocode of the simplified parser loop, supposing the lexer sends a <code>Terminal::End</code> at the end of the input (often represented as <code>$</code>):</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl Parser {
-    fn parse(&amp;mut self) {
-        let mut stack = vec![Terminal::End, self.top_nonterminal];
-        while let Some(stack_sym) = stack.pop() {
+<p>The first steps for parsing “let a = 10;” go as follows:</p>
+<ul>
+<li>The start nonterminal is <code>statement</code>, which is pushed on the stack.</li>
+<li><code>statement</code> is popped. The first token is <code>'let'</code>. The table predicts production 0 for <code>statement</code> and <code>'let'</code>, so the production symbols are put onto the stack in reverse order: <code>';'</code>, <code>assign</code>.</li>
+<li><code>assign</code> is popped. It’s a nonterminal, and the token is still <code>'let'</code>. The table predicts production 2, so the symbols <code>';'</code>, <code>value</code>, <code>'='</code>, <code>Id</code>, and <code>'let'</code> are put on to the stack.</li>
+<li><code>'let'</code> is popped and matches the token, which is consumed. The next token is <code>Id("a")</code>.</li>
+<li><code>Id</code> is popped and matches the token, which is consumed. The next one is <code>'='</code>.</li>
+<li><code>'='</code> is popped and matches the token, which is consumed. The next one is <code>Num("10")</code>.</li>
+<li><code>value</code> is popped. The table predicts production 5, so <code>Num</code> is pushed.</li>
+<li><code>Num</code> is popped and matches the token, which is consumed. The next one is <code>';'</code>.</li>
+<li><code>';'</code> is popped and matches the token. The end of the input has been reached.</li>
+</ul>
+<p>Here’s the pseudocode of the simplified LL(1) parser loop, supposing the lexer sends a <code>Terminal::End</code> at the end of the input (often represented as <code>$</code>):</p>
+<pre><code class="language-rust">impl LLParser {
+    pub fn parse (&amp;mut self) -&gt; Result&lt;(), &amp;str&gt; {
+        let mut stack = vec![Symbol::End, self.start_nonterminal];
+        let mut token = self.lexer.get_token();
+        loop {
+            let Some(stack_sym) = stack.pop();
             match stack_sym {
-                Terminal(t) =&gt; {
-                    self.match_terminal(stack_sym);
-                }
-                Nonterminal(nt) =&gt; {
-                    let predicted = self.get_table(stack_sym, nt);
-                    stack.extend(predicted);
-                }
+                Symbol::End if token == Symbol::End =&gt;
+                    // end of stream, as expected
+                    return Ok(()), 
+                Symbol::Terminal(t) if t == token =&gt;
+                    // the token matches what's expected
+                    token = self.lexer.get_token(),
+                Symbol::Nonterminal(nt) if let Some(p) = self.get_table(nt, token) =&gt;
+                    // expand predicted production for nonterminal and token
+                    stack.extend(self.production[p].rev()),
+                _ =&gt; return Err("syntax error"),
             }
         }
     }
-}
-<span class="boring">}</span></code></pre>
-<p>In reality, Lexigram’s loop is a little more complex because it handles the re-synchronization after encountering syntax errors and other types of symbols pushed on the stack to call the action routines.</p>
-<p>A website that calculates the table of an LL(1) parser can be found at <a href="https://jsmachines.sourceforge.net/machines/ll1.html">this URL</a>. It also shows step by step how the input is parsed.</p>
+}</code></pre>
+<p>In reality, Lexigram’s loop is a little more complex because it handles the re-synchronization after encountering syntax errors. Other types of symbols are also pushed on the stack to call the user interface.</p>
 <h3 id="limitations"><a class="header" href="#limitations">Limitations</a></h3>
 <p>Because the parser relies on the next token to decide what to do, top-down parsers suffer from a few limitations.</p>
 <ul>
-<li><strong>Elimination of left recursion</strong></li>
-</ul>
-<p>Left recursion is not supported. In <code>list -&gt; list "," Id | Id</code>, the parser can’t predict an alternative when <code>list</code> is the current nonterminal: in order to determine it, it must first know what to predict for its first symbol, which is <code>list</code> itself. This generates an infinite, recursive loop that it can’t solve.</p>
+<li>
+<p><strong>Elimination of left recursion</strong></p>
+<pre><code>list: list ',' Id | Id;
+</code></pre>
+<p>Left recursion is not supported. In the rule above, the parser can’t predict an alternative when <code>list</code> is the current nonterminal: in order to determine it, it must first know what to predict for its first symbol, which is <code>list</code> itself. This generates an infinite, recursive loop that it can’t solve.</p>
 <p>The grammar must be changed to work around the problem using right recursion, which is fine for LL parsers:</p>
-<pre><code>list -&gt; Id list_1;
-list_1 -&gt; "," Id list_1 | ε; 
+<pre><code>list -&gt; Id list_1
+list_1 -&gt; "," Id list_1 
+list_1 -&gt;  ε 
 </code></pre>
 <p>where <code>ε</code> is the symbol for “nothing”, meaning here the end of the “loop”.</p>
-<ul>
-<li><strong>Left factorization</strong></li>
-</ul>
-<p>An LL(1) can only look at the next token to predict the next production. If several alternatives begin with the same terminal, like <code>a -&gt; A B | A C</code>, the parser can check that the next token is <code>A</code> but it can’t see beyond; it would require an LL(2) parser.</p>
+</li>
+<li>
+<p><strong>Left factorization</strong></p>
+<pre><code>a: A B | A C;
+</code></pre>
+<p>An LL(1) can only look at the next token to predict the next production. If several alternatives begin with the same terminal, like above, the parser can check that the next token is <code>A</code> but it can’t see beyond; it would require an LL(2) parser.</p>
 <p>It’s also possible to transform the grammar to work around the limitation:</p>
-<pre><code>a -&gt; A a_1;
-a_1 -&gt; B | C;
+<pre><code>a -&gt; A a_1
+a_1 -&gt; B
+a_1 -&gt; C
 </code></pre>
-<ul>
-<li><strong>Ambiguity</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Ambiguity</strong></p>
 <p>When there is both left and right recursion, the grammar is ambiguous for any class of parser. The classic example is the expression grammar:</p>
-<pre><code>e -&gt; e * e | e - e | Id;
+<pre><code>e: e '*' e | e '-' e | Id;
 </code></pre>
-<p>Firstly, there is no information about the <em>associativity</em> of <code>-</code>. For example, with the input “a - b - c”, it is unclear whether the correct derviation is</p>
+<p>Firstly, there is no information about the <em>associativity</em> of <code>-</code>. For example, with the input “a - b - c”, it is unclear whether the correct derivation is</p>
 <ul>
 <li>
-<p><code>e -&gt; (e -&gt; Id("a")) - (e -&gt; (e -&gt; Id("b")) - (e -&gt; Id("c")))</code></p>
-<p>more simply, <code>a - (b - c)</code></p>
+<p>either <code>e -&gt; (e -&gt; Id("a")) '-' (e -&gt; (e -&gt; Id("b")) '-' (e -&gt; Id("c")))</code></p>
+<p>more simply, <code>a - (b - c)</code>, which is right-associative</p>
 </li>
 <li>
-<p><code>e -&gt; (e -&gt; (e -&gt; Id("a")) - (e -&gt; Id("b"))) - (e -&gt; Id("c"))</code></p>
-<p>more simply: <code>(a - b) - c</code></p>
+<p>or <code>e -&gt; (e -&gt; (e -&gt; Id("a")) '-' (e -&gt; Id("b"))) '-' (e -&gt; Id("c"))</code></p>
+<p>more simply: <code>(a '-' b) '-' c</code>, which is left-associative</p>
 </li>
 </ul>
-<p>Semantically, they’re not the same! 4 - (3 - 2) = 3, but (4 - 3) - 2 = -1.</p>
-<p>Secondly, there is no information about the relative precedence of <code>*</code> and <code>-</code>. The input “a - b * c” can be either</p>
+<p>Semantically, they’re not the same! 4 - (3 - 2) = 3, but (4 - 3) - 2 = -1. Lexigram assumes binary ambiguities are left-associative; the user must add an attribute to specify right-associative productions. For example, here is a rule where <code>'^'</code> is right-associative and <code>'*'</code> is left-associative:</p>
+<pre><code>e: &lt;R&gt; e '^' e | e '*' e | Id;
+</code></pre>
+<p>Secondly, there is no information about the relative <em>priority</em>, or <em>precedence</em>, of <code>'*'</code> and <code>'-'</code>. There are two ways to semantically interpret the input “a - b * c”:</p>
 <ul>
-<li><code>a - (b * c)</code></li>
-<li><code>(a - b) * c</code></li>
+<li><code>a '-' (b '*' c)</code></li>
+<li><code>(a '-' b) '*' c</code></li>
 </ul>
-<p>The problem of ambiguity is more delicate to solve in the case of top-down parsers. Several techniques exist, that depend on the implementation:</p>
+<p>Lexigram assumes earlier productions have higher priority than later productions. For example, in the following rule, <code>'^'</code> has precedence over <code>'*'</code> (a <code>&lt;P&gt;</code> attribute can also be attached to a production to give it the same precedence as the previous production, when necessary):</p>
+<pre><code>e: &lt;R&gt; e '^' e | e '*' e | Id;
+</code></pre>
+<p>The problem of ambiguity is delicate to solve in the case of top-down parsers. Several techniques exist, that depend on the implementation:</p>
 <ul>
-<li>Handwritten parsers usually apply a technique called precedence climbing, or Pratt parsing, which is equivalent but more general. Both methods use bottom-up parsing for the ambiguous productions, inside a top-down parser.</li>
-<li>Table-driven parsers use Clarke’s technique, which modifies the grammar. That’s how Lexigram deals with ambiguous rules, since it better fits the table implementation than precedence climbing/Pratt.</li>
+<li>Handwritten parsers usually apply a technique called <em>precedence climbing</em>, or <em>Pratt parsing</em>, which is equivalent but more general. Both methods use bottom-up parsing, for the ambiguous productions, inside a top-down parser.</li>
+<li>Table-driven parsers use Clarke’s technique, which modifies the grammar. That’s how Lexigram proceeds with ambiguous rules, since it’s more suited to the table implementation than precedence climbing/Pratt.</li>
 </ul>
-<p>This is only a general rule; there are exceptions: the ANTLR generates a recursive descent parser where the ambiguities are solved using Clarke’s technique.</p>
+<p>This is only a general rule. There are exceptions, such as ANTLR, which generates a recursive descent parser where the ambiguities are resolved with Clarke’s technique.</p>
+</li>
+</ul>
 <p>As we said earlier, Lexigram modifies the grammar automatically in those three situations. Other parser generators, like ANTLR, do it too, but some generators will expect you to provide an LL(k) grammar. Either way, it’s worth keeping the grammar limitations in mind, because those transformations, even if they’re automatic, create extra nonterminals.</p>
 <p>We’ll come back on those transformations and on the performance aspects of a grammar when we discuss how Lexigram works.</p>
 <h2 id="bottom-up-parsers"><a class="header" href="#bottom-up-parsers">Bottom-Up Parsers</a></h2>
-<p>A bottom-up parser starts from the tokens and deduces the production from them. It accumulates the incoming tokens until it recognizes a production and <em>reduces</em> that part of the input to a nonterminal. Then, it checks if further reductions can be made, consuming more tokens if necessary.</p>
+<p>Contrary to a top-down parser, a bottom-up parser starts from the tokens and determines the productions that derives them. To achieve that, it accumulates the incoming tokens on a stack until it recognizes a production and <em>reduces</em> the top (rightmost) symbols to a nonterminal. Then it iterates until only the start nonterminal remains.</p>
 <p>Let’s take the same grammar again:</p>
 <pre><code>Id: [A-Za-z][A-Za-z0-9]*;
 Num: [0-9]+;
 
-statement -&gt; assign ";";
-statement -&gt; print ";"; 
-assign -&gt; "let" Id "=" value;
-print -&gt; "print" value;
-value -&gt; Id;
-value -&gt; Num;
+statement -&gt; assign ";"
+statement -&gt; print ";" 
+assign -&gt; "let" Id "=" value
+print -&gt; "print" value
+value -&gt; Id
+value -&gt; Num
 </code></pre>
-<p>A bottom-up parser processes the input “let a = 10;” as follows:</p>
+<p>The parser processes the input “let a = 10;” as follows:</p>
 <ul>
-<li>The parser needs to consume <code>Let</code>, <code>Id("a")</code>, <code>"="</code>, and <code>Num("10")</code> before it can make its first reduction: <code>value -&gt; Num("10")</code>.</li>
-<li>The stack is <code>Let</code>, <code>Id("a")</code>, <code>"="</code>, <code>value</code>. The parser recognizes the production <code>assign -&gt; "let" Id "=" value</code>.</li>
+<li>It needs to consume <code>'let'</code>, <code>Id("a")</code>, <code>'='</code>, and <code>Num("10")</code> before it can make its first reduction: <code>value -&gt; Num("10")</code>.</li>
+<li>The stack is <code>'let'</code>, <code>Id("a")</code>, <code>'='</code>, <code>value</code>. The parser recognizes the production <code>assign -&gt; "let" Id "=" value</code>.</li>
 <li>The stack is <code>assign</code>. There are no further reductions, so the parser takes the next token.</li>
-<li>The stack is <code>value</code>, <code>";"</code>. The parser recognizes <code>statement -&gt; assign ";"</code>.</li>
+<li>The stack is <code>value</code>, <code>';'</code>. The parser recognizes <code>statement -&gt; assign ";"</code>.</li>
 <li>The stack is <code>statement</code>, and the end of the input has been reached. <code>statement</code> is an acceptable result, so the parser has finished and the result is successful.</li>
 </ul>
-<p><img src="./images/basic_4.svg" alt="Image"></p>
-<p>This time, you can see that the syntax tree is built from the bottom up, by discovering the terminal leaves first and incrementally creating nonterminal branches to attach them.</p>
-<p>We can also see it as the <em>reduction</em> of the input, where symbols matching the right-hand side of a production are replaced by the left-hand side.</p>
-<p>The main classes of bottom-up parsers are</p>
+<div style="text-align: center">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/basic_4.svg" alt="Image"><span class="img-wrapper"><img src="./images/basic_4.svg" alt="Image"></span></label></p>
+</div>
+
+<p>This time, you can see that the syntax tree is built from the bottom up, by discovering the terminal leaves first and incrementally creating nonterminal branches to attach them. We can also see it as the <em>reduction</em> of the input, where symbols matching the right-hand side of a production are replaced by the left-hand side.</p>
+<p>Instead of predicting the next production from the nonterminal on the stack and the next token, bottom-up parsers use a state machine that discovers symbols and keeps them on a stack until it can use the rightmost part to derive the input, progressively reducing symbols to nonterminals.</p>
+<p>The main types of bottom-up parsers are</p>
 <ul>
-<li>LR(k), where the first L stands for scanning <strong>L</strong>eft to right, and the R for <strong>R</strong>ightmost derivation. k is the number of look-ahead tokens, which is in practice 0 or 1. So, in comparison to the LL parser which starts at the top of the syntax tree and always derives the leftmost nonterminal first, the LR parser starts at the bottom and always derives (in reverse) the rightmost nonterminal first.</li>
-<li>SLR(k) is a <strong>S</strong>imple <strong>LR</strong>. This class of parsers has fewer states than the equivalent LR for the same grammar, but they can handle a smaller set of grammars.</li>
-<li>LALR stands for <strong>L</strong>ook <strong>A</strong>head <strong>LR</strong>. Without going into details, this class of parsers improves on SLR by using local look-ahead, allowing them to handle a larger set of grammars with the same number of states as the equivalent SLR parsers. In practice, LALR parsers are often preferred to the other classes.</li>
+<li>
+<p>LR(k), where the first L stands for scanning <strong>L</strong>eft to right, and the R for <strong>R</strong>ightmost derivation. k is the number of look-ahead tokens, which is in practice 0 or 1. So, in comparison to the LL parser which starts at the top of the syntax tree and always derives the leftmost nonterminal first, the LR parser starts at the bottom and always derives (in reverse) the rightmost nonterminal first.</p>
+<p>LR parsers can derive the largest set of languages, but they tend to have a huge number of states.</p>
+</li>
+<li>
+<p>SLR(k) is a <strong>S</strong>imple <strong>LR</strong>. This class of parsers has fewer states than the equivalent LR for the same grammar, but they can handle a smaller set of grammars. They’re rarely used because of their limitations.</p>
+</li>
+<li>
+<p>LALR(k) stands for <strong>L</strong>ook <strong>A</strong>head <strong>LR</strong>. The most commonly used is LALR, which is the short notation for LALR(1). This class of parsers improves on SLR by using local look-ahead, allowing them to handle a larger set of grammars with the same number of states as the equivalent SLR parsers. In practice, LALR parsers are often preferred to the other types because of the good compromise they offer. It’s the default type in the well-known Yacc and Bison generators.</p>
+</li>
 </ul>
-<p>The bottom-up parsers are table-driven, following a mechanism very similar to table-driven LL parsers. Computing the table of an LL parser is a little tedious, but it’s a lot of work for bottom-up parser, even LALR, so this task is almost always done by a tool.</p>
-<p>A website that calculates the table can be found at <a href="https://jsmachines.sourceforge.net/machines/lr1.html">this URL for an LR(1) parser</a>, and at <a href="https://jsmachines.sourceforge.net/machines/lalr1.html">this URL for an LALR(1) parser</a>. You can see the difference in the number of state for the default grammar shown as an example.</p>
-<p>Since Lexigram currently generates top-down parsers only, we won’t talk any further about bottom-up parsers. We’ll add more when Lexigram supports them.</p>
+<p>We’ll note *LR for any of these types.</p>
+<h3 id="implementation"><a class="header" href="#implementation">Implementation</a></h3>
+<p>Computing the states and the look-ahead tokens is generally too complicated to be performed by hand, so tools are used to do this task. And, since the state machine is less intuitive than the nature of predictive top-down parsers, it makes little sense to write the code manually, so bottom-up parsers are table-driven.</p>
+<p>Let’s show the general idea of the state machine and how the table is used with the same grammar as above:</p>
+<pre><code>0: statement -&gt; assign ";"     
+1: statement -&gt; print ";"      
+2: assign -&gt; "let" Id "=" value
+3: print -&gt; "print" value      
+4: value -&gt; Id                 
+5: value -&gt; Num                
+</code></pre>
+<p>The states that correspond to the LALR parser are listed below.</p>
+<pre><code>- state 0:                                |  - state 5:
+    statement -&gt; • assign ";"             |      statement -&gt; assign • ";"
+    statement -&gt; • print ";"              |  - state 6:
+    assign -&gt; • "let" Id "=" value        |      statement -&gt; print • ";"
+    print -&gt; • "print" value              |  - state 7:
+    &lt;goal&gt; -&gt; • statement                 |      assign -&gt; "let" Id • "=" value
+- state 1:                                |  - state 8:
+    print -&gt; "print" • value              |      value -&gt; Id •                    [";"]
+    value -&gt; • Id                         |  - state 9:
+    value -&gt; • Num                        |      value -&gt; Num •                   [";"]
+- state 2:                                |  - state 10:
+    assign -&gt; "let" Id "=" • value        |      print -&gt; "print" value •         [";"]
+    value -&gt; • Id                         |  - state 11:
+    value -&gt; • Num                        |      statement -&gt; assign ";" •        [$]
+- state 3:                                |  - state 12:
+    assign -&gt; "let" • Id "=" value        |      statement -&gt; print ";" •         [$]
+- state 4:                                |  - state 13:
+    &lt;goal&gt; -&gt; statement •            [$]  |      assign -&gt; "let" Id "=" value •   [";"]
+</code></pre>
+<p>Each state represents all the candidate productions, called <em>items</em>, considered at one point during the parsing and the position of the “cursor” in them. This cursor is represented by the dot <code>•</code>. What’s on the right of the dot determines the transitions to the other states, either</p>
+<ul>
+<li>directly if it’s a terminal: state 0 jumps to state 3 if the token is <code>'let'</code>.</li>
+<li>indirectly through later reduction if it’s a nonterminal: state 2 requires a <em>value</em>, which is either an <code>Id</code> or a <code>Num</code>, reduced in states 8 and 9, respectively, and then jumps to state 13.</li>
+</ul>
+<p>The terminals between <code>[</code> … <code>]</code> are lookahead tokens that must be there in order to reduce the corresponding production. For instance, in states 8 and 9, the reductions can only proceed if the next terminal is a <code>';'</code>. This allows to put multiple reductions in a single state, though it’s not used in our simple grammar (it doesn’t require lookahead, so an SLR parser would have been enough).</p>
+<p>The starting state is 0, and the parsing is done when the fake nonterminal <code>&lt;goal&gt;</code> is reduced (here, state 4). States are pushed on a stack, and the current state is by convention the top one.</p>
+<p>It’s worth noting that each state indicates a specific symbol on the left of the dot, state 0 excepted. For example, if you ignore the items where the dot has nothing on its left, state 1 represents the terminal <code>'print'</code>, state 2 the terminal <code>'='</code>, state 5 the nonterminal <code>assign</code>, and so on. This means the state stack represents a series of symbols: <code>[0, 3, 7, 2, 9]</code> represents <code>'let' Id '=' Num</code>.</p>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>A website that calculates parser tables can be found at <a href="https://jsmachines.sourceforge.net/machines/lr1.html">this URL for an LR(1) parser</a>, and at <a href="https://jsmachines.sourceforge.net/machines/lalr1.html">this URL for an LALR(1) parser</a>. You can see the difference in the number of state for the default grammar shown as an example.</p>
+</blockquote>
+<p>Below is the corresponding table used by the parser. It’s divided into two parts: the left, with the terminals <code>'let'</code> to <code>$</code>, is called the ACTION table, and the right, with the nonterminals, is called the GOTO table.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: right"><strong>state</strong></th><th style="text-align: center">‘let’</th><th style="text-align: center">‘print’</th><th style="text-align: center">‘=’</th><th style="text-align: center">‘;’</th><th style="text-align: center">Id</th><th style="text-align: center">Num</th><th style="text-align: center">$</th><th style="text-align: center"><em>statement</em></th><th style="text-align: center"><em>assign</em></th><th style="text-align: center"><em>print</em></th><th style="text-align: center"><em>value</em></th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: right"><strong>0</strong></td><td style="text-align: center">s3</td><td style="text-align: center">s1</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center"><strong>4</strong></td><td style="text-align: center"><strong>5</strong></td><td style="text-align: center"><strong>6</strong></td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>1</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s8</td><td style="text-align: center">s9</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center"><strong>10</strong></td></tr>
+<tr><td style="text-align: right"><strong>2</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s8</td><td style="text-align: center">s9</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center"><strong>13</strong></td></tr>
+<tr><td style="text-align: right"><strong>3</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s7</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>4</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">acc</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>5</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s11</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>6</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s12</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>7</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">s2</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>8</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r4</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>9</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r5</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>10</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r3</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>11</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r0</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>12</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r1</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+<tr><td style="text-align: right"><strong>13</strong></td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">r2</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td><td style="text-align: center">-</td></tr>
+</tbody>
+</table>
+</div>
+<p>In the ACTION part, the current state and the next token from the lexer determines what to do:</p>
+<ul>
+<li>
+<p><code>s&lt;number&gt;</code> is a <em>shift</em>; it consumes the token and jumps to the state number by pushing it on the stack. If the state stack is <code>[0]</code>, a token <code>'let'</code> indicates <code>s3</code>, a jump to state 3. The token is consumed and the stack now contains <code>[0, 3]</code>.</p>
+</li>
+<li>
+<p><code>r&lt;number&gt;</code> is a <em>reduction</em>; it reduces the top states on the stack by the production number. For example, if the stack is <code>[0, 3, 7, 2, 9]</code> and the next token is <code>';'</code>, <code>r5</code> indicates a reduction by production 5 (<code>value -&gt; Num</code>). It pops as many entries from the stack as there are symbols in the production. Here, there’s one symbol, <code>Num</code> (which indeed matches state 9), so</p>
+<ul>
+<li>state 9 is popped</li>
+<li>state 2 is now the state at the top</li>
+<li>GOTO(2, <code>value</code>) = state 13, which is pushed on the stack</li>
+</ul>
+<p>The stack is now <code>[0, 3, 7, 2, 13]</code>. Since the token hasn’t been consumed, it leads to another reduction <code>r2</code>, which is the production <code>assign -&gt; "let" Id "=" value</code>. You can see that the symbols correspond again to the states on the stack, as we saw before but with <code>value</code> (13) at the end. The production requires to pop four states:</p>
+<ul>
+<li>states 3, 7, 2, and 13 are popped</li>
+<li>state 0 is now at the top</li>
+<li>GOTO(0, <code>assign</code>) = state 5, which is pushed on the stack: <code>[0, 5]</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Here’s the pseudocode of the simplified LR parser loop:</p>
+<pre><code class="language-rust">impl LRParser {
+    pub fn parse (&amp;mut self) -&gt; Result&lt;(), &amp;str&gt; {
+        let mut stack = vec![0];
+        let mut token = self.lexer.get_token();
+        while let Some(top) = stack.last() {
+            match self.get_action(stack.last(), token) {
+                Shift(new_state) =&gt; {
+                    // jumps to new state and consumes the token
+                    stack.push(new_state);
+                    token = self.lexer.get_token();
+                }
+                Reduce(p) =&gt; {
+                    // reduction of rightmost symbols
+                    let num = self.production_len[p];       // number of symbols in production
+                    stack.drain(stack.len() - num ..);      // pops num states
+                    let pop_state = stack.last().unwrap();
+                    let new_state = self.get_goto(pop_state, self.nonterminal[p]);
+                    stack.push(new_state);
+                }
+                Accept =&gt; {
+                    // end of stream, as expected
+                    assert_eq!(stack.pop(), Some(0));
+                }
+                _ =&gt; return Err("syntax error")
+            }
+        }
+        Ok(())
+    }
+}</code></pre>
+<p>The actual code is a little more complex, since it tries to resynchronize from syntax errors and calls the user interface.</p>
+<p>Table-driven bottom-up parsers have an interesting characteristic: the table used by the parser has the same format for all the *LR types. The algorithm above remains the same. So, when other types are added later to Lexigram, it won’t require any work on the parser itself. More importantly, from the user perspective, changing the type has no cost! The code must be regenerated for the new table, but the code written by the user to implement the interface needn’t change at all.</p>
+<p>However, changing the type from LL(1) to *LR could require some minor modifications, depending on which features were used. It’s not too bad, though, so if you started with an LL(1) grammar and realize you’re stuck because it won’t support an extension to the language, you can consider moving to an *LR parser without having to modify your code too much. The differences are explained in detail later, in the <a href="tut-ex-impl.html">Listener Implementation</a> part of the tutorial and in the <a href="parser.html">Parser Generator Reference</a>, but roughly speaking,</p>
+<ul>
+<li>An LL(1) parser calls user methods <strong>before</strong> it starts parsing a production (e.g. <code>init_assign(…)</code>) and <strong>after</strong> it parsed it entirely (<code>exit_assign(…)</code>).</li>
+<li>An *LR parser can only call a user method <strong>after</strong> a production has been entirely parsed; e.g. it can’t call an <code>init_assign(…)</code> method. If you used such a method to initialize data before a specific rule is used, you’ll have to find another way with an *LR parser.</li>
+</ul>
+<h3 id="limitations-1"><a class="header" href="#limitations-1">Limitations</a></h3>
+<p>*LR parsers don’t suffer for the limitations of LL(1) parsers.</p>
+<p>However, ambiguous rules such as the one below must be resolved by determining the relative priority of the operations and their associativity. In LR parsers, such rules generate shift/reduce conflicts in the table for states related to the rule and the terminals separating similar nonterminals, like <code>'*'</code> and <code>'+'</code> below.</p>
+<pre><code>e: e '*' e | e '+' e | Id;
+</code></pre>
+<p>The relative priority and the associativity determine whether a shift or a reduce must be chosen in each conflict.</p>
+<p>Lexigram uses the same resolution as described before for LL(1) parsers. *LR grammars also need a <code>&lt;resolve&gt;</code> attribute in front of rules that must be resolved. Without that, Lexigram may accidentally try to automatically resolve other shift/reduce conflicts that come from bad grammars and should be reported instead. Since this attribute is ignored when Lexigram generates an LL(1) parser, you may always use it to tag ambiguous rules that need to be automatically resolved.</p>
+<!-- too much details
+
+The rule above translates into the following productions, relevant states, and table, where the conflicts are shown:
+
+```
+0: e -> e '*' e
+1: e -> e '+' e
+2: e -> Id
+```
+
+```
+- state 3:
+    e -> e '*' • e      [$, '*', '+']
+    e -> • e '*' e      [$, '*', '+']
+    e -> • e '+' e      [$, '*', '+']
+    e -> • Id           [$, '*', '+']
+    
+- state 4:
+    e -> e '+' • e      [$, '*', '+']
+    e -> • e '*' e      [$, '*', '+']
+    e -> • e '+' e      [$, '*', '+']
+    e -> • Id           [$, '*', '+']    
+```
+
+ |**state**|  '*'  |  '+'  | Id |  $  | _e_ |
+ |--------:|:-----:|:-----:|:--:|:---:|:---:|
+ |  **0**  |   -   |   -   | s2 |  -  |  1  |
+ |  **1**  |   s3  |   s4  |  - | acc |  -  |
+ |  **2**  |   r2  |   r2  |  - |  r2 |  -  |
+ |  **3**  |   -   |   -   | s2 |  -  |  5  |
+ |  **4**  |   -   |   -   | s2 |  -  |  6  |
+ |  **5**  | s3/r0 | s4/r0 |  - |  r0 |  -  |
+ |  **6**  | s3/r1 | s4/r1 |  - |  r1 |  -  |
+
+* In state 5 / `'*'`, the stack already contains an expression on the left with a `'*'` (state 1 and `'*'` -> state 3 and `Id` -> reduction -> state 5),
+  * a shift `s3` would consume the `'*'`. It wouldn't reduce that left expression yet, which means we'll reduce the rightmost one first. If we choose `s3`, we make `'*'` right-associative.
+  * a reduce `r0` would reduce the expression on the left that already contained a `'*'`, by using production 0. It's left-associative.
+
+  We want a left-associative multiplication, so we choose `r0`.
+* In state 5 / `'+'`,
+  * a shift `s4` would similarly consume the `'+'` without reducing the expression on the left that contained a `'*'`. The `'+'` will be reduced before the `'*'`, giving the addition higher precedence.
+  * a reduce `r0` would reduce the left expression before continuing with `'+'`, giving the multiplication higher precedence.
+
+  We want the multiplication to have higher precedence, so we choose `r0`.
+* In state 6 / `'*'`the stack already contains an expression on the left with a `'+'` (state 1 and `'+'` -> state 4 and `Id` -> reduction -> state 6),
+  * a shift `s3` would defer the reduction of the addition on the left, giving higher precedence to the multiplication. This is what we want.
+  * a reduce `r1` would reduce the addition on the left first, giving higher precedence to this addition vs the multiplication.
+* In state 6 / `'+'`,
+  * a shift `s4` makes the addition right-associative.
+  * a reduce `r1` makes the addition left-associative, which is what we want.
+
+So the resolved table is:
+
+ |**state**|  '*'  |  '+'  | Id |  $  | _e_ |
+ |--------:|:-----:|:-----:|:--:|:---:|:---:|
+ | ...                                      |
+ |  **5**  | **r0**| **r0**|  - |  r0 |  -  |
+ |  **6**  | **s3**| **r1**|  - |  r1 |  -  |
+
+-->
 
                     </main>
 
@@ -569,11 +799,11 @@ value -&gt; Num;
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 
