@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -196,7 +196,7 @@
 <p>If you prefer the command-line option, you should install the <a href="crates.html#lexigram">lexigram executable</a>. That’s the option we’ll take in this overview.</p>
 </li>
 <li>
-<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
+<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="crates.html#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
 </li>
 <li>
 <p>Or you could create a <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">build script</a> that generates the code. Again, there’s a choice: the script may either launch the command-line executable, call its public method <code>lexigram::execute</code>, or use the build method as described in the previous paragraph.</p>
@@ -495,7 +495,7 @@ pub enum SynS {
 </code></pre>
 <ul>
 <li><code>'a</code> is simply the lifetime of the table references, which are static if you use <code>build_lexer()</code> since the tables are static in the code.</li>
-<li><code>R: Read</code> is the input. If you read from a string, it’s usually <code>Cursor&lt;String&gt;</code>. If the input is itself a reference, like <code>&amp;str</code>, you may have a <code>Cursor&lt;&amp;str&gt;</code> and so another lifetime in your top parser type. You’ll find an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/typedef/src/typedef_id_type.rs">examples/typedef</a>.</li>
+<li><code>R: Read</code> is the input. If you read from a string, it’s usually <code>Cursor&lt;String&gt;</code>. If the input is itself a reference, like <code>&amp;str</code>, you may have a <code>Cursor&lt;&amp;str&gt;</code> and so another lifetime in your top parser type. You’ll find an example of that in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef/src/typedef_id_type.rs">examples/typedef</a>.</li>
 </ul>
 <p>The parser has only a lifetime generic parameter:</p>
 <pre><code>pub struct LLParser&lt;'a&gt;
@@ -610,7 +610,7 @@ impl ExampleListener for Listener {
 
     // ...
 }</code></pre>
-<p>Another return value, <code>Terminate::Conclude</code>, makes the parser stop as if everything had been successfully parsed. It can be used if you intend to parse an input that may be longer than what you need and if it’s too difficult to cut that input before giving it to the parser. There’s an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/watcher/src/lib.rs">examples/watcher</a></p>
+<p>Another return value, <code>Terminate::Conclude</code>, makes the parser stop as if everything had been successfully parsed. It can be used if you intend to parse an input that may be longer than what you need and if it’s too difficult to cut that input before giving it to the parser. There’s an example of that in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher/src/lib.rs">examples/watcher</a></p>
 <p>Keep in mind that aborting the parsing, even with <code>Terminate::Conclude</code> will not call the exit methods of the pending nonterminals, nor the final <code>exit()</code> method. Instead, it will call <code>abort()</code>. For example, if you aborted in <code>exit_val(…)</code>, the <code>exit_s(…)</code> method wouldn’t be called.</p>
 </li>
 <li>

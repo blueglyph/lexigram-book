@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -182,14 +182,14 @@
 <p>Two parser types can be generated: top-down and bottom-up.</p>
 <p>The top-down option generates a predictive, non-recursive LL(1) parser. You may write non-LL(1) grammars as long as Lexigram can transform it into LL(1): left-recursive and ambiguous rules such as binary expressions are supported, and left factorization is performed automatically. The grammar also supports extended syntax such as repetition, token-separated repetitions, and so on. The generated interface hides those transformations by referring to the original rules as much as possible.</p>
 <p>The bottom-up option currently generates an LALR(1) parser. Ambiguous rules are resolved with the same simple grammar notation used in LL(1) grammars. In general, Lexigram makes it relatively straightforward to move from LL to LALR.</p>
-<p>The project is currently hosted on <a href="https://github.com/blueglyph/lexigram">GitHub</a>.</p>
+<p>The project is currently hosted on <a href="https://codeberg.org/Redglyph/lexigram">Codeberg</a>.</p>
 <h2 id="this-documentation"><a class="header" href="#this-documentation">This Documentation</a></h2>
 <p>This documentation consists of several chapters.</p>
 <p>The <a href="intro.html">introduction</a> gives a general overview of parsers, their components, how they are designed, how they can be used, and the main parser types. If you’re not familiar with the design of parsers and the limitations of LL(1) and LALR grammars, it is recommended to read it, otherwise it can be skipped.</p>
 <p>The <a href="tutorial.html">tutorial</a> gives a brief overview of the flow, and then shows how to build a small parser step by step. It helps you familiarize yourself with Lexigram using a hands-on approach.</p>
 <p>The <a href="crates.html">quick overview of the crates</a> presents the main crates of this project.</p>
 <p>The <a href="lexer.html">lexer generator reference</a> and the <a href="parser.html">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
-<p>The Lexigram Book covers versions <strong>0.10.0</strong> and <strong>0.10.1</strong>; it was last updated on <strong>13 October 2026</strong>.</p>
+<p>The Lexigram Book covers versions <strong>0.10.0</strong> to <strong>0.10.2</strong>; it was last updated on <strong>13 October 2026</strong>.</p>
 <h3 id="older-versions"><a class="header" href="#older-versions">Older versions</a></h3>
 <ul>
 <li><a href="0.9.3/index.html">0.9.3 - 0.9.4</a></li>
@@ -207,7 +207,7 @@
 <pre><code class="language-shell">lexigram -c grammar/calc.lg --indent 4 -l src/calc.rs tag calc_lexer -p src/calc.rs tag calc_parser
 </code></pre>
 <p>You can also generate a parser programatically from your source code instead of using the command-line tool. In that case, you need the full library; see the <a href="crates.html#lexi-gram">Lexigram Crates</a> chapter and the <a href="tut-overview.html#generating-the-code">tutorial</a> for more information.</p>
-<p>Don’t miss the examples in the repository, under the <a href="https://github.com/blueglyph/lexigram/tree/master/examples"><code>examples</code></a> directory (they’re briefly listed at <a href="tut-what-next.html">the end of the tutorial</a>).</p>
+<p>Don’t miss the examples in the repository, under the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples"><code>examples</code></a> directory (they’re briefly listed at <a href="tut-what-next.html">the end of the tutorial</a>).</p>
 
                     </main>
 

@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -1100,7 +1100,7 @@ None                    : 'none';
 Parents                 : 'parents';
 Set                     : 'set';
 </code></pre>
-<p>And here is the grammar part. We use <code>value</code> for the nonterminal names instead of <code>Id</code> because we want to avoid collisions with the existing keywords. For example, we wouldn’t be able to use nonterminal names like <code>lexer</code> and <code>parser</code> in that list, since the lexer wouldn’t identify them as <code>Id</code>, but as other tokens. There is a way around that with more advanced features of Lexigram, though, as you can see in the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef"><code>gen_typedef</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef"><code>typedef</code></a> example.</p>
+<p>And here is the grammar part. We use <code>value</code> for the nonterminal names instead of <code>Id</code> because we want to avoid collisions with the existing keywords. For example, we wouldn’t be able to use nonterminal names like <code>lexer</code> and <code>parser</code> in that list, since the lexer wouldn’t identify them as <code>Id</code>, but as other tokens. There is a way around that with more advanced features of Lexigram, though, as you can see in the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_typedef"><code>gen_typedef</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef"><code>typedef</code></a> example.</p>
 <pre><code>nt_value:
     'default'
 |   'none'

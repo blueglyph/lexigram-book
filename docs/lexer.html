@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -543,7 +543,7 @@ inst:
 <p>In the grammatical definition of <code>decl</code> above, the <code>Type</code> in the first alternative is “competing” with the <code>Typedef</code> of the second alternative. Therefore, the method could get <code>Term::Type</code> or <code>Term::Typedef</code>. That’s not all: <code>inst</code> is competing with <code>decl</code> as next predicted nonterminal in <code>program</code>, so ``Let<code>and</code>Print<code>are two other arguments that</code>hook(…)`  receive.</p>
 </blockquote>
 <p>The listener offers another way to intercept all the tokens: the parser calls the listener’s <code>intercept_token(…)</code> method each time it receives a token from the lexer. Its default implementation is empty, so it’s optimized out by the compiler. Implementing it to intercept tokens may have a bigger performance impact than <code>hook(…)</code>, and it requires to take all the incoming tokens into account.</p>
-<p>See also the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef">gen_typedef</a> and <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef">typedef</a> examples, which illustrate the two interception methods.</p>
+<p>See also the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_typedef">gen_typedef</a> and <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef">typedef</a> examples, which illustrate the two interception methods.</p>
 <h2 id="formal-grammar-definition"><a class="header" href="#formal-grammar-definition">Formal Grammar Definition</a></h2>
 <p>Here are the lexicon and the grammar of Lexi, using the Lexigram syntax. Those files can be found in the repository, in the <code>build-stage1</code> directory.</p>
 <h3 id="lexis-lexicon"><a class="header" href="#lexis-lexicon">Lexi’s Lexicon</a></h3>

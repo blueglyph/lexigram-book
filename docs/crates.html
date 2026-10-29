@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -212,7 +212,7 @@
 <li><code>-c|--combined</code>: location of the combined lexicon/grammar (same principle as above)</li>
 </ul>
 <p>The tags can be in a comment or in a string; Lexigram simply looks if it’s included in two lines of the file. If it can’t find both tags, Lexigram stops before going any further; e.g. it won’t start writing to the file, possibly erasing important code. Make sure the tags are unique, though.</p>
-<p>You can find example of lexicons and grammars, either in their own file or between tags, <a href="https://github.com/blueglyph/lexigram/tree/master/examples">in the repository</a>. Look for <code>*.l</code>, <code>*.g</code>, and <code>*.lg</code> files in the <code>gen_*</code> crates; the extension doesn’t really matter for Lexigram, but we stuck to this convention for the sake of consistency.</p>
+<p>You can find example of lexicons and grammars, either in their own file or between tags, <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples">in the repository</a>. Look for <code>*.l</code>, <code>*.g</code>, and <code>*.lg</code> files in the <code>gen_*</code> crates; the extension doesn’t really matter for Lexigram, but we stuck to this convention for the sake of consistency.</p>
 <p>The same system as above applies to the location where the generated code should be written, although you can also output it to stdout. Using the tags allow you to have your grammar in the same file as the generated code, if you wanted something minimal, or in one of the crate’s Rust files. The generated lexer and parser can even share the same module, although it’s tidier to keep them apart.</p>
 <ul>
 <li><code>-l|--lexer</code>: location of the generated lexer
@@ -299,10 +299,10 @@
 </ul>
 <p>The <code>lexigram-core</code> crate has an optional feature for top-down parsers, <code>delay_stream_interception</code>, which is disabled by default. That feature delays the capture of the next tokens coming from the lexer, in order to reduce the latency between the capture and the calls to the listener even further. It can be used in some situations:</p>
 <ul>
-<li>When the parser must ignore the remaining part of an input stream, if that remaining part contains text the lexer cannot scan. By delaying the capture, it prevents the lexer from issuing a lexical error before the listener can stop the parser. An example is given in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/watcher">watcher</a>, where you can modify the Cargo.toml to change that optional feature and see the impact.</li>
+<li>When the parser must ignore the remaining part of an input stream, if that remaining part contains text the lexer cannot scan. By delaying the capture, it prevents the lexer from issuing a lexical error before the listener can stop the parser. An example is given in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher">watcher</a>, where you can modify the Cargo.toml to change that optional feature and see the impact.</li>
 <li>When the listener intercepts the tokens with <code>intercept_token(…)</code> to change them, if that change depends on another <code>exit_*(…)</code> listener method that may not be called before the token is captured by the parser.</li>
 </ul>
-<p>Note that, in both cases, it is usually possible to work around those latency problems by introducing an extra nonterminal whose <code>exit_(…)</code> method will be called earlier. This is illustrated in the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_watcher">watcher</a> (<a href="https://github.com/blueglyph/lexigram/tree/master/examples/watcher">impl</a>) example: the <code>shutdown</code> nonterminal was added to the grammar for that purpose.</p>
+<p>Note that, in both cases, it is usually possible to work around those latency problems by introducing an extra nonterminal whose <code>exit_(…)</code> method will be called earlier. This is illustrated in the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_watcher">watcher</a> (<a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher">impl</a>) example: the <code>shutdown</code> nonterminal was added to the grammar for that purpose.</p>
 <h2 id="lexi-gram"><a class="header" href="#lexi-gram">lexi-gram</a></h2>
 <p>This crate contains Lexi and Gram, the parsers used to read the lexicon and the grammar. We do indeed require a parser to read those definitions, which led to some interesting recursion during the development of Lexigram, since those parsers generate themselves.</p>
 <p><a href="https://docs.rs/lexi-gram">Link to the crate documentation</a></p>
@@ -312,7 +312,7 @@
 <li><a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/index.html">options</a>, a module with an <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/struct.OptionsBuilder.html">option builder</a> used with the gen_parser.</li>
 <li>A couple of <a href="https://docs.rs/lexi-gram/latest/lexi_gram/index.html#macros">macros</a> that can be used with the options.</li>
 </ul>
-<p>You will find <a href="https://github.com/blueglyph/lexigram/tree/master/examples">examples in the repository</a>; look at the <code>gen_*</code> crates to see how gen_parser is used to generate the code in the other crates.</p>
+<p>You will find <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples">examples in the repository</a>; look at the <code>gen_*</code> crates to see how gen_parser is used to generate the code in the other crates.</p>
 <p>To illustrate one case, the parser used in the <code>microcalc</code> crate is generated with the following code when <code>action = Action::Generate</code> (<code>Action::Verify</code> is used to verify the generated code, similarly to the <code>-v</code> option of the executable).</p>
 <pre><code class="language-rust">static LEXICON_GRAMMAR_FILENAME: &amp;str = "src/microcalc.lg";
 static SOURCE_FILENAME: &amp;str = "../microcalc/src/main.rs";

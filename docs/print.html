@@ -37,7 +37,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c7e95369.js";
+            window.path_to_searchindex_js = "searchindex-c75cacf9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-448141be.js"></script>
@@ -183,14 +183,14 @@
 <p>Two parser types can be generated: top-down and bottom-up.</p>
 <p>The top-down option generates a predictive, non-recursive LL(1) parser. You may write non-LL(1) grammars as long as Lexigram can transform it into LL(1): left-recursive and ambiguous rules such as binary expressions are supported, and left factorization is performed automatically. The grammar also supports extended syntax such as repetition, token-separated repetitions, and so on. The generated interface hides those transformations by referring to the original rules as much as possible.</p>
 <p>The bottom-up option currently generates an LALR(1) parser. Ambiguous rules are resolved with the same simple grammar notation used in LL(1) grammars. In general, Lexigram makes it relatively straightforward to move from LL to LALR.</p>
-<p>The project is currently hosted on <a href="https://github.com/blueglyph/lexigram">GitHub</a>.</p>
+<p>The project is currently hosted on <a href="https://codeberg.org/Redglyph/lexigram">Codeberg</a>.</p>
 <h2 id="this-documentation"><a class="header" href="#this-documentation">This Documentation</a></h2>
 <p>This documentation consists of several chapters.</p>
 <p>The <a href="#introduction">introduction</a> gives a general overview of parsers, their components, how they are designed, how they can be used, and the main parser types. If you’re not familiar with the design of parsers and the limitations of LL(1) and LALR grammars, it is recommended to read it, otherwise it can be skipped.</p>
 <p>The <a href="#tutorial">tutorial</a> gives a brief overview of the flow, and then shows how to build a small parser step by step. It helps you familiarize yourself with Lexigram using a hands-on approach.</p>
 <p>The <a href="#lexigram-crates">quick overview of the crates</a> presents the main crates of this project.</p>
 <p>The <a href="#lexer-generator-reference">lexer generator reference</a> and the <a href="#parser-generator-reference">parser generator reference</a> describe more formally the lexicon and grammar language, the grammar transformations, and the generated code.</p>
-<p>The Lexigram Book covers versions <strong>0.10.0</strong> and <strong>0.10.1</strong>; it was last updated on <strong>13 October 2026</strong>.</p>
+<p>The Lexigram Book covers versions <strong>0.10.0</strong> to <strong>0.10.2</strong>; it was last updated on <strong>13 October 2026</strong>.</p>
 <h3 id="older-versions"><a class="header" href="#older-versions">Older versions</a></h3>
 <ul>
 <li><a href="0.9.3/index.html">0.9.3 - 0.9.4</a></li>
@@ -208,7 +208,7 @@
 <pre><code class="language-shell">lexigram -c grammar/calc.lg --indent 4 -l src/calc.rs tag calc_lexer -p src/calc.rs tag calc_parser
 </code></pre>
 <p>You can also generate a parser programatically from your source code instead of using the command-line tool. In that case, you need the full library; see the <a href="#lexi-gram">Lexigram Crates</a> chapter and the <a href="#generating-the-code-1">tutorial</a> for more information.</p>
-<p>Don’t miss the examples in the repository, under the <a href="https://github.com/blueglyph/lexigram/tree/master/examples"><code>examples</code></a> directory (they’re briefly listed at <a href="#what-next">the end of the tutorial</a>).</p>
+<p>Don’t miss the examples in the repository, under the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples"><code>examples</code></a> directory (they’re briefly listed at <a href="#what-next">the end of the tutorial</a>).</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>This chapter gives a gentle introduction to parsers and how the tool can help you build one. Its only purpose is to make sure the user is aware of how lexers and parsers work, and what the limitations of the grammar are.</p>
@@ -816,7 +816,7 @@ So the resolved table is:
 <p>If you prefer the command-line option, you should install the <a href="#lexigram-1">lexigram executable</a>. That’s the option we’ll take in this overview.</p>
 </li>
 <li>
-<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://github.com/blueglyph/lexigram/blob/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
+<p>Alternatively, you could generate the code programmatically in a test unit or a binary crate that you can launch directly from the IDE, without having to retype the same command each time. The build method is described briefly in the <a href="#lexi-gram">lexi-gram crate overview</a>, and you can see several examples in the repository, like <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_microcalc/src/lib.rs">examples/gen_microcalc</a>. There, you’ll find one version with the lexicon and the grammar in separate files, and one version with a combined lexicon/grammar.</p>
 </li>
 <li>
 <p>Or you could create a <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">build script</a> that generates the code. Again, there’s a choice: the script may either launch the command-line executable, call its public method <code>lexigram::execute</code>, or use the build method as described in the previous paragraph.</p>
@@ -1115,7 +1115,7 @@ pub enum SynS {
 </code></pre>
 <ul>
 <li><code>'a</code> is simply the lifetime of the table references, which are static if you use <code>build_lexer()</code> since the tables are static in the code.</li>
-<li><code>R: Read</code> is the input. If you read from a string, it’s usually <code>Cursor&lt;String&gt;</code>. If the input is itself a reference, like <code>&amp;str</code>, you may have a <code>Cursor&lt;&amp;str&gt;</code> and so another lifetime in your top parser type. You’ll find an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/typedef/src/typedef_id_type.rs">examples/typedef</a>.</li>
+<li><code>R: Read</code> is the input. If you read from a string, it’s usually <code>Cursor&lt;String&gt;</code>. If the input is itself a reference, like <code>&amp;str</code>, you may have a <code>Cursor&lt;&amp;str&gt;</code> and so another lifetime in your top parser type. You’ll find an example of that in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef/src/typedef_id_type.rs">examples/typedef</a>.</li>
 </ul>
 <p>The parser has only a lifetime generic parameter:</p>
 <pre><code>pub struct LLParser&lt;'a&gt;
@@ -1230,7 +1230,7 @@ impl ExampleListener for Listener {
 
     // ...
 }</code></pre>
-<p>Another return value, <code>Terminate::Conclude</code>, makes the parser stop as if everything had been successfully parsed. It can be used if you intend to parse an input that may be longer than what you need and if it’s too difficult to cut that input before giving it to the parser. There’s an example of that in <a href="https://github.com/blueglyph/lexigram/blob/master/examples/watcher/src/lib.rs">examples/watcher</a></p>
+<p>Another return value, <code>Terminate::Conclude</code>, makes the parser stop as if everything had been successfully parsed. It can be used if you intend to parse an input that may be longer than what you need and if it’s too difficult to cut that input before giving it to the parser. There’s an example of that in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher/src/lib.rs">examples/watcher</a></p>
 <p>Keep in mind that aborting the parsing, even with <code>Terminate::Conclude</code> will not call the exit methods of the pending nonterminals, nor the final <code>exit()</code> method. Instead, it will call <code>abort()</code>. For example, if you aborted in <code>exit_val(…)</code>, the <code>exit_s(…)</code> method wouldn’t be called.</p>
 </li>
 <li>
@@ -1297,7 +1297,7 @@ options {
     indent: INDENT
 }
 </code></pre>
-<p>The full code of that example can be found in the repository, in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_config">examples/gen_config</a> for the parser generation, and in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/config">examples/config</a> for the listener implementations and the test. There’s one implementation for the LL1 parser version and one for the LALR parser version, but the user’s listener implementations are identical.</p>
+<p>The full code of that example can be found in the repository, in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_config">examples/gen_config</a> for the parser generation, and in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/config">examples/config</a> for the listener implementations and the test. There’s one implementation for the LL1 parser version and one for the LALR parser version, but the user’s listener implementations are identical.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="grammar"><a class="header" href="#grammar">Grammar</a></h1>
 <p>Let’s start with the top structure of the grammar. In this section, we’ll build the grammar and get a peek at the generated code. It’s a good opportunity to show features and provide guidance. We’ll implement the listener for the generated code in <a href="#listener-implementation">the next section</a>, once the grammar is fully defined.</p>
@@ -2224,7 +2224,7 @@ None                    : 'none';
 Parents                 : 'parents';
 Set                     : 'set';
 </code></pre>
-<p>And here is the grammar part. We use <code>value</code> for the nonterminal names instead of <code>Id</code> because we want to avoid collisions with the existing keywords. For example, we wouldn’t be able to use nonterminal names like <code>lexer</code> and <code>parser</code> in that list, since the lexer wouldn’t identify them as <code>Id</code>, but as other tokens. There is a way around that with more advanced features of Lexigram, though, as you can see in the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef"><code>gen_typedef</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef"><code>typedef</code></a> example.</p>
+<p>And here is the grammar part. We use <code>value</code> for the nonterminal names instead of <code>Id</code> because we want to avoid collisions with the existing keywords. For example, we wouldn’t be able to use nonterminal names like <code>lexer</code> and <code>parser</code> in that list, since the lexer wouldn’t identify them as <code>Id</code>, but as other tokens. There is a way around that with more advanced features of Lexigram, though, as you can see in the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_typedef"><code>gen_typedef</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef"><code>typedef</code></a> example.</p>
 <pre><code>nt_value:
     'default'
 |   'none'
@@ -3558,18 +3558,18 @@ a_2 -&gt; Id a_1 | ε;
 <li>The <a href="#parser-generator-reference">Gram Reference: Parser</a></li>
 </ul>
 <p>Don’t miss the <a href="#lexigram-crates"><strong>crate documentation</strong></a>, which briefly presents the different crates.</p>
-<p>To see <strong>practical examples</strong>, you can look at the <a href="https://github.com/blueglyph/lexigram">GitHub repository</a>. You’ll find an example directory with a few illustrations of common and more advanced features. Each example is divided into two parts: a <code>gen_&lt;name&gt;</code> crate with the grammar and the parser generator, and the <code>&lt;name&gt;</code> crate with the parser implementation. At the time of writing, the following examples are available:</p>
+<p>To see <strong>practical examples</strong>, you can look at the <a href="https://codeberg.org/Redglyph/lexigram">repository</a>. You’ll find an example directory with a few illustrations of common and more advanced features. Each example is divided into two parts: a <code>gen_&lt;name&gt;</code> crate with the grammar and the parser generator, and the <code>&lt;name&gt;</code> crate with the parser implementation. At the time of writing, the following examples are available:</p>
 <ul>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_microcalc"><code>microcalc</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/microcalc">impl</a>: a simple, bare-bones parser.</li>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_config"><code>config</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/config">impl</a>: a configuration parser on which this tutorial is based.</li>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_terminate"><code>terminate</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/terminate">impl</a>: a parser that uses <code>Terminate::Conclude</code> to discard the rest of the input.</li>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_watcher"><code>watcher</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/watcher">impl</a>: a parser that shows the latency between reading the input and calling the listener methods (check the Cargo.toml file to reduce the latency further).</li>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_pandemonium"><code>pandemonium</code></a> / <a href="https://github.com/blueglyph/lexigram/tree/master/examples/pandemonium">impl</a>: a test that includes all the grammar transformations. It’s probably less instructive.</li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_microcalc"><code>microcalc</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/microcalc">impl</a>: a simple, bare-bones parser.</li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_config"><code>config</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/config">impl</a>: a configuration parser on which this tutorial is based.</li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_terminate"><code>terminate</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/terminate">impl</a>: a parser that uses <code>Terminate::Conclude</code> to discard the rest of the input.</li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_watcher"><code>watcher</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher">impl</a>: a parser that shows the latency between reading the input and calling the listener methods (check the Cargo.toml file to reduce the latency further).</li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_pandemonium"><code>pandemonium</code></a> / <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/pandemonium">impl</a>: a test that includes all the grammar transformations. It’s probably less instructive.</li>
 </ul>
 <p>Another example is a parser for the simplified lexicon/grammar (<code>a -&gt; "let" Id "=" expr ";";</code>), and which is used for a series of unit tests. Some parts may be harder to understand because it uses the full library to generate a parser.</p>
 <ul>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/build-rtsgen"><code>build-rtsgen</code></a></li>
-<li><a href="https://github.com/blueglyph/lexigram/tree/master/src/rtsgen"><code>rtsgen</code></a></li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/build-rtsgen"><code>build-rtsgen</code></a></li>
+<li><a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/src/rtsgen"><code>rtsgen</code></a></li>
 </ul>
 <p>There are of course the lexers and parsers of Lexi and Gram, but they’re even less straightforward to follow because they’re built in two stages and also use the full library to build the lexer and the parser.</p>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -3610,7 +3610,7 @@ a_2 -&gt; Id a_1 | ε;
 <li><code>-c|--combined</code>: location of the combined lexicon/grammar (same principle as above)</li>
 </ul>
 <p>The tags can be in a comment or in a string; Lexigram simply looks if it’s included in two lines of the file. If it can’t find both tags, Lexigram stops before going any further; e.g. it won’t start writing to the file, possibly erasing important code. Make sure the tags are unique, though.</p>
-<p>You can find example of lexicons and grammars, either in their own file or between tags, <a href="https://github.com/blueglyph/lexigram/tree/master/examples">in the repository</a>. Look for <code>*.l</code>, <code>*.g</code>, and <code>*.lg</code> files in the <code>gen_*</code> crates; the extension doesn’t really matter for Lexigram, but we stuck to this convention for the sake of consistency.</p>
+<p>You can find example of lexicons and grammars, either in their own file or between tags, <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples">in the repository</a>. Look for <code>*.l</code>, <code>*.g</code>, and <code>*.lg</code> files in the <code>gen_*</code> crates; the extension doesn’t really matter for Lexigram, but we stuck to this convention for the sake of consistency.</p>
 <p>The same system as above applies to the location where the generated code should be written, although you can also output it to stdout. Using the tags allow you to have your grammar in the same file as the generated code, if you wanted something minimal, or in one of the crate’s Rust files. The generated lexer and parser can even share the same module, although it’s tidier to keep them apart.</p>
 <ul>
 <li><code>-l|--lexer</code>: location of the generated lexer
@@ -3697,10 +3697,10 @@ a_2 -&gt; Id a_1 | ε;
 </ul>
 <p>The <code>lexigram-core</code> crate has an optional feature for top-down parsers, <code>delay_stream_interception</code>, which is disabled by default. That feature delays the capture of the next tokens coming from the lexer, in order to reduce the latency between the capture and the calls to the listener even further. It can be used in some situations:</p>
 <ul>
-<li>When the parser must ignore the remaining part of an input stream, if that remaining part contains text the lexer cannot scan. By delaying the capture, it prevents the lexer from issuing a lexical error before the listener can stop the parser. An example is given in <a href="https://github.com/blueglyph/lexigram/tree/master/examples/watcher">watcher</a>, where you can modify the Cargo.toml to change that optional feature and see the impact.</li>
+<li>When the parser must ignore the remaining part of an input stream, if that remaining part contains text the lexer cannot scan. By delaying the capture, it prevents the lexer from issuing a lexical error before the listener can stop the parser. An example is given in <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher">watcher</a>, where you can modify the Cargo.toml to change that optional feature and see the impact.</li>
 <li>When the listener intercepts the tokens with <code>intercept_token(…)</code> to change them, if that change depends on another <code>exit_*(…)</code> listener method that may not be called before the token is captured by the parser.</li>
 </ul>
-<p>Note that, in both cases, it is usually possible to work around those latency problems by introducing an extra nonterminal whose <code>exit_(…)</code> method will be called earlier. This is illustrated in the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_watcher">watcher</a> (<a href="https://github.com/blueglyph/lexigram/tree/master/examples/watcher">impl</a>) example: the <code>shutdown</code> nonterminal was added to the grammar for that purpose.</p>
+<p>Note that, in both cases, it is usually possible to work around those latency problems by introducing an extra nonterminal whose <code>exit_(…)</code> method will be called earlier. This is illustrated in the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_watcher">watcher</a> (<a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/watcher">impl</a>) example: the <code>shutdown</code> nonterminal was added to the grammar for that purpose.</p>
 <h2 id="lexi-gram"><a class="header" href="#lexi-gram">lexi-gram</a></h2>
 <p>This crate contains Lexi and Gram, the parsers used to read the lexicon and the grammar. We do indeed require a parser to read those definitions, which led to some interesting recursion during the development of Lexigram, since those parsers generate themselves.</p>
 <p><a href="https://docs.rs/lexi-gram">Link to the crate documentation</a></p>
@@ -3710,7 +3710,7 @@ a_2 -&gt; Id a_1 | ε;
 <li><a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/index.html">options</a>, a module with an <a href="https://docs.rs/lexi-gram/latest/lexi_gram/options/struct.OptionsBuilder.html">option builder</a> used with the gen_parser.</li>
 <li>A couple of <a href="https://docs.rs/lexi-gram/latest/lexi_gram/index.html#macros">macros</a> that can be used with the options.</li>
 </ul>
-<p>You will find <a href="https://github.com/blueglyph/lexigram/tree/master/examples">examples in the repository</a>; look at the <code>gen_*</code> crates to see how gen_parser is used to generate the code in the other crates.</p>
+<p>You will find <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples">examples in the repository</a>; look at the <code>gen_*</code> crates to see how gen_parser is used to generate the code in the other crates.</p>
 <p>To illustrate one case, the parser used in the <code>microcalc</code> crate is generated with the following code when <code>action = Action::Generate</code> (<code>Action::Verify</code> is used to verify the generated code, similarly to the <code>-v</code> option of the executable).</p>
 <pre><code class="language-rust">static LEXICON_GRAMMAR_FILENAME: &amp;str = "src/microcalc.lg";
 static SOURCE_FILENAME: &amp;str = "../microcalc/src/main.rs";
@@ -4118,7 +4118,7 @@ inst:
 <p>In the grammatical definition of <code>decl</code> above, the <code>Type</code> in the first alternative is “competing” with the <code>Typedef</code> of the second alternative. Therefore, the method could get <code>Term::Type</code> or <code>Term::Typedef</code>. That’s not all: <code>inst</code> is competing with <code>decl</code> as next predicted nonterminal in <code>program</code>, so ``Let<code>and</code>Print<code>are two other arguments that</code>hook(…)`  receive.</p>
 </blockquote>
 <p>The listener offers another way to intercept all the tokens: the parser calls the listener’s <code>intercept_token(…)</code> method each time it receives a token from the lexer. Its default implementation is empty, so it’s optimized out by the compiler. Implementing it to intercept tokens may have a bigger performance impact than <code>hook(…)</code>, and it requires to take all the incoming tokens into account.</p>
-<p>See also the <a href="https://github.com/blueglyph/lexigram/tree/master/examples/gen_typedef">gen_typedef</a> and <a href="https://github.com/blueglyph/lexigram/tree/master/examples/typedef">typedef</a> examples, which illustrate the two interception methods.</p>
+<p>See also the <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/gen_typedef">gen_typedef</a> and <a href="https://codeberg.org/Redglyph/lexigram/src/branch/master/examples/typedef">typedef</a> examples, which illustrate the two interception methods.</p>
 <h2 id="formal-grammar-definition"><a class="header" href="#formal-grammar-definition">Formal Grammar Definition</a></h2>
 <p>Here are the lexicon and the grammar of Lexi, using the Lexigram syntax. Those files can be found in the repository, in the <code>build-stage1</code> directory.</p>
 <h3 id="lexis-lexicon"><a class="header" href="#lexis-lexicon">Lexi’s Lexicon</a></h3>
